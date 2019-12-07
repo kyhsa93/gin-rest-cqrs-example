@@ -5,7 +5,7 @@ import (
 	"study/repositories"
 )
 
-func CreateStudy(study *model.Study, repository repositories.StudyRepository) {
+func Create(study *model.Study, repository repositories.StudyRepository) {
 
 	repository.Save(study)
 }
