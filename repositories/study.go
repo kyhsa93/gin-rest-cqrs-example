@@ -40,7 +40,7 @@ func (repository *Repository) FindById(id string) model.Study {
 }
 
 func (repository *Repository) Delete(id string) {
-	err := repository.db.Delete(&model.Model{ID: id}).Error
+	err := repository.db.Delete(&model.Study{Model: model.Model{ID: id}}).Error
 	if err != nil {
 		panic(err)
 	}
