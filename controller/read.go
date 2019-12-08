@@ -2,13 +2,13 @@ package controller
 
 import (
 	"study/model"
-	"study/repositories"
+	"study/repository"
 )
 
-func ReadItem(id string, repository repositories.Repository) model.Study {
+func ReadItem(id string, repository repository.Repository) model.Study {
 	return repository.FindById(id)
 }
 
-func ReadList(repository repositories.Repository) model.Studies {
+func ReadList(repository repository.Repository) model.Studies {
 	return repository.FindAll()
 }

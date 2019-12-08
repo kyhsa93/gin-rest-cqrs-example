@@ -2,9 +2,9 @@ package controller
 
 import (
 	"study/model"
-	"study/repositories"
+	"study/repository"
 )
 
-func Create(study *model.Study, repository repositories.Repository) {
+func Create(study *model.Study, repository repository.Repository) {
 	repository.Save(study)
 }

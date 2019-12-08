@@ -1,12 +1,12 @@
 package router
 
 import (
-	"study/repositories"
+	"study/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(repository *repositories.Repository) *gin.Engine {
+func SetupRoutes(repository *repository.Repository) *gin.Engine {
 	route := gin.Default()
 
 	route.POST("studies", func(context *gin.Context) {

@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"study/controller"
 	"study/model"
-	"study/repositories"
+	"study/repository"
 )
 
-func Create(context *gin.Context, repository repositories.Repository) {
+func Create(context *gin.Context, repository repository.Repository) {
 	var study model.Study
 	context.ShouldBindJSON(&study)
 	controller.Create(&study, repository)
