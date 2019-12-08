@@ -5,6 +5,6 @@ import (
 	"study/repositories"
 )
 
-func Update(context *gin.Context, repository repositories.StudyRepository) {
+func Update(context *gin.Context, repository repositories.Repository) {
 	context.JSON(200, "update")
 }

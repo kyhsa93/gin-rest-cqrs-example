@@ -6,8 +6,8 @@ import (
 	"log"
 
 	"study/config"
-	"study/repositories"
 	"study/model"
+	"study/repositories"
 	"study/router"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	databaseHost := databaseConfig.Host
 	databasePort := databaseConfig.Port
 
-	db, err := gorm.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/"+databaseName)
+	db, err := gorm.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/"+databaseName+"?parseTime=true")
 
 	if err != nil {
 		log.Println(err)
@@ -40,8 +40,8 @@ func main() {
 	defer db.Close()
 
 	port := serviceConfig.Port
-	studyRepository := repositories.NewStudyRepository(db)
-	route := router.SetupRoutes(studyRepository)
+	repository := repositories.NewRepository(db)
+	route := router.SetupRoutes(repository)
 
-	log.Fatal(route.Run(":"+port))
+	log.Fatal(route.Run(":" + port))
 }

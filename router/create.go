@@ -7,7 +7,7 @@ import (
 	"study/repositories"
 )
 
-func Create(context *gin.Context, repository repositories.StudyRepository) {
+func Create(context *gin.Context, repository repositories.Repository) {
 	var study model.Study
 	context.ShouldBindJSON(&study)
 	controller.Create(&study, repository)

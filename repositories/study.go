@@ -6,29 +6,42 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type StudyRepository struct {
+type Repository struct {
 	db *gorm.DB
 }
 
-func NewStudyRepository(db *gorm.DB) *StudyRepository {
-	return &StudyRepository{db: db}
+func NewRepository(db *gorm.DB) *Repository {
+	return &Repository{db: db}
 }
 
-func (repository *StudyRepository) Save(study *model.Study) {
-	repository.db.Save(study)
+func (repository *Repository) Save(study *model.Study) {
+	err := repository.db.Save(study).Error
+	if err != nil {
+		panic(err)
+	}
 }
 
-func (repository *StudyRepository) FindAll() model.Studies {
+func (repository *Repository) FindAll() model.Studies {
 	var studies model.Studies
-	repository.db.Find(&studies)
+	err := repository.db.Find(&studies).Error
+	if err != nil {
+		panic(err)
+	}
 	return studies
 }
 
-func (repository *StudyRepository) FindById(id string) {
+func (repository *Repository) FindById(id string) model.Study {
 	var study model.Study
-	repository.db.Take(&study).Where(&model.Model{ID: id})
+	err := repository.db.Where(&model.Study{Model: model.Model{ID: id}}).Take(&study).Error
+	if err != nil {
+		panic(err)
+	}
+	return study
 }
 
-func (repository *StudyRepository) Delete(id string) {
-	repository.db.Delete(&model.Model{ID: id})
+func (repository *Repository) Delete(id string) {
+	err := repository.db.Delete(&model.Model{ID: id}).Error
+	if err != nil {
+		panic(err)
+	}
 }
