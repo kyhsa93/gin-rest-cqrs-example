@@ -6,27 +6,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(studyRepository *repositories.StudyRepository) *gin.Engine {
+func SetupRoutes(repository *repositories.Repository) *gin.Engine {
 	route := gin.Default()
 
 	route.POST("studies", func(context *gin.Context) {
-		Create(context, *studyRepository)
+		Create(context, *repository)
 	})
 
 	route.GET("studies/:id", func(context *gin.Context) {
-		Read(context, *studyRepository)
+		ReadItem(context, *repository)
 	})
 
 	route.GET("studies", func(context *gin.Context) {
-		ReadList(context, *studyRepository)
+		ReadList(context, *repository)
 	})
 
 	route.PUT("studies/:id", func(context *gin.Context) {
-		Update(context, *studyRepository)
+		Update(context, *repository)
 	})
 
 	route.DELETE("studies/:id", func(context *gin.Context) {
-		Delete(context, *studyRepository)
+		Delete(context, *repository)
 	})
 
 	return route

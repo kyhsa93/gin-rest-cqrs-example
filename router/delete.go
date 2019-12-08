@@ -5,6 +5,6 @@ import (
 	"study/repositories"
 )
 
-func Delete(context *gin.Context, repository repositories.StudyRepository) {
+func Delete(context *gin.Context, repository repositories.Repository) {
 	context.JSON(200, "delete")
 }
