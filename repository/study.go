@@ -1,4 +1,4 @@
-package repositories
+package repository
 
 import (
 	"study/model"
@@ -32,10 +32,7 @@ func (repository *Repository) FindAll() model.Studies {
 
 func (repository *Repository) FindById(id string) model.Study {
 	var study model.Study
-	err := repository.db.Where(&model.Study{Model: model.Model{ID: id}}).Take(&study).Error
-	if err != nil {
-		panic(err)
-	}
+	repository.db.Where(&model.Study{Model: model.Model{ID: id}}).Take(&study)
 	return study
 }
 

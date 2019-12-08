@@ -2,9 +2,9 @@ package controller
 
 import "study/model"
 
-import "study/repositories"
+import "study/repository"
 
-func Update(id string, study *model.Study, repository repositories.Repository) {
+func Update(id string, study *model.Study, repository repository.Repository) {
 	oldData := ReadItem(id, repository)
 	if oldData.ID != id {
 		return

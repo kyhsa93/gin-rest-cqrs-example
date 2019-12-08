@@ -7,7 +7,7 @@ import (
 
 	"study/config"
 	"study/model"
-	"study/repositories"
+	"study/repository"
 	"study/router"
 )
 
@@ -40,7 +40,7 @@ func main() {
 	defer db.Close()
 
 	port := serviceConfig.Port
-	repository := repositories.NewRepository(db)
+	repository := repository.NewRepository(db)
 	route := router.SetupRoutes(repository)
 
 	log.Fatal(route.Run(":" + port))
