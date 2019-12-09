@@ -1,14 +1,22 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"study/controller"
-	"study/model"
+	"study/dto"
 	"study/repository"
+
+	"github.com/gin-gonic/gin"
 )
 
+// @Description create study group
+// @Tags Studies
+// @Accept  json
+// @Produce  json
+// @Param study body dto.Study true "Add study"
+// @Success 200
+// @Router /studies [post]
 func Create(context *gin.Context, repository repository.Repository) {
-	var study model.Study
-	context.ShouldBindJSON(&study)
-	controller.Create(&study, repository)
+	var data dto.Study
+	context.ShouldBindJSON(&data)
+	controller.Create(&data, repository)
 }

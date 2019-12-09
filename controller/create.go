@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"study/model"
+	"study/dto"
 	"study/repository"
 )
 
-func Create(study *model.Study, repository repository.Repository) {
-	repository.Save(study)
+func Create(data *dto.Study, repository repository.Repository) {
+	repository.Save(data)
 }

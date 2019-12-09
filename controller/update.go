@@ -1,15 +1,14 @@
 package controller
 
-import "study/model"
+import (
+	"study/dto"
+	"study/repository"
+)
 
-import "study/repository"
-
-func Update(id string, study *model.Study, repository repository.Repository) {
+func Update(id string, data *dto.Study, repository repository.Repository) {
 	oldData := ReadItem(id, repository)
 	if oldData.ID != id {
 		return
 	}
-	oldData.Name = study.Name
-	oldData.Description = study.Description
-	repository.Save(&oldData)
+	repository.Save(&dto.Study{Name: data.Name, Description: data.Description})
 }

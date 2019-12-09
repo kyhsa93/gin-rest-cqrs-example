@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"study/dto"
 	"study/model"
 
 	"github.com/jinzhu/gorm"
@@ -14,7 +15,8 @@ func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (repository *Repository) Save(study *model.Study) {
+func (repository *Repository) Save(data *dto.Study) {
+	study := &model.Study{Name: data.Name, Description: data.Description}
 	err := repository.db.Save(study).Error
 	if err != nil {
 		panic(err)
