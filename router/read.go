@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"study/controller"
-	"study/repository"
+	"go-rest-example/controller"
+	"go-rest-example/repository"
 )
 
 // @Tags Studies

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"study/dto"
-	"study/repository"
+	"go-rest-example/dto"
+	"go-rest-example/repository"
 )
 
 func Update(id string, data *dto.Study, repository repository.Repository) {

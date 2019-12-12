@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	"study/config"
-	"study/docs"
-	"study/model"
-	"study/repository"
-	"study/router"
+	"go-rest-example/config"
+	"go-rest-example/docs"
+	"go-rest-example/model"
+	"go-rest-example/repository"
+	"go-rest-example/router"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

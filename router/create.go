@@ -1,9 +1,9 @@
 package router
 
 import (
-	"study/controller"
-	"study/dto"
-	"study/repository"
+	"go-rest-example/controller"
+	"go-rest-example/dto"
+	"go-rest-example/repository"
 
 	"github.com/gin-gonic/gin"
 )

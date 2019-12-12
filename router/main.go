@@ -1,7 +1,7 @@
 package router
 
 import (
-	"study/repository"
+	"go-rest-example/repository"
 
 	"github.com/gin-gonic/gin"
 )

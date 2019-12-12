@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"study/model"
-	"study/repository"
+	"go-rest-example/model"
+	"go-rest-example/repository"
 )
 
 func ReadItem(id string, repository repository.Repository) model.Study {
