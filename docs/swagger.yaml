@@ -1,5 +1,5 @@
 definitions:
-  dto.Study:
+  dto.Command:
     properties:
       description:
         type: string
@@ -65,7 +65,7 @@ paths:
         name: study
         required: true
         schema:
-          $ref: '#/definitions/dto.Study'
+          $ref: '#/definitions/dto.Command'
           type: object
       produces:
       - application/json
@@ -107,7 +107,7 @@ paths:
         name: study
         required: true
         schema:
-          $ref: '#/definitions/dto.Study'
+          $ref: '#/definitions/dto.Command'
           type: object
       produces:
       - application/json

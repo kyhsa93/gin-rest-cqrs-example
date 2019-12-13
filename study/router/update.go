@@ -13,11 +13,11 @@ import (
 // @Accept  json
 // @Produce  json
 // @param id path string true "Study ID"
-// @Param study body dto.Study true "Add study"
+// @Param study body dto.Command true "Add study"
 // @Success 200
 // @Router /studies/{id} [put]
 func Update(context *gin.Context, repository repository.Repository) {
-	var data dto.Study
+	var data dto.Command
 	context.ShouldBindJSON(&data)
 	controller.Update(context.Param("id"), &data, repository)
 }

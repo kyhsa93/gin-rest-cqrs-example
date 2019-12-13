@@ -5,6 +5,6 @@ import (
 	"go-rest-example/study/repository"
 )
 
-func Create(data *dto.Study, repository repository.Repository) {
+func Create(data *dto.Command, repository repository.Repository) {
 	repository.Save(data)
 }
