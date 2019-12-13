@@ -5,10 +5,10 @@ import (
 	"go-rest-example/study/repository"
 )
 
-func Update(id string, data *dto.Study, repository repository.Repository) {
+func Update(id string, data *dto.Command, repository repository.Repository) {
 	oldData := ReadItem(id, repository)
 	if oldData.ID != id {
 		return
 	}
-	repository.Save(&dto.Study{Name: data.Name, Description: data.Description})
+	repository.Save(&dto.Command{Name: data.Name, Description: data.Description})
 }

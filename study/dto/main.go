@@ -1,6 +1,6 @@
 package dto
 
-type Study struct {
+type Command struct {
 	Name        string
 	Description string
 }

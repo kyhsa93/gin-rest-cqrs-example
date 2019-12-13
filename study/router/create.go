@@ -12,11 +12,11 @@ import (
 // @Tags Studies
 // @Accept  json
 // @Produce  json
-// @Param study body dto.Study true "Add study"
+// @Param study body dto.Command true "Add study"
 // @Success 200
 // @Router /studies [post]
 func Create(context *gin.Context, repository repository.Repository) {
-	var data dto.Study
+	var data dto.Command
 	context.ShouldBindJSON(&data)
 	controller.Create(&data, repository)
 }
