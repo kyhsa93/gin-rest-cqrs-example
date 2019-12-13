@@ -1,13 +1,14 @@
 package router
 
 import (
-	"go-rest-example/repository"
+	"go-rest-example/config"
+	"go-rest-example/study/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(repository *repository.Repository) *gin.Engine {
-	route := gin.Default()
+func SetupRoutes(route *gin.Engine) {
+	repository := repository.NewRepository(config.GetConnection())
 
 	route.POST("studies", func(context *gin.Context) {
 		Create(context, *repository)
@@ -28,6 +29,4 @@ func SetupRoutes(repository *repository.Repository) *gin.Engine {
 	route.DELETE("studies/:id", func(context *gin.Context) {
 		Delete(context, *repository)
 	})
-
-	return route
 }

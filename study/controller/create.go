@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"go-rest-example/dto"
-	"go-rest-example/repository"
+	"go-rest-example/study/dto"
+	"go-rest-example/study/repository"
 )
 
 func Create(data *dto.Study, repository repository.Repository) {
