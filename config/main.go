@@ -1,13 +1,13 @@
 package config
 
 type Config struct {
-	service  *Service
-	database *Database
+	service *Service
+	// database *Database
 }
 
 func Init() Config {
 	service := GetService()
-	database := GetDatabase()
-	config := Config{service: service, database: database}
+	// database := GetDatabase()
+	config := Config{service: service}
 	return config
 }

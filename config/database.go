@@ -1,6 +1,13 @@
 package config
 
-import "github.com/caarlos0/env"
+import (
+	"log"
+
+	"github.com/caarlos0/env"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"go-rest-example/study/model"
+)
 
 type Database struct {
 	Port     string `env:"DATABASE_PORT" envDefault:"3306"`
@@ -10,8 +17,25 @@ type Database struct {
 	Password string `env:"DATABASE_PASSWORD" envDefault:"test"`
 }
 
-func GetDatabase() *Database {
+func GetConnection() *gorm.DB {
 	database := Database{}
 	env.Parse(&database)
-	return &database
+
+	User := database.User
+	Password := database.Password
+	Name := database.Name
+	Host := database.Host
+	Port := database.Port
+
+	db, err := gorm.Open("mysql", User+":"+Password+"@tcp("+Host+":"+Port+")/"+Name+"?parseTime=true")
+
+	if err != nil {
+		log.Println(err)
+		panic(err)
+	}
+
+	db.AutoMigrate(model.Study{})
+
+	db.LogMode(true)
+	return db
 }
