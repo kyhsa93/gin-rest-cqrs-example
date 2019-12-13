@@ -115,6 +115,24 @@
                 "responses": {
                     "200": {}
                 }
+            },
+            "delete": {
+                "description": "delete study by id",
+                "tags": [
+                    "Studies"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Study ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {}
+                }
             }
         }
     },
