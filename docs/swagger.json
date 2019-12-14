@@ -20,7 +20,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Studies"
+                            "$ref": "#/definitions/dto.Studies"
                         }
                     }
                 }
@@ -77,7 +77,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Study"
+                            "$ref": "#/definitions/dto.Study"
                         }
                     }
                 }
@@ -148,15 +148,12 @@
                 }
             }
         },
-        "model.Studies": {
+        "dto.Studies": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
                     "createdAt": {
-                        "type": "string"
-                    },
-                    "deletedAt": {
                         "type": "string"
                     },
                     "description": {
@@ -174,13 +171,10 @@
                 }
             }
         },
-        "model.Study": {
+        "dto.Study": {
             "type": "object",
             "properties": {
                 "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
                     "type": "string"
                 },
                 "description": {

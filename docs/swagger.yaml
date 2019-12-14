@@ -6,12 +6,10 @@ definitions:
       name:
         type: string
     type: object
-  model.Studies:
+  dto.Studies:
     items:
       properties:
         createdAt:
-          type: string
-        deletedAt:
           type: string
         description:
           type: string
@@ -23,11 +21,9 @@ definitions:
           type: string
       type: object
     type: array
-  model.Study:
+  dto.Study:
     properties:
       createdAt:
-        type: string
-      deletedAt:
         type: string
       description:
         type: string
@@ -52,7 +48,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Studies'
+            $ref: '#/definitions/dto.Studies'
       tags:
       - Studies
     post:
@@ -101,7 +97,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Study'
+            $ref: '#/definitions/dto.Study'
       tags:
       - Studies
     put:
