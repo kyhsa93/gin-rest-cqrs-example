@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
+
+	accountRouter "github.com/kyhsa93/go-rest-example/account/router"
 	"github.com/kyhsa93/go-rest-example/config"
 	"github.com/kyhsa93/go-rest-example/docs"
 	studyRouter "github.com/kyhsa93/go-rest-example/study/router"
-	"log"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -14,6 +16,7 @@ import (
 
 func main() {
 	route := gin.Default()
+	accountRouter.SetupRoutes(route)
 	studyRouter.SetupRoutes(route)
 
 	docs.SwaggerInfo.Title = "Swagger Example API"
