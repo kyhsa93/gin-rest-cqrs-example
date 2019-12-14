@@ -14,7 +14,7 @@ import (
 type Database struct {
 	Port     string `env:"DATABASE_PORT" envDefault:"3306"`
 	Host     string `env:"DATABASE_HOST" envDefault:"localhost"`
-	Name     string `env:"DATABASE_NAME" envDefault:"go-rest-exmaple"`
+	Name     string `env:"DATABASE_NAME" envDefault:"go-rest-example"`
 	User     string `env:"DATABASE_USER" envDefault:"root"`
 	Password string `env:"DATABASE_PASSWORD" envDefault:"test"`
 }
