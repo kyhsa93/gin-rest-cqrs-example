@@ -10,7 +10,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param id path string true "Study ID"
-// @Success 200 {object} model.Study
+// @Success 200 {object} dto.Study
 // @Router /studies/{id} [get]
 func ReadItem(context *gin.Context, repository repository.Repository) {
 	context.JSON(200, controller.ReadItem(context.Param("id"), repository))
@@ -19,7 +19,7 @@ func ReadItem(context *gin.Context, repository repository.Repository) {
 // @Tags Studies
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.Studies
+// @Success 200 {object} dto.Studies
 // @Router /studies [get]
 func ReadList(context *gin.Context, repository repository.Repository) {
 	context.JSON(200, controller.ReadList(repository))
