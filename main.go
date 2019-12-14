@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-rest-example/config"
-	"go-rest-example/docs"
-	studyRouter "go-rest-example/study/router"
+	"github.com/kyhsa93/go-rest-example/config"
+	"github.com/kyhsa93/go-rest-example/docs"
+	studyRouter "github.com/kyhsa93/go-rest-example/study/router"
 	"log"
 
 	"github.com/gin-gonic/gin"

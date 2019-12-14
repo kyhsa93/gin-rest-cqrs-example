@@ -1,8 +1,8 @@
 package router
 
 import (
-	"go-rest-example/config"
-	"go-rest-example/study/repository"
+	"github.com/kyhsa93/go-rest-example/config"
+	"github.com/kyhsa93/go-rest-example/study/repository"
 
 	"github.com/gin-gonic/gin"
 )

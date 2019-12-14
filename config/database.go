@@ -1,12 +1,12 @@
 package config
 
 import (
+	"github.com/kyhsa93/go-rest-example/study/model"
 	"log"
 
 	"github.com/caarlos0/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"go-rest-example/study/model"
 )
 
 type Database struct {

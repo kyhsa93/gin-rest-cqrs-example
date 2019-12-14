@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"go-rest-example/study/dto"
-	"go-rest-example/study/model"
+	"github.com/kyhsa93/go-rest-example/study/dto"
+	"github.com/kyhsa93/go-rest-example/study/model"
 
 	"github.com/jinzhu/gorm"
 )
