@@ -3,8 +3,8 @@ package config
 import (
 	"log"
 
-	account "github.com/kyhsa93/go-rest-example/account/model"
-	study "github.com/kyhsa93/go-rest-example/study/model"
+	account "github.com/kyhsa93/go-rest-example/account/entity"
+	study "github.com/kyhsa93/go-rest-example/study/entity"
 
 	"github.com/caarlos0/env"
 	"github.com/jinzhu/gorm"
