@@ -1,12 +1,34 @@
 definitions:
-  dto.Command:
+  dto.Account:
+    type: object
+  dto.Study:
     properties:
       description:
         type: string
       name:
         type: string
     type: object
-  dto.Studies:
+  model.Account:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.Accounts:
+    items:
+      properties:
+        createdAt:
+          type: string
+        id:
+          type: string
+        updatedAt:
+          type: string
+      type: object
+    type: array
+  model.Studies:
     items:
       properties:
         createdAt:
@@ -21,7 +43,7 @@ definitions:
           type: string
       type: object
     type: array
-  dto.Study:
+  model.Study:
     properties:
       createdAt:
         type: string
@@ -38,6 +60,91 @@ info:
   contact: {}
   license: {}
 paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Accounts'
+      tags:
+      - Accounts
+    post:
+      consumes:
+      - application/json
+      description: create account group
+      parameters:
+      - description: Add account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Account'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      tags:
+      - Accounts
+  /accounts/{id}:
+    delete:
+      description: delete account by id
+      parameters:
+      - description: account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200": {}
+      tags:
+      - Accounts
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+      tags:
+      - Accounts
+    put:
+      consumes:
+      - application/json
+      description: create account group
+      parameters:
+      - description: account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Add account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Account'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      tags:
+      - Accounts
   /studies:
     get:
       consumes:
@@ -48,7 +155,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Studies'
+            $ref: '#/definitions/model.Studies'
       tags:
       - Studies
     post:
@@ -61,7 +168,7 @@ paths:
         name: study
         required: true
         schema:
-          $ref: '#/definitions/dto.Command'
+          $ref: '#/definitions/dto.Study'
           type: object
       produces:
       - application/json
@@ -97,7 +204,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Study'
+            $ref: '#/definitions/model.Study'
       tags:
       - Studies
     put:
@@ -115,7 +222,7 @@ paths:
         name: study
         required: true
         schema:
-          $ref: '#/definitions/dto.Command'
+          $ref: '#/definitions/dto.Study'
           type: object
       produces:
       - application/json

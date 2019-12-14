@@ -5,6 +5,136 @@
         "license": {}
     },
     "paths": {
+        "/accounts": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Accounts"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create account group",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "description": "Add account",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/dto.Account"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {}
+                }
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "create account group",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Add account",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/dto.Account"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {}
+                }
+            },
+            "delete": {
+                "description": "delete account by id",
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {}
+                }
+            }
+        },
         "/studies": {
             "get": {
                 "consumes": [
@@ -20,7 +150,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Studies"
+                            "$ref": "#/definitions/model.Studies"
                         }
                     }
                 }
@@ -44,7 +174,7 @@
                         "required": true,
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/dto.Command"
+                            "$ref": "#/definitions/dto.Study"
                         }
                     }
                 ],
@@ -77,7 +207,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Study"
+                            "$ref": "#/definitions/model.Study"
                         }
                     }
                 }
@@ -108,7 +238,7 @@
                         "required": true,
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/dto.Command"
+                            "$ref": "#/definitions/dto.Study"
                         }
                     }
                 ],
@@ -137,7 +267,10 @@
         }
     },
     "definitions": {
-        "dto.Command": {
+        "dto.Account": {
+            "type": "object"
+        },
+        "dto.Study": {
             "type": "object",
             "properties": {
                 "description": {
@@ -148,7 +281,38 @@
                 }
             }
         },
-        "dto.Studies": {
+        "model.Account": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Accounts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "model.Studies": {
             "type": "array",
             "items": {
                 "type": "object",
@@ -171,7 +335,7 @@
                 }
             }
         },
-        "dto.Study": {
+        "model.Study": {
             "type": "object",
             "properties": {
                 "createdAt": {

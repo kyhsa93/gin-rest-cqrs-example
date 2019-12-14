@@ -1,21 +1,13 @@
 package model
 
-import (
-	"time"
+import "time"
 
-	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
-type Model struct {
-	ID        string `gorm:"primary_key;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+type Study struct {
+	ID          string
+	Name        string
+	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
-func (model *Model) BeforeCreate(scope *gorm.Scope) error {
-	uuid, _ := uuid.NewRandom()
-	return scope.SetColumn("ID", uuid.String())
-}
+type Studies []Study
