@@ -10,7 +10,7 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
 
   go-rest-example:
-    build: .
+    image: kyhsa93/go-rest-example
     restart: always
     env_file:
       - .env

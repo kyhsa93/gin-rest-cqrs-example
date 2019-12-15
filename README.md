@@ -14,9 +14,9 @@ I recommand to use docker for your environment.
 
  * Install Go: [https://golang.org/dl/](https://golang.org/dl/)
 
- * Install Docker Desktop for MAC: [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)
+ * Install Docker for MAC: [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)
 
- * Install Docker Desktop for Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)
+ * Install Docker for Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)
 
  * Install compose: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
@@ -39,11 +39,11 @@ And then, build this program for set all dependencies.
 
 `go.mod` and `go.sum` is already exists. so you don't need run `go mod init`.
 
-Next up, gnerate mysql and redis.
+Next up, generate mysql and redis.
 
 If you already have mysql and redis in your environment, you can use that.
 
-But if you don't have one or both, try followed process.
+But if you don't have one or both of them, try followed process.
 
 Install docker for your OS from link in top of this document.
 
@@ -55,15 +55,15 @@ If your docker is successfully installed, you can use docker cli.
 
   OR
 
-  docker-compose -f docker-compose.development.yml up -d # create mysql, redis container for development environment
-  docker-compose -f docker-compose.development.yml down  # remove created containers
+  docker-compose -f docker-compose.dev.yml up -d # create mysql, redis container for development environment
+  docker-compose -f docker-compose.dev.yml down  # remove created containers
 ```
 
 > Note. If you use docker container or any other docker resources included docker compose, recommended remove that after you use.
 
 Now you can connect mysql in localhost:3306, that user 'root' and password is 'test'.
 
-Finaly, your development environment is created.
+Finally, your development environment is created.
 
 And now you can start api with followed command.
 
@@ -78,7 +78,7 @@ If you want apply your code change into running process, save all changes and re
 If you can use docker cli, you can build docker image.
 
 ```bash
-  docker build -t go-rest-example
+  docker build -t go-rest-example .
   docker images # list up docker images
 ```
 
@@ -98,18 +98,12 @@ Docker compose in this project is include api, redis and mysql.
 Run followed command in this project directory root.
 
 ```bash
-  docker-compose up -d # build images, create and run containers in background process
+  docker-compose up -d # pull images, create and run containers in background process
 ```
 
 If all containers are created, you can access api on http://localhost, and database also you can connect through by http://localhost:3306.
 
 Default database user is 'root' and password is 'test'.
-
-If you want apply your modified code into running container, you can add build option.
-
-```bash
-  docker-compose up -d --build # if source code is changed, rebuild image, recreate and start containers.
-```
 
 After use docker-compose, you have to stop and remove all resources created by docker-compose in this project.
 
@@ -119,13 +113,15 @@ Run followed command in project root.
   docker-compose down # stop and remove containers in defined docker-compose.yml
 ```
 
+> Note. docker-compose in this project, does not build from this source code. If you want to build and use image from this code, you have to modify docker-compose.yml
+
 ## Configurations
 
 All configurations are in [./config](https://github.com/kyhsa93/go-rest-example/tree/master/config)
 
 Most default configuration can use with your environment values.
 
-And also you can modify conrigurations.
+And also you can modify configurations.
 
 ## Documentation
 
@@ -140,22 +136,22 @@ Start this api and connect api host in your browser.
 ## Scripts
 
 ```bash
-  git clone https://github.com/kyhsa93/go-rest-example.git
+  git clone https://github.com/kyhsa93/go-rest-example.git # clone this project
   
-  go build
+  go build # build this project
   
   docker run --name go-rest-example -d -p 3306:3306 -e MYSQL_DATABASE=go-rest-example -e MYSQL_ROOT_PASSWORD=test -v ~/database/
-  go-rest-example:/var/lib/mysql mysql:5.7
+  go-rest-example:/var/lib/mysql mysql:5.7 # create mysql container
   
-  docker run --name redis -d -p 6379:6379 redis:alpine
+  docker run --name redis -d -p 6379:6379 redis:alpine # create redis container
   
-  docker-compose -f docker-compose.development.yml up -d # create mysql, redis container for development environment
+  docker-compose -f docker-compose.dev.yml up -d # create mysql, redis container for development environment
   
-  docker-compose -f docker-compose.development.yml down  # remove created containers
+  docker-compose -f docker-compose.dev.yml down  # remove created containers
 
-  go run main.go
+  go run main.go # start 
 
-  docker build -t go-rest-example
+  docker build -t go-rest-example . # build docker image
   
   docker images # list up docker images
 
@@ -164,8 +160,6 @@ Start this api and connect api host in your browser.
   docker ps # list up runnint docker containers
 
   docker-compose up -d # build images, create and run containers in background process
-
-  docker-compose up -d --build # if source code is changed, rebuild image, recreate and start containers.
 
   docker-compose down # stop and remove containers in defined docker-compose.yml
 
