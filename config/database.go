@@ -4,7 +4,6 @@ import (
 	"log"
 
 	account "github.com/kyhsa93/go-rest-example/account/entity"
-	study "github.com/kyhsa93/go-rest-example/study/entity"
 
 	"github.com/caarlos0/env"
 	"github.com/jinzhu/gorm"
@@ -36,7 +35,7 @@ func GetConnection() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(study.Study{}, account.Account{})
+	db.AutoMigrate(account.Account{})
 
 	db.LogMode(true)
 	return db

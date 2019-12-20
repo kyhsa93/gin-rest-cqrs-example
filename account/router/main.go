@@ -1,32 +1,28 @@
 package router
 
 import (
-	"github.com/kyhsa93/go-rest-example/account/repository"
-	"github.com/kyhsa93/go-rest-example/config"
-
 	"github.com/gin-gonic/gin"
 )
 
+// SetupRoutes setup accounts route handler
 func SetupRoutes(route *gin.Engine) {
-	repository := repository.NewRepository(config.GetConnection())
-
 	route.POST("accounts", func(context *gin.Context) {
-		Create(context, *repository)
+		Create(context)
 	})
 
 	route.GET("accounts/:id", func(context *gin.Context) {
-		ReadItem(context, *repository)
+		ReadItem(context)
 	})
 
 	route.GET("accounts", func(context *gin.Context) {
-		ReadList(context, *repository)
+		ReadList(context)
 	})
 
 	route.PUT("accounts/:id", func(context *gin.Context) {
-		Update(context, *repository)
+		Update(context)
 	})
 
 	route.DELETE("accounts/:id", func(context *gin.Context) {
-		Delete(context, *repository)
+		Delete(context)
 	})
 }

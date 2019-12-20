@@ -3,11 +3,11 @@ package router
 import (
 	"github.com/kyhsa93/go-rest-example/account/controller"
 	"github.com/kyhsa93/go-rest-example/account/dto"
-	"github.com/kyhsa93/go-rest-example/account/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
+// Create create account route handler
 // @Description create account group
 // @Tags Accounts
 // @Accept  json
@@ -15,8 +15,8 @@ import (
 // @Param account body dto.Account true "Add account"
 // @Success 200
 // @Router /accounts [post]
-func Create(context *gin.Context, repository repository.Repository) {
+func Create(context *gin.Context) {
 	var data dto.Account
 	context.ShouldBindJSON(&data)
-	controller.Create(&data, repository)
+	controller.Create(&data)
 }

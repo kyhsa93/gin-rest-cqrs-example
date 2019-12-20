@@ -5,16 +5,18 @@ import (
 	"github.com/kyhsa93/go-rest-example/account/repository"
 )
 
-func ReadItem(id string, repository repository.Repository) model.Account {
+// ReadItem read account by acountID
+func ReadItem(acountID string) model.Account {
 	var model model.Account
-	result := repository.FindById(id)
+	result := repository.FindByID(acountID)
 	model.ID = result.ID
 	model.CreatedAt = result.CreatedAt
 	model.UpdatedAt = result.UpdatedAt
 	return model
 }
 
-func ReadList(repository repository.Repository) model.Accounts {
+// ReadList read account list
+func ReadList() model.Accounts {
 	var accounts model.Accounts
 	var account model.Account
 
