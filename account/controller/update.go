@@ -5,9 +5,10 @@ import (
 	"github.com/kyhsa93/go-rest-example/account/repository"
 )
 
-func Update(id string, data *dto.Account, repository repository.Repository) {
-	oldData := ReadItem(id, repository)
-	if oldData.ID != id {
+// Update update account by accountID
+func Update(accountID string, data *dto.Account) {
+	oldData := ReadItem(accountID)
+	if oldData.ID != accountID {
 		return
 	}
 	repository.Save(&dto.Account{})

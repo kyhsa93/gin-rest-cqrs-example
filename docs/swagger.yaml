@@ -1,13 +1,6 @@
 definitions:
   dto.Account:
     type: object
-  dto.Study:
-    properties:
-      description:
-        type: string
-      name:
-        type: string
-    type: object
   model.Account:
     properties:
       createdAt:
@@ -28,34 +21,6 @@ definitions:
           type: string
       type: object
     type: array
-  model.Studies:
-    items:
-      properties:
-        createdAt:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        updatedAt:
-          type: string
-      type: object
-    type: array
-  model.Study:
-    properties:
-      createdAt:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updatedAt:
-        type: string
-    type: object
 info:
   contact: {}
   license: {}
@@ -145,89 +110,4 @@ paths:
         "200": {}
       tags:
       - Accounts
-  /studies:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Studies'
-      tags:
-      - Studies
-    post:
-      consumes:
-      - application/json
-      description: create study group
-      parameters:
-      - description: Add study
-        in: body
-        name: study
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Study'
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200": {}
-      tags:
-      - Studies
-  /studies/{id}:
-    delete:
-      description: delete study by id
-      parameters:
-      - description: Study ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200": {}
-      tags:
-      - Studies
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: Study ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Study'
-      tags:
-      - Studies
-    put:
-      consumes:
-      - application/json
-      description: create study group
-      parameters:
-      - description: Study ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Add study
-        in: body
-        name: study
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Study'
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200": {}
-      tags:
-      - Studies
 swagger: "2.0"

@@ -5,6 +5,7 @@ import (
 	"github.com/kyhsa93/go-rest-example/account/repository"
 )
 
-func Create(data *dto.Account, repository repository.Repository) {
+// Create create account
+func Create(data *dto.Account) {
 	repository.Save(data)
 }
