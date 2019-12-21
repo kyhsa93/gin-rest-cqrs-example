@@ -1,7 +1,6 @@
 package router
 
 import (
-	"github.com/kyhsa93/go-rest-example/account/controller"
 	"github.com/kyhsa93/go-rest-example/account/dto"
 
 	"github.com/gin-gonic/gin"
@@ -15,8 +14,8 @@ import (
 // @Param account body dto.Account true "Add account"
 // @Success 200
 // @Router /accounts [post]
-func Create(context *gin.Context) {
+func (router *Router) create(context *gin.Context) {
 	var data dto.Account
 	context.ShouldBindJSON(&data)
-	controller.Create(&data)
+	router.service.Create(&data)
 }

@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/go-rest-example/account/controller"
 )
 
 // ReadItem read account route handler
@@ -12,8 +11,8 @@ import (
 // @Param id path string true "account ID"
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [get]
-func ReadItem(context *gin.Context) {
-	context.JSON(200, controller.ReadItem(context.Param("id")))
+func (router *Router) readItem(context *gin.Context) {
+	context.JSON(200, router.service.ReadItem(context.Param("id")))
 }
 
 // ReadList read accounts route handler
@@ -22,6 +21,6 @@ func ReadItem(context *gin.Context) {
 // @Produce  json
 // @Success 200 {object} model.Accounts
 // @Router /accounts [get]
-func ReadList(context *gin.Context) {
-	context.JSON(200, controller.ReadList())
+func (router *Router) readList(context *gin.Context) {
+	context.JSON(200, router.service.ReadList())
 }
