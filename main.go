@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	accountRouter "github.com/kyhsa93/go-rest-example/account/router"
+	"github.com/kyhsa93/go-rest-example/account"
 	"github.com/kyhsa93/go-rest-example/config"
 
 	"github.com/gin-gonic/gin"
@@ -14,9 +14,11 @@ import (
 
 func main() {
 	route := gin.Default()
-	accountRouter.SetupRoutes(route)
+	config := config.InitializeConfig()
+
+	account.InitializeAccount(route, config)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	log.Fatal(route.Run(":" + config.GetService().Port))
+	log.Fatal(route.Run(":" + config.Server.Port))
 }

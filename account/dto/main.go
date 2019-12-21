@@ -1,4 +1,4 @@
 package dto
 
-type Account struct {
-}
+// Account account dto for command action
+type Account struct{}

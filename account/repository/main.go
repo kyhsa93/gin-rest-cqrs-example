@@ -8,23 +8,30 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func database() *gorm.DB {
-	return config.GetConnection()
+// Repository repository for query to database
+type Repository struct {
+	database *gorm.DB
+}
+
+// NewRepository create repository instance
+func NewRepository(config *config.Config) *Repository {
+	database := config.Database.Connection
+	return &Repository{database: database}
 }
 
 // Save create or update account
-func Save(data *dto.Account) {
+func (repository *Repository) Save(data *dto.Account) {
 	account := &entity.Account{}
-	err := database().Save(account).Error
+	err := repository.database.Save(account).Error
 	if err != nil {
 		panic(err)
 	}
 }
 
 // FindAll find all account
-func FindAll() entity.Accounts {
+func (repository *Repository) FindAll() entity.Accounts {
 	var accounts entity.Accounts
-	err := database().Find(&accounts).Error
+	err := repository.database.Find(&accounts).Error
 	if err != nil {
 		panic(err)
 	}
@@ -32,15 +39,15 @@ func FindAll() entity.Accounts {
 }
 
 // FindByID find account by accountId
-func FindByID(id string) entity.Account {
+func (repository *Repository) FindByID(id string) entity.Account {
 	var account entity.Account
-	database().Where(&entity.Account{Model: entity.Model{ID: id}}).Take(&account)
+	repository.database.Where(&entity.Account{Model: entity.Model{ID: id}}).Take(&account)
 	return account
 }
 
 // Delete delete account by accountId
-func Delete(id string) {
-	err := database().Delete(&entity.Account{Model: entity.Model{ID: id}}).Error
+func (repository *Repository) Delete(id string) {
+	err := repository.database.Delete(&entity.Account{Model: entity.Model{ID: id}}).Error
 	if err != nil {
 		panic(err)
 	}
