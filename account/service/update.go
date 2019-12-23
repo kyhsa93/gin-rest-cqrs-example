@@ -6,7 +6,7 @@ import (
 
 // Update update account by accountID
 func (service *Service) Update(accountID string, data *dto.Account) {
-	oldData := service.ReadItem(accountID)
+	oldData := service.ReadAccount(accountID)
 	if oldData.ID != accountID {
 		return
 	}

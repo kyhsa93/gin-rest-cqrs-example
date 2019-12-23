@@ -4,8 +4,8 @@ import (
 	"github.com/kyhsa93/go-rest-example/account/model"
 )
 
-// ReadItem read account by acountID
-func (service *Service) ReadItem(acountID string) model.Account {
+// ReadAccount read account by acountID
+func (service *Service) ReadAccount(acountID string) model.Account {
 	var model model.Account
 	result := service.repository.FindByID(acountID)
 	model.ID = result.ID
@@ -14,8 +14,8 @@ func (service *Service) ReadItem(acountID string) model.Account {
 	return model
 }
 
-// ReadList read account list
-func (service *Service) ReadList() model.Accounts {
+// ReadAccounts read account list
+func (service *Service) ReadAccounts() model.Accounts {
 	var accounts model.Accounts
 	var account model.Account
 	result := service.repository.FindAll()
