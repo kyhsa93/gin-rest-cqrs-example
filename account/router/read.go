@@ -21,6 +21,10 @@ func (router *Router) readAccount(context *gin.Context) {
 // @Produce  json
 // @Success 200 {object} model.Accounts
 // @Router /accounts [get]
+// @Param email query string true "account email"
+// @Param password query string true "account password"
 func (router *Router) readAccounts(context *gin.Context) {
-	context.JSON(200, router.service.ReadAccounts())
+	email := context.Query("email")
+	password := context.Query("password")
+	context.JSON(200, router.service.ReadAccounts(email, password))
 }

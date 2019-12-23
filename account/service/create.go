@@ -6,5 +6,5 @@ import (
 
 // Create create account
 func (service *Service) Create(data *dto.Account) {
-	service.repository.Save(data)
+	service.repository.Save(data, "")
 }
