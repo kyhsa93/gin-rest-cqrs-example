@@ -3,8 +3,6 @@ package database
 import (
 	"log"
 
-	account "github.com/kyhsa93/go-rest-example/account/entity"
-
 	"github.com/caarlos0/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql package for gorm
@@ -50,7 +48,6 @@ func (database *Database) getConnection(databaseENV *databaseEnvironmentValue) {
 	}
 
 	db.LogMode(databaseENV.Logging)
-	db.AutoMigrate(account.Account{})
 
 	database.Connection = db
 }

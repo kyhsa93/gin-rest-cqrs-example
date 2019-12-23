@@ -16,6 +16,7 @@ type Repository struct {
 // NewRepository create repository instance
 func NewRepository(config *config.Config) *Repository {
 	database := config.Database.Connection
+	database.AutoMigrate(entity.Account{})
 	return &Repository{database: database}
 }
 
