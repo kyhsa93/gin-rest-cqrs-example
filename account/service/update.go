@@ -10,5 +10,5 @@ func (service *Service) Update(accountID string, data *dto.Account) {
 	if oldData.ID != accountID {
 		return
 	}
-	service.repository.Save(&dto.Account{})
+	service.repository.Save(data, accountID)
 }

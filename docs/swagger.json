@@ -16,6 +16,22 @@
                 "tags": [
                     "Accounts"
                 ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "account email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "account password",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -138,19 +154,40 @@
     },
     "definitions": {
         "dto.Account": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@test.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "testpassword"
+                }
+            }
         },
         "model.Account": {
             "type": "object",
             "properties": {
+                "UpdatedAt": {
+                    "type": "string",
+                    "example": "2019-12-23 12:27:37"
+                },
                 "createdAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2019-12-23 12:27:37"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "test@test.com"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "389df385-ccaa-49c1-aee2-698ba1191857"
                 },
-                "updatedAt": {
-                    "type": "string"
+                "password": {
+                    "type": "string",
+                    "example": "testpassword"
                 }
             }
         },
@@ -159,14 +196,25 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "UpdatedAt": {
+                        "type": "string",
+                        "example": "2019-12-23 12:27:37"
+                    },
                     "createdAt": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "2019-12-23 12:27:37"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "test@test.com"
                     },
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "389df385-ccaa-49c1-aee2-698ba1191857"
                     },
-                    "updatedAt": {
-                        "type": "string"
+                    "password": {
+                        "type": "string",
+                        "example": "testpassword"
                     }
                 }
             }

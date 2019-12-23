@@ -1,23 +1,48 @@
 definitions:
   dto.Account:
+    properties:
+      email:
+        example: test@test.com
+        type: string
+      password:
+        example: testpassword
+        type: string
     type: object
   model.Account:
     properties:
+      UpdatedAt:
+        example: "2019-12-23 12:27:37"
+        type: string
       createdAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      email:
+        example: test@test.com
         type: string
       id:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
         type: string
-      updatedAt:
+      password:
+        example: testpassword
         type: string
     type: object
   model.Accounts:
     items:
       properties:
+        UpdatedAt:
+          example: "2019-12-23 12:27:37"
+          type: string
         createdAt:
+          example: "2019-12-23 12:27:37"
+          type: string
+        email:
+          example: test@test.com
           type: string
         id:
+          example: 389df385-ccaa-49c1-aee2-698ba1191857
           type: string
-        updatedAt:
+        password:
+          example: testpassword
           type: string
       type: object
     type: array
@@ -29,6 +54,17 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: account email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: account password
+        in: query
+        name: password
+        required: true
+        type: string
       produces:
       - application/json
       responses:
