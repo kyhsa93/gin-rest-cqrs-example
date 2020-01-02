@@ -19,7 +19,7 @@ func (router *Router) readAccount(context *gin.Context) {
 // @Tags Accounts
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.Accounts
+// @Success 200 {object} model.Account
 // @Router /accounts [get]
 // @Param email query string true "account email"
 // @Param password query string true "account password"

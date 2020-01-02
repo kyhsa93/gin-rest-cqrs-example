@@ -26,26 +26,6 @@ definitions:
         example: testpassword
         type: string
     type: object
-  model.Accounts:
-    items:
-      properties:
-        UpdatedAt:
-          example: "2019-12-23 12:27:37"
-          type: string
-        createdAt:
-          example: "2019-12-23 12:27:37"
-          type: string
-        email:
-          example: test@test.com
-          type: string
-        id:
-          example: 389df385-ccaa-49c1-aee2-698ba1191857
-          type: string
-        password:
-          example: testpassword
-          type: string
-      type: object
-    type: array
 info:
   contact: {}
   license: {}
@@ -71,7 +51,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Accounts'
+            $ref: '#/definitions/model.Account'
       tags:
       - Accounts
     post:
