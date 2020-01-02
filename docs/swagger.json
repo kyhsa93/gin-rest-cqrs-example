@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Accounts"
+                            "$ref": "#/definitions/model.Account"
                         }
                     }
                 }
@@ -188,34 +188,6 @@
                 "password": {
                     "type": "string",
                     "example": "testpassword"
-                }
-            }
-        },
-        "model.Accounts": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "UpdatedAt": {
-                        "type": "string",
-                        "example": "2019-12-23 12:27:37"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "example": "2019-12-23 12:27:37"
-                    },
-                    "email": {
-                        "type": "string",
-                        "example": "test@test.com"
-                    },
-                    "id": {
-                        "type": "string",
-                        "example": "389df385-ccaa-49c1-aee2-698ba1191857"
-                    },
-                    "password": {
-                        "type": "string",
-                        "example": "testpassword"
-                    }
                 }
             }
         }

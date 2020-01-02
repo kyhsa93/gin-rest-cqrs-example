@@ -5,11 +5,11 @@ import (
 )
 
 // ReadAccount read account by acountID
-func (service *Service) ReadAccount(acountID string) model.Account {
+func (service *Service) ReadAccount(acountID string) (data *model.Account) {
 	return service.repository.FindByID(acountID)
 }
 
 // ReadAccounts read account list
-func (service *Service) ReadAccounts(email string, password string) model.Accounts {
-	return service.repository.FindAll(email, password)
+func (service *Service) ReadAccounts(email string, password string) (data *model.Account) {
+	return service.repository.FindByEmailAndPassWord(email, password)
 }

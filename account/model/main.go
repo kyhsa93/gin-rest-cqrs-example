@@ -10,6 +10,3 @@ type Account struct {
 	CreatedAt time.Time `json:"createdAt" example:"2019-12-23 12:27:37"`
 	UpdatedAt time.Time `json:"UpdatedAt" example:"2019-12-23 12:27:37"`
 }
-
-// Accounts account model list
-type Accounts []Account
