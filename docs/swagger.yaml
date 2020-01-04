@@ -4,16 +4,16 @@ definitions:
       email:
         example: test@test.com
         type: string
-      password:
-        example: testpassword
+      profile_image_url:
+        example: profile_image_url.com
+        type: string
+      social_id:
+        example: socail_id
         type: string
     type: object
   model.Account:
     properties:
-      UpdatedAt:
-        example: "2019-12-23 12:27:37"
-        type: string
-      createdAt:
+      created_at:
         example: "2019-12-23 12:27:37"
         type: string
       email:
@@ -22,8 +22,11 @@ definitions:
       id:
         example: 389df385-ccaa-49c1-aee2-698ba1191857
         type: string
-      password:
-        example: testpassword
+      profile_image_url:
+        example: profile_image_url.com
+        type: string
+      updated_at:
+        example: "2019-12-23 12:27:37"
         type: string
     type: object
 info:
@@ -40,9 +43,9 @@ paths:
         name: email
         required: true
         type: string
-      - description: account password
+      - description: account social_id
         in: query
-        name: password
+        name: social_id
         required: true
         type: string
       produces:
@@ -76,7 +79,7 @@ paths:
     delete:
       description: delete account by id
       parameters:
-      - description: account ID
+      - description: account Id
         in: path
         name: id
         required: true
@@ -89,7 +92,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: account ID
+      - description: account id
         in: path
         name: id
         required: true
@@ -108,7 +111,7 @@ paths:
       - application/json
       description: create account group
       parameters:
-      - description: account ID
+      - description: account Id
         in: path
         name: id
         required: true

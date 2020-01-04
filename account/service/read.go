@@ -10,6 +10,6 @@ func (service *Service) ReadAccount(acountID string) (data *model.Account) {
 }
 
 // ReadAccounts read account list
-func (service *Service) ReadAccounts(email string, password string) (data *model.Account) {
-	return service.repository.FindByEmailAndPassWord(email, password)
+func (service *Service) ReadAccounts(email string, SocialID string) (data *model.Account) {
+	return service.repository.FindByEmailAndSocialID(email, SocialID)
 }

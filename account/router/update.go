@@ -11,7 +11,7 @@ import (
 // @Tags Accounts
 // @Accept  json
 // @Produce  json
-// @param id path string true "account ID"
+// @param id path string true "account Id"
 // @Param account body dto.Account true "Add account"
 // @Success 200
 // @Router /accounts/{id} [put]
