@@ -7,7 +7,7 @@ import (
 // Delete delete account route handler
 // @Description delete account by id
 // @Tags Accounts
-// @Param id path string true "account ID"
+// @Param id path string true "account Id"
 // @Success 200
 // @Router /accounts/{id} [delete]
 func (router *Router) delete(context *gin.Context) {

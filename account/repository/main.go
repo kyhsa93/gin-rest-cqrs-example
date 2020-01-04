@@ -32,7 +32,8 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 
 	account := &entity.Account{}
 	account.Email = data.Email
-	account.Password = data.Password
+	account.SocialID = data.SocialID
+	account.ProfileImageURL = data.ProdileImageURL
 
 	if accountID != "" {
 		account.ID = accountID
@@ -45,12 +46,12 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 	}
 }
 
-// FindByEmailAndPassWord find all account
-func (repository *Repository) FindByEmailAndPassWord(email string, password string) (data *model.Account) {
+// FindByEmailAndSocialID find all account
+func (repository *Repository) FindByEmailAndSocialID(email string, SocialID string) (data *model.Account) {
 	var accountEntity entity.Account
 	var accountModel model.Account
 
-	err := repository.database.Where(&entity.Account{Email: email, Password: password}).Take(&accountEntity).Error
+	err := repository.database.Where(&entity.Account{Email: email, SocialID: SocialID}).Take(&accountEntity).Error
 	if err != nil {
 		panic(err)
 	}
