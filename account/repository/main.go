@@ -33,7 +33,6 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 	account := &entity.Account{}
 	account.Email = data.Email
 	account.SocialID = data.SocialID
-	account.ProfileImageURL = data.ProdileImageURL
 
 	if accountID != "" {
 		account.ID = accountID
