@@ -5,7 +5,7 @@ definitions:
         example: test@test.com
         type: string
       social_id:
-        example: socail_id
+        example: social_id
         type: string
     required:
     - email
@@ -24,6 +24,15 @@ definitions:
         type: string
       updated_at:
         example: "2019-12-23 12:27:37"
+        type: string
+    type: object
+  model.Token:
+    properties:
+      access:
+        type: string
+      id:
+        type: string
+      refresh:
         type: string
     type: object
 info:
@@ -51,7 +60,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Account'
+            $ref: '#/definitions/model.Token'
       tags:
       - Accounts
     post:

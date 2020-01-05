@@ -3,17 +3,19 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/go-rest-example/account/service"
+	"github.com/kyhsa93/go-rest-example/util"
 )
 
 // Router account router struct
 type Router struct {
 	route   *gin.Engine
 	service *service.Service
+	util    *util.Util
 }
 
 // NewRouter create account router instance
-func NewRouter(route *gin.Engine, service *service.Service) *Router {
-	router := &Router{route: route, service: service}
+func NewRouter(route *gin.Engine, service *service.Service, util *util.Util) *Router {
+	router := &Router{route: route, service: service, util: util}
 	router.SetupRoutes()
 	return router
 }
@@ -29,7 +31,7 @@ func (router *Router) SetupRoutes() {
 	})
 
 	router.route.GET("accounts", func(context *gin.Context) {
-		router.readAccounts(context)
+		router.readAccountByEmailAndSocialID(context)
 	})
 
 	router.route.PUT("accounts/:id", func(context *gin.Context) {

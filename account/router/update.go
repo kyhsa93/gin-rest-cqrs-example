@@ -1,12 +1,13 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/kyhsa93/go-rest-example/account/dto"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Update update route handler
 // @Description create account group
 // @Tags Accounts
 // @Accept  json
@@ -17,6 +18,14 @@ import (
 // @Router /accounts/{id} [put]
 func (router *Router) update(context *gin.Context) {
 	var data dto.Account
-	context.ShouldBindJSON(&data)
+
+	if bindError := context.ShouldBindJSON(&data); bindError != nil {
+		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
 	router.service.Update(context.Param("id"), &data)
+
+	context.JSON(http.StatusOK, "Account updated")
 }
