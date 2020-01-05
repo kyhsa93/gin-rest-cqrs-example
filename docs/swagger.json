@@ -155,14 +155,14 @@
     "definitions": {
         "dto.Account": {
             "type": "object",
+            "required": [
+                "email",
+                "social_id"
+            ],
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "test@test.com"
-                },
-                "profile_image_url": {
-                    "type": "string",
-                    "example": "profile_image_url.com"
                 },
                 "social_id": {
                     "type": "string",
@@ -184,10 +184,6 @@
                 "id": {
                     "type": "string",
                     "example": "389df385-ccaa-49c1-aee2-698ba1191857"
-                },
-                "profile_image_url": {
-                    "type": "string",
-                    "example": "profile_image_url.com"
                 },
                 "updated_at": {
                     "type": "string",
