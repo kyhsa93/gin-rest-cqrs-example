@@ -12,10 +12,27 @@ import (
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [get]
 func (router *Router) readAccount(context *gin.Context) {
+	accessHeader := context.GetHeader("Authorization")
+	refreshHeader := context.GetHeader("Refresh")
+
+	if accessHeader == "" || refreshHeader == "" {
+		httpError := router.util.HTTPError.Unauthorized()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
 	id := context.Param("id")
 
 	if id == "" {
 		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
+
+	if auth := token.Validate(); auth == "" || auth != id {
+		httpError := router.util.HTTPError.Forbidden()
 		context.JSON(httpError.Code, httpError.Message)
 		return
 	}
