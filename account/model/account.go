@@ -16,7 +16,8 @@ type Account struct {
 
 // CreateAccessToken create access token with jwt
 func (account *Account) CreateAccessToken() string {
-	claims := jwt.StandardClaims{ExpiresAt: 15000, Issuer: account.ID}
+	expirationTime := time.Now().Add(500 * time.Minute)
+	claims := jwt.StandardClaims{ExpiresAt: expirationTime.Unix(), Issuer: account.ID}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, tokenError := token.SignedString([]byte("access token secret"))
 
@@ -29,7 +30,8 @@ func (account *Account) CreateAccessToken() string {
 
 // CreateRefreshToken create refresh token with jwt
 func (account *Account) CreateRefreshToken(accessToken string) string {
-	claims := jwt.StandardClaims{ExpiresAt: 150000, Issuer: accessToken}
+	expirationTime := time.Now().Add(500 * time.Minute)
+	claims := jwt.StandardClaims{ExpiresAt: expirationTime.Unix(), Issuer: accessToken}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, tokenError := token.SignedString([]byte("refresh token secret"))
 

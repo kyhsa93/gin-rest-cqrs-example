@@ -21,6 +21,16 @@ func (err *HTTPError) BadRequest() *HTTPError {
 	return &HTTPError{Code: 400, Message: "Bad request"}
 }
 
+// Unauthorized return http 401 unauthorized error data
+func (err *HTTPError) Unauthorized() *HTTPError {
+	return &HTTPError{Code: 401, Message: "Unauthorized"}
+}
+
+// Forbidden return http 403 forbidden error data
+func (err *HTTPError) Forbidden() *HTTPError {
+	return &HTTPError{Code: 401, Message: "Forbidden"}
+}
+
 // NotFound return http 404 not found error data
 func (err *HTTPError) NotFound() *HTTPError {
 	return &HTTPError{Code: 404, Message: "Not found"}
