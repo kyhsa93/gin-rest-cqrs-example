@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Create create account route handler
 // @Description create account group
 // @Tags Accounts
 // @Accept  json
@@ -18,12 +17,20 @@ import (
 // @Router /accounts [post]
 func (router *Router) create(context *gin.Context) {
 	var data dto.Account
+
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"Message": "Could not parse body"})
+		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
 	}
 
-	if validationError := data.Validate(&data); validationError != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"Message": validationError.Error()})
+	duplicated := router.service.Create(&data)
+
+	if duplicated != nil {
+		httpError := router.util.HTTPError.Conflict()
+		context.JSON(httpError.Code, httpError.Message)
+		return
 	}
-	router.service.Create(&data)
+
+	context.JSON(http.StatusCreated, "Account created")
 }

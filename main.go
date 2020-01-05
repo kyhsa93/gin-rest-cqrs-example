@@ -5,6 +5,7 @@ import (
 
 	"github.com/kyhsa93/go-rest-example/account"
 	"github.com/kyhsa93/go-rest-example/config"
+	"github.com/kyhsa93/go-rest-example/util"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -15,8 +16,9 @@ import (
 func main() {
 	route := gin.Default()
 	config := config.InitializeConfig()
+	util := util.InitializeUtil()
 
-	account.InitializeAccount(route, config)
+	account.InitializeAccount(route, config, util)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

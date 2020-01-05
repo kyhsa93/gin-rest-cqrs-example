@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Account"
+                            "$ref": "#/definitions/model.Token"
                         }
                     }
                 }
@@ -166,7 +166,7 @@
                 },
                 "social_id": {
                     "type": "string",
-                    "example": "socail_id"
+                    "example": "social_id"
                 }
             }
         },
@@ -188,6 +188,20 @@
                 "updated_at": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
+                }
+            }
+        },
+        "model.Token": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "refresh": {
+                    "type": "string"
                 }
             }
         }

@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/go-rest-example/account/model"
 )
 
-// ReadAccount read account route handler
 // @Tags Accounts
 // @Accept  json
 // @Produce  json
@@ -12,19 +12,65 @@ import (
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [get]
 func (router *Router) readAccount(context *gin.Context) {
-	context.JSON(200, router.service.ReadAccount(context.Param("id")))
+	id := context.Param("id")
+
+	if id == "" {
+		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	account := router.service.ReadAccount(id)
+
+	if account == nil {
+		httpError := router.util.HTTPError.NotFound()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	context.JSON(200, account)
 }
 
-// ReadAccounts read accounts route handler
 // @Tags Accounts
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.Account
+// @Success 200 {object} model.Token
 // @Router /accounts [get]
 // @Param email query string true "account email"
 // @Param social_id query string true "account social_id"
-func (router *Router) readAccounts(context *gin.Context) {
+func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 	email := context.Query("email")
 	socialID := context.Query("social_id")
-	context.JSON(200, router.service.ReadAccounts(email, socialID))
+
+	if email == "" || socialID == "" {
+		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	account := router.service.ReadAccountByEmailAndSocialID(email, socialID)
+
+	if account == nil {
+		httpError := router.util.HTTPError.NotFound()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	accessToken := account.CreateAccessToken()
+
+	if accessToken == "" {
+		httpError := router.util.HTTPError.Error()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	refreshToken := account.CreateRefreshToken(accessToken)
+
+	if refreshToken == "" {
+		httpError := router.util.HTTPError.Error()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	context.JSON(200, &model.Token{ID: account.ID, Access: accessToken, Refresh: refreshToken})
 }

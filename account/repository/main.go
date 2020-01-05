@@ -24,21 +24,21 @@ func NewRepository(config *config.Config) *Repository {
 // Save create or update account
 func (repository *Repository) Save(data *dto.Account, accountID string) {
 	if accountID == "" {
-		_, count := repository.findByEmail(data.Email)
-		if *count != 0 {
+		account := repository.FindByEmail(data.Email)
+		if account != nil {
 			return
 		}
 	}
 
-	account := &entity.Account{}
-	account.Email = data.Email
-	account.SocialID = data.SocialID
+	accountEntity := &entity.Account{}
+	accountEntity.Email = data.Email
+	accountEntity.SocialID = data.SocialID
 
 	if accountID != "" {
-		account.ID = accountID
+		accountEntity.ID = accountID
 	}
 
-	err := repository.database.Save(account).Error
+	err := repository.database.Save(accountEntity).Error
 
 	if err != nil {
 		panic(err)
@@ -46,14 +46,11 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 }
 
 // FindByEmailAndSocialID find all account
-func (repository *Repository) FindByEmailAndSocialID(email string, SocialID string) (data *model.Account) {
+func (repository *Repository) FindByEmailAndSocialID(email string, socialID string) (data *model.Account) {
 	var accountEntity entity.Account
 	var accountModel model.Account
 
-	err := repository.database.Where(&entity.Account{Email: email, SocialID: SocialID}).Take(&accountEntity).Error
-	if err != nil {
-		panic(err)
-	}
+	repository.database.Where(&entity.Account{Email: email, SocialID: socialID}).First(&accountEntity)
 
 	accountModel.ID = accountEntity.ID
 	accountModel.Email = accountEntity.Email
@@ -68,10 +65,13 @@ func (repository *Repository) FindByID(id string) (data *model.Account) {
 	var accountEntity entity.Account
 	var accountModel model.Account
 
-	repository.database.Where(&entity.Account{Model: entity.Model{ID: id}}).Take(&accountEntity)
+	repository.database.Where(&entity.Account{Model: entity.Model{ID: id}}).First(&accountEntity)
+
 	accountModel.ID = accountEntity.ID
+	accountModel.Email = accountEntity.Email
 	accountModel.CreatedAt = accountEntity.CreatedAt
 	accountModel.UpdatedAt = accountEntity.UpdatedAt
+
 	return &accountModel
 }
 
@@ -83,9 +83,21 @@ func (repository *Repository) Delete(id string) {
 	}
 }
 
-func (repository *Repository) findByEmail(email string) (data *entity.Account, count *int) {
-	var account entity.Account
-	var accountCount int
-	repository.database.Where(&entity.Account{Email: email}).Find(&account).Count(&accountCount)
-	return &account, &accountCount
+// FindByEmail find account by email
+func (repository *Repository) FindByEmail(email string) (data *model.Account) {
+	var accountEntity entity.Account
+	var accountModel model.Account
+
+	repository.database.Where(&entity.Account{Email: email}).First(&accountEntity)
+
+	if accountEntity.ID == "" {
+		return nil
+	}
+
+	accountModel.ID = accountEntity.ID
+	accountModel.Email = accountEntity.Email
+	accountModel.CreatedAt = accountEntity.CreatedAt
+	accountModel.UpdatedAt = accountEntity.UpdatedAt
+
+	return &accountModel
 }
