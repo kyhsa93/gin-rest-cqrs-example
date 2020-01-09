@@ -16,32 +16,32 @@ func (router *Router) readAccount(context *gin.Context) {
 	refreshHeader := context.GetHeader("Refresh")
 
 	if accessHeader == "" || refreshHeader == "" {
-		httpError := router.util.HTTPError.Unauthorized()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	id := context.Param("id")
 
 	if id == "" {
-		httpError := router.util.HTTPError.BadRequest()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := router.util.HTTPError.Forbidden()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.Forbidden()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	account := router.service.ReadAccount(id)
 
 	if account == nil {
-		httpError := router.util.HTTPError.NotFound()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.NotFound()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
@@ -60,32 +60,32 @@ func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 	socialID := context.Query("social_id")
 
 	if email == "" || socialID == "" {
-		httpError := router.util.HTTPError.BadRequest()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	account := router.service.ReadAccountByEmailAndSocialID(email, socialID)
 
 	if account == nil {
-		httpError := router.util.HTTPError.NotFound()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.NotFound()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	accessToken := account.CreateAccessToken()
 
 	if accessToken == "" {
-		httpError := router.util.HTTPError.Error()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	refreshToken := account.CreateRefreshToken(accessToken)
 
 	if refreshToken == "" {
-		httpError := router.util.HTTPError.Error()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 

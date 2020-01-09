@@ -19,16 +19,16 @@ func (router *Router) create(context *gin.Context) {
 	var data dto.Account
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
-		httpError := router.util.HTTPError.BadRequest()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	duplicated := router.service.Create(&data)
 
 	if duplicated != nil {
-		httpError := router.util.HTTPError.Conflict()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.Conflict()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 

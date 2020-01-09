@@ -1,16 +1,16 @@
 package util
 
 import (
-	httpError "github.com/kyhsa93/go-rest-example/util/http-error"
+	"github.com/kyhsa93/go-rest-example/util/error"
 )
 
 // Util provide utilities
 type Util struct {
-	HTTPError *httpError.HTTPError
+	Error *error.Error
 }
 
 // InitializeUtil initialize utilities
 func InitializeUtil() *Util {
-	httpError := httpError.New()
-	return &Util{HTTPError: httpError}
+	error := error.New()
+	return &Util{Error: error}
 }

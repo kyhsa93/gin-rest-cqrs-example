@@ -17,24 +17,24 @@ func (router *Router) delete(context *gin.Context) {
 	refreshHeader := context.GetHeader("Refresh")
 
 	if accessHeader == "" || refreshHeader == "" {
-		httpError := router.util.HTTPError.Unauthorized()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	id := context.Param("id")
 
 	if id == "" {
-		httpError := router.util.HTTPError.BadRequest()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := router.util.HTTPError.Forbidden()
-		context.JSON(httpError.Code, httpError.Message)
+		httpError := router.util.Error.HTTP.Forbidden()
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
