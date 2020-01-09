@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/kyhsa93/go-rest-example/account/dto"
+	"github.com/kyhsa93/go-rest-example/account/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,31 @@ import (
 // @Success 200
 // @Router /accounts/{id} [put]
 func (router *Router) update(context *gin.Context) {
+	accessHeader := context.GetHeader("Authorization")
+	refreshHeader := context.GetHeader("Refresh")
+
+	if accessHeader == "" || refreshHeader == "" {
+		httpError := router.util.HTTPError.Unauthorized()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	id := context.Param("id")
+
+	if id == "" {
+		httpError := router.util.HTTPError.BadRequest()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
+	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
+
+	if auth := token.Validate(); auth == "" || auth != id {
+		httpError := router.util.HTTPError.Forbidden()
+		context.JSON(httpError.Code, httpError.Message)
+		return
+	}
+
 	var data dto.Account
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
@@ -25,7 +51,7 @@ func (router *Router) update(context *gin.Context) {
 		return
 	}
 
-	router.service.Update(context.Param("id"), &data)
+	router.service.Update(id, &data)
 
 	context.JSON(http.StatusOK, "Account updated")
 }
