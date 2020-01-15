@@ -24,13 +24,15 @@ func (router *Router) create(context *gin.Context) {
 		return
 	}
 
-	duplicated := router.service.Create(&data)
+	duplicated := router.service.ReadAccountByEmailAndSocialID(data.Email, data.SocialID)
 
 	if duplicated != nil {
 		httpError := router.util.Error.HTTP.Conflict()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
+
+	router.service.Create(&data)
 
 	context.JSON(http.StatusCreated, "Account created")
 }
