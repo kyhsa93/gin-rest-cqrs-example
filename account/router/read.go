@@ -1,6 +1,8 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/go-rest-example/account/model"
 )
@@ -11,6 +13,8 @@ import (
 // @Param id path string true "account id"
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [get]
+// @Security AccessToken
+// @Security RefreshToken
 func (router *Router) readAccount(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 	refreshHeader := context.GetHeader("Refresh")
@@ -37,7 +41,7 @@ func (router *Router) readAccount(context *gin.Context) {
 		return
 	}
 
-	account := router.service.ReadAccount(id)
+	account := router.service.ReadAccountByID(id)
 
 	if account == nil {
 		httpError := router.util.Error.HTTP.NotFound()
@@ -45,7 +49,7 @@ func (router *Router) readAccount(context *gin.Context) {
 		return
 	}
 
-	context.JSON(200, account)
+	context.JSON(http.StatusOK, account)
 }
 
 // @Tags Accounts
@@ -89,5 +93,5 @@ func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 		return
 	}
 
-	context.JSON(200, &model.Token{ID: account.ID, Access: accessToken, Refresh: refreshToken})
+	context.JSON(http.StatusOK, &model.Token{ID: account.ID, Access: accessToken, Refresh: refreshToken})
 }

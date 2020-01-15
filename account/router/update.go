@@ -17,6 +17,8 @@ import (
 // @Param account body dto.Account true "Add account"
 // @Success 200
 // @Router /accounts/{id} [put]
+// @Security AccessToken
+// @Security RefreshToken
 func (router *Router) update(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 	refreshHeader := context.GetHeader("Refresh")
