@@ -12,6 +12,8 @@ import (
 // @Param id path string true "account Id"
 // @Success 200
 // @Router /accounts/{id} [delete]
+// @Security AccessToken
+// @Security RefreshToken
 func (router *Router) delete(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 	refreshHeader := context.GetHeader("Refresh")

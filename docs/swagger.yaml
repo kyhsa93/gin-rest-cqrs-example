@@ -92,6 +92,9 @@ paths:
         type: string
       responses:
         "200": {}
+      security:
+      - AccessToken: []
+      - RefreshToken: []
       tags:
       - Accounts
     get:
@@ -110,6 +113,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
+      - RefreshToken: []
       tags:
       - Accounts
     put:
@@ -133,6 +139,18 @@ paths:
       - application/json
       responses:
         "200": {}
+      security:
+      - AccessToken: []
+      - RefreshToken: []
       tags:
       - Accounts
+securityDefinitions:
+  AccessToken:
+    in: header
+    name: Authorization
+    type: apiKey
+  RefreshToken:
+    in: header
+    name: Refresh
+    type: apiKey
 swagger: "2.0"

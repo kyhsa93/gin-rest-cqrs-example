@@ -71,6 +71,14 @@
         },
         "/accounts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    },
+                    {
+                        "RefreshToken": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -99,6 +107,14 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    },
+                    {
+                        "RefreshToken": []
+                    }
+                ],
                 "description": "create account group",
                 "consumes": [
                     "application/json"
@@ -133,6 +149,14 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    },
+                    {
+                        "RefreshToken": []
+                    }
+                ],
                 "description": "delete account by id",
                 "tags": [
                     "Accounts"
@@ -204,6 +228,18 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "AccessToken": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "RefreshToken": {
+            "type": "apiKey",
+            "name": "Refresh",
+            "in": "header"
         }
     }
 }
