@@ -32,8 +32,6 @@ definitions:
         type: string
       id:
         type: string
-      refresh:
-        type: string
     type: object
 info:
   contact: {}
@@ -148,9 +146,5 @@ securityDefinitions:
   AccessToken:
     in: header
     name: Authorization
-    type: apiKey
-  RefreshToken:
-    in: header
-    name: Refresh
     type: apiKey
 swagger: "2.0"

@@ -17,9 +17,6 @@ import (
 // @in header
 // @name Authorization
 
-// @securityDefinitions.apikey RefreshToken
-// @in header
-// @name Refresh
 func main() {
 	route := gin.Default()
 	config := config.InitializeConfig()

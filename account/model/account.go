@@ -27,17 +27,3 @@ func (account *Account) CreateAccessToken() string {
 
 	return tokenString
 }
-
-// CreateRefreshToken create refresh token with jwt
-func (account *Account) CreateRefreshToken(accessToken string) string {
-	expirationTime := time.Now().Add(500 * time.Minute)
-	claims := jwt.StandardClaims{ExpiresAt: expirationTime.Unix(), Issuer: accessToken}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, tokenError := token.SignedString([]byte("refresh token secret"))
-
-	if tokenError != nil {
-		panic(tokenError)
-	}
-
-	return tokenString
-}
