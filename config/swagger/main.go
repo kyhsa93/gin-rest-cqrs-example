@@ -1,7 +1,7 @@
 package swagger
 
 import (
-	"github.com/kyhsa93/go-rest-example/docs"
+	"github.com/kyhsa93/gin-rest-example/docs"
 )
 
 // Swagger swagger config struct

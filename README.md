@@ -27,7 +27,7 @@ Firstable, create directory `$GOPATH/src/github.com/kyhsa93/` and clone this rep
 ```bash
   mkdir $GOPATH/src/github.com/kyhsa93
   cd $GOPATH/src/github.com/kyhsa93
-  git clone https://github.com/kyhsa93/go-rest-example.git
+  git clone https://github.com/kyhsa93/gin-rest-example.git
 ```
 
 And then, build this program for set all dependencies.
@@ -50,7 +50,7 @@ Install docker for your OS from link in top of this document.
 If your docker is successfully installed, you can use docker cli.
 
 ```bash
-  docker run --name go-rest-example -d -p 3306:3306 -e MYSQL_DATABASE=go-rest-example -e MYSQL_ROOT_PASSWORD=test -v ~/database/go-rest-example:/var/lib/mysql mysql:5.7
+  docker run --name gin-rest-example -d -p 3306:3306 -e MYSQL_DATABASE=gin-rest-example -e MYSQL_ROOT_PASSWORD=test -v ~/database/gin-rest-example:/var/lib/mysql mysql:5.7
   docker run --name redis -d -p 6379:6379 redis:alpine
 
   OR
@@ -78,14 +78,14 @@ If you want apply your code change into running process, save all changes and re
 If you can use docker cli, you can build docker image.
 
 ```bash
-  docker build -t go-rest-example .
+  docker build -t gin-rest-example .
   docker images # list up docker images
 ```
 
 And then you can create and run docker container using builded image.
 
 ```bash
-  docker run -d -p 5000:5000 go-rest-example
+  docker run -d -p 5000:5000 gin-rest-example
   docker ps # list up runnint docker containers
 ```
 
@@ -117,7 +117,7 @@ Run followed command in project root.
 
 ## Configurations
 
-All configurations are in [./config](https://github.com/kyhsa93/go-rest-example/tree/master/config)
+All configurations are in [./config](https://github.com/kyhsa93/gin-rest-example/tree/master/config)
 
 Most default configuration can use with your environment values.
 
@@ -129,19 +129,19 @@ Document about this project us made swagger.
 
 Start this api and connect api host in your browser.
 
- * swagger config: [./config/swagger.go](https://github.com/kyhsa93/go-rest-example/blob/master/config/swagger.go)
+ * swagger config: [./config/swagger.go](https://github.com/kyhsa93/gin-rest-example/blob/master/config/swagger.go)
 
 > Note. Swagger in this project is use swag ([https://github.com/swaggo/swag](https://github.com/swaggo/swag)). Please check before you use it.
 
 ## Scripts
 
 ```bash
-  git clone https://github.com/kyhsa93/go-rest-example.git # clone this project
+  git clone https://github.com/kyhsa93/gin-rest-example.git # clone this project
   
   go build # build this project
   
-  docker run --name go-rest-example -d -p 3306:3306 -e MYSQL_DATABASE=go-rest-example -e MYSQL_ROOT_PASSWORD=test -v ~/database/
-  go-rest-example:/var/lib/mysql mysql:5.7 # create mysql container
+  docker run --name gin-rest-example -d -p 3306:3306 -e MYSQL_DATABASE=gin-rest-example -e MYSQL_ROOT_PASSWORD=test -v ~/database/
+  gin-rest-example:/var/lib/mysql mysql:5.7 # create mysql container
   
   docker run --name redis -d -p 6379:6379 redis:alpine # create redis container
   
@@ -151,11 +151,11 @@ Start this api and connect api host in your browser.
 
   go run main.go # start 
 
-  docker build -t go-rest-example . # build docker image
+  docker build -t gin-rest-example . # build docker image
   
   docker images # list up docker images
 
-  docker run -d -p 5000:5000 go-rest-example
+  docker run -d -p 5000:5000 gin-rest-example
   
   docker ps # list up runnint docker containers
 
@@ -167,6 +167,6 @@ Start this api and connect api host in your browser.
 ```
 
 ## Links
-Github: [https://github.com/kyhsa93/go-rest-example](https://github.com/kyhsa93/go-rest-example)
+Github: [https://github.com/kyhsa93/gin-rest-example](https://github.com/kyhsa93/gin-rest-example)
 
-Dockerhub: [https://hub.docker.com/repository/docker/kyhsa93/go-rest-example](https://hub.docker.com/repository/docker/kyhsa93/go-rest-example)
+Dockerhub: [https://hub.docker.com/repository/docker/kyhsa93/gin-rest-example](https://hub.docker.com/repository/docker/kyhsa93/gin-rest-example)

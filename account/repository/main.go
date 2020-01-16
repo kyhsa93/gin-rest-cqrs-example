@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/kyhsa93/go-rest-example/account/dto"
-	"github.com/kyhsa93/go-rest-example/account/entity"
-	"github.com/kyhsa93/go-rest-example/config"
+	"github.com/kyhsa93/gin-rest-example/account/dto"
+	"github.com/kyhsa93/gin-rest-example/account/entity"
+	"github.com/kyhsa93/gin-rest-example/config"
 
 	"github.com/jinzhu/gorm"
 )

@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/go-rest-example/account/service"
-	"github.com/kyhsa93/go-rest-example/util"
+	"github.com/kyhsa93/gin-rest-example/account/service"
+	"github.com/kyhsa93/gin-rest-example/util"
 )
 
 // Router account router struct

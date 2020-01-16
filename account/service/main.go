@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/kyhsa93/go-rest-example/account/entity"
-	"github.com/kyhsa93/go-rest-example/account/model"
-	"github.com/kyhsa93/go-rest-example/account/repository"
+	"github.com/kyhsa93/gin-rest-example/account/entity"
+	"github.com/kyhsa93/gin-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/repository"
 )
 
 // Service account service struct

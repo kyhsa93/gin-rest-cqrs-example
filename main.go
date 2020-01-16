@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/kyhsa93/go-rest-example/account"
-	"github.com/kyhsa93/go-rest-example/config"
-	"github.com/kyhsa93/go-rest-example/util"
+	"github.com/kyhsa93/gin-rest-example/account"
+	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-example/util"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
