@@ -223,9 +223,6 @@
                 },
                 "id": {
                     "type": "string"
-                },
-                "refresh": {
-                    "type": "string"
                 }
             }
         }
@@ -234,11 +231,6 @@
         "AccessToken": {
             "type": "apiKey",
             "name": "Authorization",
-            "in": "header"
-        },
-        "RefreshToken": {
-            "type": "apiKey",
-            "name": "Refresh",
             "in": "header"
         }
     }

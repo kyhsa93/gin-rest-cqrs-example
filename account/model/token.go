@@ -8,14 +8,13 @@ import (
 
 // Token access and refresh
 type Token struct {
-	ID      string
-	Access  string
-	Refresh string
+	ID     string
+	Access string
 }
 
 // Validate validate token
 func (token *Token) Validate() string {
-	if token.ID == "" || token.Access == "" || token.Refresh == "" {
+	if token.ID == "" || token.Access == "" {
 		return ""
 	}
 	claims := &jwt.StandardClaims{}

@@ -17,9 +17,8 @@ import (
 // @Security RefreshToken
 func (router *Router) readAccount(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
-	refreshHeader := context.GetHeader("Refresh")
 
-	if accessHeader == "" || refreshHeader == "" {
+	if accessHeader == "" {
 		httpError := router.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
@@ -33,7 +32,7 @@ func (router *Router) readAccount(context *gin.Context) {
 		return
 	}
 
-	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
+	token := &model.Token{ID: id, Access: accessHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
 		httpError := router.util.Error.HTTP.Forbidden()
@@ -85,13 +84,5 @@ func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 		return
 	}
 
-	refreshToken := account.CreateRefreshToken(accessToken)
-
-	if refreshToken == "" {
-		httpError := router.util.Error.HTTP.InternalServerError()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	context.JSON(http.StatusOK, &model.Token{ID: account.ID, Access: accessToken, Refresh: refreshToken})
+	context.JSON(http.StatusOK, &model.Token{ID: account.ID, Access: accessToken})
 }

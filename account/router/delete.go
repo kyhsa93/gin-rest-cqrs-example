@@ -16,9 +16,8 @@ import (
 // @Security RefreshToken
 func (router *Router) delete(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
-	refreshHeader := context.GetHeader("Refresh")
 
-	if accessHeader == "" || refreshHeader == "" {
+	if accessHeader == "" {
 		httpError := router.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
@@ -32,7 +31,7 @@ func (router *Router) delete(context *gin.Context) {
 		return
 	}
 
-	token := &model.Token{ID: id, Access: accessHeader, Refresh: refreshHeader}
+	token := &model.Token{ID: id, Access: accessHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
 		httpError := router.util.Error.HTTP.Forbidden()
