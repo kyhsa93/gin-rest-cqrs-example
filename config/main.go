@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/kyhsa93/go-rest-example/config/auth"
-	"github.com/kyhsa93/go-rest-example/config/database"
-	"github.com/kyhsa93/go-rest-example/config/server"
-	"github.com/kyhsa93/go-rest-example/config/swagger"
+	"github.com/kyhsa93/gin-rest-example/config/auth"
+	"github.com/kyhsa93/gin-rest-example/config/database"
+	"github.com/kyhsa93/gin-rest-example/config/server"
+	"github.com/kyhsa93/gin-rest-example/config/swagger"
 )
 
 // Config config stcut

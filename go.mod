@@ -1,4 +1,4 @@
-module github.com/kyhsa93/go-rest-example
+module github.com/kyhsa93/gin-rest-example
 
 go 1.13
 

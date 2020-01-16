@@ -1,7 +1,7 @@
 package util
 
 import (
-	"github.com/kyhsa93/go-rest-example/util/error"
+	"github.com/kyhsa93/gin-rest-example/util/error"
 )
 
 // Util provide utilities

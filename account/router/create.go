@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/kyhsa93/go-rest-example/account/dto"
+	"github.com/kyhsa93/gin-rest-example/account/dto"
 
 	"github.com/gin-gonic/gin"
 )

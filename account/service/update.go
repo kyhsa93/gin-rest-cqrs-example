@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/kyhsa93/go-rest-example/account/dto"
+	"github.com/kyhsa93/gin-rest-example/account/dto"
 )
 
 // Update update account by accountID

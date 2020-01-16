@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/go-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/model"
 )
 
 // @Description delete account by id
