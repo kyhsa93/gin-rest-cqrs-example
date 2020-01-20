@@ -13,8 +13,8 @@ type Router struct {
 	util    *util.Util
 }
 
-// NewRouter create account router instance
-func NewRouter(route *gin.Engine, service service.Interface, util *util.Util) *Router {
+// New create account router instance
+func New(route *gin.Engine, service service.Interface, util *util.Util) *Router {
 	router := &Router{route: route, service: service, util: util}
 	router.SetupRoutes()
 	return router

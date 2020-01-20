@@ -10,12 +10,12 @@ import (
 	"github.com/kyhsa93/gin-rest-example/util"
 )
 
-// TestNewRouter test router's NewRouter method
-func TestNewRouter(t *testing.T) {
+// TestNew test router's New method
+func TestNew(t *testing.T) {
 	_, engine := gin.CreateTestContext(httptest.NewRecorder())
 	service := &service.Service{}
 	util := &util.Util{}
-	routerInstance := router.NewRouter(engine, service, util)
+	routerInstance := router.New(engine, service, util)
 	if routerInstance == nil {
 		t.Error("Can not create router instance")
 	}

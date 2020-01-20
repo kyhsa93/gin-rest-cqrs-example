@@ -9,7 +9,7 @@ import (
 
 func TestCreate(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.NewService(repository)
+	serviceInstance := service.New(repository)
 	data := &dto.Account{}
 	serviceInstance.Create(data)
 }

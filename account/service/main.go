@@ -30,7 +30,7 @@ func (service *Service) entityToModel(entity entity.Account) *model.Account {
 	return &accountModel
 }
 
-// NewService create account service instance
-func NewService(repository repository.Interface) *Service {
+// New create account service instance
+func New(repository repository.Interface) *Service {
 	return &Service{repository: repository}
 }

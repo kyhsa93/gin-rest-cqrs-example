@@ -23,9 +23,9 @@ func (repository *mockedRepository) dtoToEntity(dto *dto.Account) *entity.Accoun
 	return &entity.Account{}
 }
 
-func TestNewService(t *testing.T) {
+func TestNew(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.NewService(repository)
+	serviceInstance := service.New(repository)
 	if serviceInstance == nil {
 		t.Error("Can not create service instance")
 	}
