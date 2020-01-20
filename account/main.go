@@ -11,7 +11,7 @@ import (
 
 // InitializeAccount innitialize account module
 func InitializeAccount(engine *gin.Engine, config *config.Config, util *util.Util) {
-	repository := repository.NewRepository(config)
-	service := service.NewService(repository)
-	router.NewRouter(engine, service, util)
+	repository := repository.New(config)
+	service := service.New(repository)
+	router.New(engine, service, util)
 }

@@ -8,7 +8,7 @@ import (
 
 func TestReadAccountByID(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.NewService(repository)
+	serviceInstance := service.New(repository)
 	result := serviceInstance.ReadAccountByID("accountID")
 	if result != nil {
 		t.Error("Read account by ID service is error")
@@ -17,7 +17,7 @@ func TestReadAccountByID(t *testing.T) {
 
 func TestReadAccountByEmailAndSocialID(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.NewService(repository)
+	serviceInstance := service.New(repository)
 	result := serviceInstance.ReadAccountByEmailAndSocialID("email", "socialID")
 	if result != nil {
 		t.Error("Read account by email and socialID")

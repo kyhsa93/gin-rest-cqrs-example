@@ -21,8 +21,8 @@ type Repository struct {
 	database *gorm.DB
 }
 
-// NewRepository create repository instance
-func NewRepository(config *config.Config) *Repository {
+// New create repository instance
+func New(config *config.Config) *Repository {
 	database := config.Database.Connection
 	database.AutoMigrate(&entity.Account{})
 	return &Repository{database: database}
