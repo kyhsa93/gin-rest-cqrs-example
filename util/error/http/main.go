@@ -1,4 +1,16 @@
-package error
+package http
+
+// Interface HTTP error interface
+type Interface interface {
+	Code() int
+	Message() string
+	BadRequest() *HTTP
+	Unauthorized() *HTTP
+	Forbidden() *HTTP
+	NotFound() *HTTP
+	Conflict() *HTTP
+	InternalServerError() *HTTP
+}
 
 // HTTP http error struct
 type HTTP struct {
