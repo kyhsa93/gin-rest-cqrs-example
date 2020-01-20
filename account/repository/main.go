@@ -8,6 +8,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Interface repository inteface
+type Interface interface {
+	Save(data *dto.Account, accountID string)
+	FindByEmailAndSocialID(email string, socialID string) entity.Account
+	FindByID(id string) entity.Account
+	Delete(id string)
+}
+
 // Repository repository for query to database
 type Repository struct {
 	database *gorm.DB
@@ -40,15 +48,17 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 }
 
 // FindByEmailAndSocialID find all account
-func (repository *Repository) FindByEmailAndSocialID(email string, socialID string) (accountEntity entity.Account) {
+func (repository *Repository) FindByEmailAndSocialID(email string, socialID string) entity.Account {
+	accountEntity := entity.Account{}
 	repository.database.Where(&entity.Account{Email: email, SocialID: socialID}).First(&accountEntity)
-	return
+	return accountEntity
 }
 
 // FindByID find account by accountId
-func (repository *Repository) FindByID(id string) (accountEntity entity.Account) {
+func (repository *Repository) FindByID(id string) entity.Account {
+	accountEntity := entity.Account{}
 	repository.database.Where(&entity.Account{Model: entity.Model{ID: id}}).First(&accountEntity)
-	return
+	return accountEntity
 }
 
 // Delete delete account by accountId

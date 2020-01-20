@@ -8,6 +8,10 @@ import (
 func (service *Service) ReadAccountByID(acountID string) *model.Account {
 	entity := service.repository.FindByID(acountID)
 
+	if entity.ID == "" {
+		return nil
+	}
+
 	return service.entityToModel(entity)
 }
 
