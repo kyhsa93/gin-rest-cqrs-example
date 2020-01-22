@@ -4,12 +4,18 @@ definitions:
       email:
         example: test@test.com
         type: string
+      password:
+        example: password
+        type: string
+      provider:
+        example: google
+        type: string
       social_id:
         example: social_id
         type: string
     required:
     - email
-    - social_id
+    - provider
     type: object
   model.Account:
     properties:
@@ -21,6 +27,8 @@ definitions:
         type: string
       id:
         example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      provider:
         type: string
       updated_at:
         example: "2019-12-23 12:27:37"
@@ -47,10 +55,18 @@ paths:
         name: email
         required: true
         type: string
+      - description: account service provider
+        in: query
+        name: provider
+        required: true
+        type: string
+      - description: account password (email provider only)
+        in: query
+        name: password
+        type: string
       - description: account social_id
         in: query
         name: social_id
-        required: true
         type: string
       produces:
       - application/json

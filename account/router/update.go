@@ -52,7 +52,24 @@ func (router *Router) update(context *gin.Context) {
 		return
 	}
 
-	router.service.Update(id, &data)
+	_, existedProvider := dto.Provider()[data.Provider]
+
+	if existedProvider == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	dto.FilterAccountAttributeByProvider(&data)
+
+	validate := dto.ValidateAccountAttributeByProvider(&data)
+	if validate == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	router.service.Update(id, data.Email, data.Provider, data.SocialID, data.Password)
 
 	context.JSON(http.StatusOK, "Account updated")
 }

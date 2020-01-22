@@ -26,10 +26,22 @@
                     },
                     {
                         "type": "string",
-                        "description": "account social_id",
-                        "name": "social_id",
+                        "description": "account service provider",
+                        "name": "provider",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "account password (email provider only)",
+                        "name": "password",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "account social_id",
+                        "name": "social_id",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -181,12 +193,20 @@
             "type": "object",
             "required": [
                 "email",
-                "social_id"
+                "provider"
             ],
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "test@test.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "provider": {
+                    "type": "string",
+                    "example": "google"
                 },
                 "social_id": {
                     "type": "string",
@@ -208,6 +228,9 @@
                 "id": {
                     "type": "string",
                     "example": "389df385-ccaa-49c1-aee2-698ba1191857"
+                },
+                "provider": {
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string",

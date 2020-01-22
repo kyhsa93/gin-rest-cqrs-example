@@ -10,8 +10,9 @@ import (
 
 type mockedRepository struct{}
 
-func (repository *mockedRepository) Save(data *dto.Account, accountID string) {}
-func (repository *mockedRepository) FindByEmailAndSocialID(email string, socialID string) entity.Account {
+func (repository *mockedRepository) Save(accountID string, email string, provider string, socialID string, password string) {
+}
+func (repository *mockedRepository) FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account {
 	return entity.Account{}
 }
 func (repository *mockedRepository) FindByID(id string) entity.Account {

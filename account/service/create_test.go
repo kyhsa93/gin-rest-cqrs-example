@@ -11,5 +11,5 @@ func TestCreate(t *testing.T) {
 	repository := &mockedRepository{}
 	serviceInstance := service.New(repository)
 	data := &dto.Account{}
-	serviceInstance.Create(data)
+	serviceInstance.Create(data.Email, data.Provider, data.SocialID, data.Password)
 }

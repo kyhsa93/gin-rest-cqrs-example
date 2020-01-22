@@ -16,8 +16,8 @@ func (service *Service) ReadAccountByID(acountID string) *model.Account {
 }
 
 // ReadAccountByEmailAndSocialID read account list
-func (service *Service) ReadAccountByEmailAndSocialID(email string, socialID string) *model.Account {
-	entity := service.repository.FindByEmailAndSocialID(email, socialID)
+func (service *Service) ReadAccountByEmailAndSocialID(email string, provider string, socialID string, password string) *model.Account {
+	entity := service.repository.FindByEmailAndSocialID(email, provider, socialID, password)
 
 	if entity.ID == "" {
 		return nil
