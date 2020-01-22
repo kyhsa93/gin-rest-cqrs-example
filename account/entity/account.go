@@ -5,6 +5,8 @@ type Account struct {
 	Model
 	Email    string `gorm:"unique;not null"`
 	SocialID string `gorm:"not null"`
+	Password string
+	Provider string `gorm:"not null"`
 }
 
 // Accounts account entity list

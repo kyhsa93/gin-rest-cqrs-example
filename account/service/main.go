@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/entity"
 	"github.com/kyhsa93/gin-rest-example/account/model"
 	"github.com/kyhsa93/gin-rest-example/account/repository"
@@ -9,10 +8,10 @@ import (
 
 // Interface service interface
 type Interface interface {
-	Create(data *dto.Account)
+	Create(email string, provider string, socialID string, password string)
 	ReadAccountByID(acountID string) *model.Account
-	ReadAccountByEmailAndSocialID(email string, socialID string) *model.Account
-	Update(accountID string, data *dto.Account)
+	ReadAccountByEmailAndSocialID(email string, provider string, socialID string, password string) *model.Account
+	Update(accountID string, email string, provider string, socialID string, password string)
 	Delete(accountID string)
 }
 
@@ -25,6 +24,7 @@ func (service *Service) entityToModel(entity entity.Account) *model.Account {
 	var accountModel model.Account
 	accountModel.ID = entity.ID
 	accountModel.Email = entity.Email
+	accountModel.Provider = entity.Provider
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 	return &accountModel

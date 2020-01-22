@@ -1,10 +1,6 @@
 package service
 
-import (
-	"github.com/kyhsa93/gin-rest-example/account/dto"
-)
-
 // Create create account
-func (service *Service) Create(data *dto.Account) {
-	service.repository.Save(data, "")
+func (service *Service) Create(email string, provider string, socialID string, password string) {
+	service.repository.Save("", email, provider, socialID, password)
 }

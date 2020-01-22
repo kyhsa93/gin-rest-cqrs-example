@@ -11,5 +11,5 @@ func TestUpdate(t *testing.T) {
 	repository := &mockedRepository{}
 	serviceInstance := service.New(repository)
 	data := &dto.Account{}
-	serviceInstance.Update("accountID", data)
+	serviceInstance.Update("accountID", data.Email, data.Provider, data.SocialID, data.Password)
 }

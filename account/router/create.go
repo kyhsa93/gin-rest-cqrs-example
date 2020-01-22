@@ -24,7 +24,15 @@ func (router *Router) create(context *gin.Context) {
 		return
 	}
 
-	duplicated := router.service.ReadAccountByEmailAndSocialID(data.Email, data.SocialID)
+	_, existedProvider := dto.Provider()[data.Provider]
+
+	if existedProvider == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	duplicated := router.service.ReadAccountByEmailAndSocialID(data.Email, "", "", "")
 
 	if duplicated != nil {
 		httpError := router.util.Error.HTTP.Conflict()
@@ -32,7 +40,16 @@ func (router *Router) create(context *gin.Context) {
 		return
 	}
 
-	router.service.Create(&data)
+	dto.FilterAccountAttributeByProvider(&data)
+
+	validate := dto.ValidateAccountAttributeByProvider(&data)
+	if validate == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	router.service.Create(data.Email, data.Provider, data.SocialID, data.Password)
 
 	context.JSON(http.StatusCreated, "Account created")
 }

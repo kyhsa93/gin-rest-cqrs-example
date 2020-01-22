@@ -10,8 +10,8 @@ import (
 
 // Interface repository inteface
 type Interface interface {
-	Save(data *dto.Account, accountID string)
-	FindByEmailAndSocialID(email string, socialID string) entity.Account
+	Save(accountID string, email string, provider string, socialID string, password string)
+	FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account
 	FindByID(id string) entity.Account
 	Delete(id string)
 }
@@ -28,16 +28,18 @@ func New(config *config.Config) *Repository {
 	return &Repository{database: database}
 }
 
-func (repository *Repository) dtoToEntity(dto *dto.Account) *entity.Account {
-	return &entity.Account{Email: dto.Email, SocialID: dto.SocialID}
+func (repository *Repository) dtoToEntity(data *dto.Account) *entity.Account {
+	return &entity.Account{Email: data.Email, Provider: data.Provider, Password: data.Password, SocialID: data.SocialID}
 }
 
 // Save create or update account
-func (repository *Repository) Save(data *dto.Account, accountID string) {
-	accountEntity := repository.dtoToEntity(data)
-
-	if accountID != "" {
-		accountEntity.ID = accountID
+func (repository *Repository) Save(accountID string, email string, provider string, socialID string, password string) {
+	accountEntity := &entity.Account{
+		Model:    entity.Model{ID: accountID},
+		Email:    email,
+		Provider: provider,
+		Password: password,
+		SocialID: socialID,
 	}
 
 	err := repository.database.Save(accountEntity).Error
@@ -48,7 +50,7 @@ func (repository *Repository) Save(data *dto.Account, accountID string) {
 }
 
 // FindByEmailAndSocialID find all account
-func (repository *Repository) FindByEmailAndSocialID(email string, socialID string) entity.Account {
+func (repository *Repository) FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account {
 	accountEntity := entity.Account{}
 	repository.database.Where(&entity.Account{Email: email, SocialID: socialID}).First(&accountEntity)
 	return accountEntity

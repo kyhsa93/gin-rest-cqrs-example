@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/model"
 )
 
@@ -57,18 +58,46 @@ func (router *Router) readAccount(context *gin.Context) {
 // @Success 200 {object} model.Token
 // @Router /accounts [get]
 // @Param email query string true "account email"
-// @Param social_id query string true "account social_id"
+// @Param provider query string true "account service provider"
+// @Param password query string false "account password (email provider only)"
+// @Param social_id query string false "account social_id"
 func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 	email := context.Query("email")
 	socialID := context.Query("social_id")
+	provider := context.Query("provider")
+	password := context.Query("password")
 
-	if email == "" || socialID == "" {
+	socialIDAndPasswordBothEmpty := false
+	if socialID == "" && password == "" {
+		socialIDAndPasswordBothEmpty = true
+	}
+
+	if email == "" || provider == "" || socialIDAndPasswordBothEmpty {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	account := router.service.ReadAccountByEmailAndSocialID(email, socialID)
+	data := &dto.Account{Email: email, Provider: provider, SocialID: socialID, Password: password}
+
+	_, existedProvider := dto.Provider()[data.Provider]
+
+	if existedProvider == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	dto.FilterAccountAttributeByProvider(data)
+
+	validate := dto.ValidateAccountAttributeByProvider(data)
+	if validate == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	account := router.service.ReadAccountByEmailAndSocialID(email, provider, socialID, password)
 
 	if account == nil {
 		httpError := router.util.Error.HTTP.NotFound()
