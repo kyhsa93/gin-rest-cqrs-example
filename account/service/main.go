@@ -10,7 +10,7 @@ import (
 type Interface interface {
 	Create(email string, provider string, socialID string, password string)
 	ReadAccountByID(acountID string) *model.Account
-	ReadAccountByEmailAndSocialID(email string, provider string, socialID string, password string) *model.Account
+	ReadAccountByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) *model.Account
 	Update(accountID string, email string, provider string, socialID string, password string)
 	Delete(accountID string)
 }

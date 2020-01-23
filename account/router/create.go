@@ -32,7 +32,7 @@ func (router *Router) create(context *gin.Context) {
 		return
 	}
 
-	duplicated := router.service.ReadAccountByEmailAndSocialID(data.Email, "", "", "")
+	duplicated := router.service.ReadAccountByEmailAndSocialID(data.Email, "", "", "", true)
 
 	if duplicated != nil {
 		httpError := router.util.Error.HTTP.Conflict()

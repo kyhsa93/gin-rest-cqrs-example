@@ -97,7 +97,7 @@ func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 		return
 	}
 
-	account := router.service.ReadAccountByEmailAndSocialID(email, provider, socialID, password)
+	account := router.service.ReadAccountByEmailAndSocialID(email, provider, socialID, password, false)
 
 	if account == nil {
 		httpError := router.util.Error.HTTP.NotFound()
