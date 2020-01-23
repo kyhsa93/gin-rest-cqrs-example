@@ -18,7 +18,7 @@ func TestReadAccountByID(t *testing.T) {
 func TestReadAccountByEmailAndSocialID(t *testing.T) {
 	repository := &mockedRepository{}
 	serviceInstance := service.New(repository)
-	result := serviceInstance.ReadAccountByEmailAndSocialID("email", "provider", "socialID", "password")
+	result := serviceInstance.ReadAccountByEmailAndSocialID("email", "provider", "socialID", "password", false)
 	if result != nil {
 		t.Error("Read account by email and socialID")
 	}

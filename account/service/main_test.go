@@ -12,7 +12,7 @@ type mockedRepository struct{}
 
 func (repository *mockedRepository) Save(accountID string, email string, provider string, socialID string, password string) {
 }
-func (repository *mockedRepository) FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account {
+func (repository *mockedRepository) FindByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) entity.Account {
 	return entity.Account{}
 }
 func (repository *mockedRepository) FindByID(id string) entity.Account {

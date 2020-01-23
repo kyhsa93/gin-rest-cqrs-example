@@ -11,7 +11,7 @@ import (
 // Interface repository inteface
 type Interface interface {
 	Save(accountID string, email string, provider string, socialID string, password string)
-	FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account
+	FindByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) entity.Account
 	FindByID(id string) entity.Account
 	Delete(id string)
 }
@@ -50,9 +50,16 @@ func (repository *Repository) Save(accountID string, email string, provider stri
 }
 
 // FindByEmailAndSocialID find all account
-func (repository *Repository) FindByEmailAndSocialID(email string, provider string, socialID string, password string) entity.Account {
+func (repository *Repository) FindByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) entity.Account {
 	accountEntity := entity.Account{}
-	repository.database.Where(&entity.Account{Email: email, SocialID: socialID}).First(&accountEntity)
+	condition := &entity.Account{Email: email, SocialID: socialID}
+
+	if unscoped == true {
+		repository.database.Unscoped().Where(condition).First(&accountEntity)
+		return accountEntity
+	}
+	repository.database.Where(condition).First(&accountEntity)
+
 	return accountEntity
 }
 
