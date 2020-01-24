@@ -11,7 +11,7 @@ import (
 // Interface repository inteface
 type Interface interface {
 	Save(accountID string, email string, provider string, socialID string, password string)
-	FindByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) entity.Account
+	FindByEmailAndProvider(email string, provider string, unscoped bool) entity.Account
 	FindByID(id string) entity.Account
 	Delete(id string)
 }
@@ -29,11 +29,22 @@ func New(config *config.Config) *Repository {
 }
 
 func (repository *Repository) dtoToEntity(data *dto.Account) *entity.Account {
-	return &entity.Account{Email: data.Email, Provider: data.Provider, Password: data.Password, SocialID: data.SocialID}
+	return &entity.Account{
+		Email:    data.Email,
+		Provider: data.Provider,
+		Password: data.Password,
+		SocialID: data.SocialID,
+	}
 }
 
 // Save create or update account
-func (repository *Repository) Save(accountID string, email string, provider string, socialID string, password string) {
+func (repository *Repository) Save(
+	accountID string,
+	email string,
+	provider string,
+	socialID string,
+	password string,
+) {
 	accountEntity := &entity.Account{
 		Model:    entity.Model{ID: accountID},
 		Email:    email,
@@ -49,10 +60,14 @@ func (repository *Repository) Save(accountID string, email string, provider stri
 	}
 }
 
-// FindByEmailAndSocialID find all account
-func (repository *Repository) FindByEmailAndSocialID(email string, provider string, socialID string, password string, unscoped bool) entity.Account {
+// FindByEmailAndProvider find all account
+func (repository *Repository) FindByEmailAndProvider(
+	email string,
+	provider string,
+	unscoped bool,
+) entity.Account {
 	accountEntity := entity.Account{}
-	condition := &entity.Account{Email: email, SocialID: socialID}
+	condition := &entity.Account{Email: email, Provider: provider}
 
 	if unscoped == true {
 		repository.database.Unscoped().Where(condition).First(&accountEntity)
@@ -66,13 +81,15 @@ func (repository *Repository) FindByEmailAndSocialID(email string, provider stri
 // FindByID find account by accountId
 func (repository *Repository) FindByID(id string) entity.Account {
 	accountEntity := entity.Account{}
-	repository.database.Where(&entity.Account{Model: entity.Model{ID: id}}).First(&accountEntity)
+	condition := &entity.Account{Model: entity.Model{ID: id}}
+	repository.database.Where(condition).First(&accountEntity)
 	return accountEntity
 }
 
 // Delete delete account by accountId
 func (repository *Repository) Delete(id string) {
-	err := repository.database.Delete(&entity.Account{Model: entity.Model{ID: id}}).Error
+	condition := &entity.Account{Model: entity.Model{ID: id}}
+	err := repository.database.Delete(condition).Error
 	if err != nil {
 		panic(err)
 	}

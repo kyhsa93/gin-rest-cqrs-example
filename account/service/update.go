@@ -6,5 +6,6 @@ func (service *Service) Update(accountID string, email string, provider string, 
 	if oldData == nil {
 		return
 	}
-	service.repository.Save(accountID, email, provider, socialID, password)
+	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(password, socialID)
+	service.repository.Save(accountID, email, provider, hashedSocialID, hashedPassword)
 }
