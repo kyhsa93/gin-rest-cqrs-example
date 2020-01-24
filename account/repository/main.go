@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"time"
+
+	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/entity"
 	"github.com/kyhsa93/gin-rest-example/config"
@@ -18,6 +21,7 @@ type Interface interface {
 
 // Repository repository for query to database
 type Repository struct {
+	redis    *redis.Client
 	database *gorm.DB
 }
 
@@ -25,7 +29,8 @@ type Repository struct {
 func New(config *config.Config) *Repository {
 	database := config.Database.Connection
 	database.AutoMigrate(&entity.Account{})
-	return &Repository{database: database}
+	redis := config.Redis.Client
+	return &Repository{database: database, redis: redis}
 }
 
 func (repository *Repository) dtoToEntity(data *dto.Account) *entity.Account {
@@ -58,6 +63,7 @@ func (repository *Repository) Save(
 	if err != nil {
 		panic(err)
 	}
+	repository.redis.Set("account:"+accountID, accountEntity, time.Second)
 }
 
 // FindByEmailAndProvider find all account
