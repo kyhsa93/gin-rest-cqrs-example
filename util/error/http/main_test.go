@@ -1,7 +1,6 @@
 package http_test
 
 import (
-	"log"
 	"testing"
 
 	"github.com/kyhsa93/gin-rest-example/util/error/http"
@@ -29,7 +28,6 @@ func TestMessage(t *testing.T) {
 func TestBadRequest(t *testing.T) {
 	instance := &http.HTTP{}
 	httpError := instance.BadRequest()
-	log.Println(httpError)
 	if httpError == nil {
 		t.Error("Util HTTP Error TestBadRequest method error")
 	}

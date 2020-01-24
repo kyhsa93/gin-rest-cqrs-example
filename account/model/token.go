@@ -1,8 +1,6 @@
 package model
 
 import (
-	"log"
-
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -19,7 +17,6 @@ func (token *Token) Validate() string {
 	}
 	claims := &jwt.StandardClaims{}
 	jwtToken, _ := jwt.ParseWithClaims(token.Access, claims, func(accessToken *jwt.Token) (interface{}, error) {
-		log.Println(token)
 		return []byte("access token secret"), nil
 	})
 
