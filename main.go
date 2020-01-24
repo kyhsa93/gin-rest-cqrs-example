@@ -17,9 +17,10 @@ import (
 // @name Authorization
 
 func main() {
-	route := gin.Default()
 	config := config.InitializeConfig()
 	util := util.InitializeUtil()
+	gin.SetMode(config.Server.Mode)
+	route := gin.Default()
 
 	account.InitializeAccount(route, config, util)
 
