@@ -27,11 +27,11 @@ func (router *Router) SetupRoutes() {
 	})
 
 	router.route.GET("accounts/:id", func(context *gin.Context) {
-		router.readAccount(context)
+		router.readAccountByID(context)
 	})
 
 	router.route.GET("accounts", func(context *gin.Context) {
-		router.readAccountByEmailAndSocialID(context)
+		router.readAccount(context)
 	})
 
 	router.route.PUT("accounts/:id", func(context *gin.Context) {

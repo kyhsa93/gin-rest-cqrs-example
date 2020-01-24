@@ -8,6 +8,3 @@ type Account struct {
 	Password string
 	Provider string `gorm:"not null"`
 }
-
-// Accounts account entity list
-type Accounts []Account

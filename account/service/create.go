@@ -1,6 +1,10 @@
 package service
 
+import "github.com/google/uuid"
+
 // Create create account
 func (service *Service) Create(email string, provider string, socialID string, password string) {
-	service.repository.Save("", email, provider, socialID, password)
+	uuid, _ := uuid.NewRandom()
+	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(password, socialID)
+	service.repository.Save(uuid.String(), email, provider, hashedSocialID, hashedPassword)
 }

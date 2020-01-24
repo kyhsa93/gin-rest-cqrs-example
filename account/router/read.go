@@ -16,7 +16,7 @@ import (
 // @Router /accounts/{id} [get]
 // @Security AccessToken
 // @Security RefreshToken
-func (router *Router) readAccount(context *gin.Context) {
+func (router *Router) readAccountByID(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 
 	if accessHeader == "" {
@@ -61,7 +61,7 @@ func (router *Router) readAccount(context *gin.Context) {
 // @Param provider query string true "account service provider"
 // @Param password query string false "account password (email provider only)"
 // @Param social_id query string false "account social_id"
-func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
+func (router *Router) readAccount(context *gin.Context) {
 	email := context.Query("email")
 	socialID := context.Query("social_id")
 	provider := context.Query("provider")
@@ -97,9 +97,9 @@ func (router *Router) readAccountByEmailAndSocialID(context *gin.Context) {
 		return
 	}
 
-	account := router.service.ReadAccountByEmailAndSocialID(email, provider, socialID, password, false)
+	account, err := router.service.ReadAccount(email, provider, socialID, password, false)
 
-	if account == nil {
+	if account == nil || err != nil {
 		httpError := router.util.Error.HTTP.NotFound()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
