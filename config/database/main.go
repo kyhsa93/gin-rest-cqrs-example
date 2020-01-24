@@ -1,8 +1,6 @@
 package database
 
 import (
-	"log"
-
 	"github.com/caarlos0/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql package for gorm
@@ -43,7 +41,6 @@ func (database *Database) getConnection(databaseENV *databaseEnvironmentValue) {
 	db, err := gorm.Open("mysql", User+":"+Password+"@tcp("+Host+":"+Port+")/"+Name+"?parseTime=true")
 
 	if err != nil {
-		log.Println(err)
 		panic(err)
 	}
 
