@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/badoux/checkmail"
 	"github.com/kyhsa93/gin-rest-example/account/dto"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,20 @@ func (router *Router) create(context *gin.Context) {
 	var data dto.Account
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
+	if emaiFormatlValidationError != nil {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
+	if emaiHostlValidationError != nil {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return

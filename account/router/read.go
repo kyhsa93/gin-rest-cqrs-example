@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/model"
@@ -73,6 +74,20 @@ func (router *Router) readAccount(context *gin.Context) {
 	}
 
 	if email == "" || provider == "" || socialIDAndPasswordBothEmpty {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	emaiFormatlValidationError := checkmail.ValidateFormat(email)
+	if emaiFormatlValidationError != nil {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	emaiHostlValidationError := checkmail.ValidateHost(email)
+	if emaiHostlValidationError != nil {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
