@@ -1,6 +1,14 @@
-# Go Rest api example
+# Gin Rest api example
 
 This is sample Go project.
+
+Go: [https://golang.org/](https://golang.org/)
+
+Gin: [https://gin-gonic.com/](https://gin-gonic.com/)
+
+Gorm: [http://gorm.io/](http://gorm.io/)
+
+Docker: [https://www.docker.com/](https://www.docker.com/)
 
 ## Getting started
 
