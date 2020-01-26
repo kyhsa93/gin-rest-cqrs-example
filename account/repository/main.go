@@ -1,12 +1,10 @@
 package repository
 
 import (
-	"time"
-
-	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/entity"
 	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-example/config/redis"
 
 	"github.com/jinzhu/gorm"
 )
@@ -21,7 +19,7 @@ type Interface interface {
 
 // Repository repository for query to database
 type Repository struct {
-	redis    *redis.Client
+	redis    redis.Interface
 	database *gorm.DB
 }
 
@@ -29,7 +27,7 @@ type Repository struct {
 func New(config *config.Config) *Repository {
 	database := config.Database.Connection
 	database.AutoMigrate(&entity.Account{})
-	redis := config.Redis.Client
+	redis := config.Redis
 	return &Repository{database: database, redis: redis}
 }
 
@@ -63,7 +61,7 @@ func (repository *Repository) Save(
 	if err != nil {
 		panic(err)
 	}
-	repository.redis.Set("account:"+accountID, accountEntity, time.Second)
+	repository.redis.Set(accountID, accountEntity)
 }
 
 // FindByEmailAndProvider find all account
@@ -73,13 +71,18 @@ func (repository *Repository) FindByEmailAndProvider(
 	unscoped bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
-	condition := &entity.Account{Email: email, Provider: provider}
+	condition := entity.Account{Email: email, Provider: provider}
 
 	if unscoped == true {
-		repository.database.Unscoped().Where(condition).First(&accountEntity)
+		repository.database.Unscoped().Where(&condition).First(&accountEntity)
 		return accountEntity
 	}
-	repository.database.Where(condition).First(&accountEntity)
+
+	if cache := repository.redis.Get(email); cache != nil {
+		return *cache
+	}
+	repository.database.Where(&condition).First(&accountEntity)
+	repository.redis.Set(email, &accountEntity)
 
 	return accountEntity
 }
@@ -87,8 +90,13 @@ func (repository *Repository) FindByEmailAndProvider(
 // FindByID find account by accountId
 func (repository *Repository) FindByID(id string) entity.Account {
 	accountEntity := entity.Account{}
-	condition := &entity.Account{Model: entity.Model{ID: id}}
-	repository.database.Where(condition).First(&accountEntity)
+	condition := entity.Account{Model: entity.Model{ID: id}}
+
+	if cache := repository.redis.Get(id); cache != nil {
+		return *cache
+	}
+	repository.database.Where(&condition).First(&accountEntity)
+	repository.redis.Set(id, &accountEntity)
 	return accountEntity
 }
 
