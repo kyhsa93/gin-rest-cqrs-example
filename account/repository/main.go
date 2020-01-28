@@ -25,9 +25,9 @@ type Repository struct {
 
 // New create repository instance
 func New(config *config.Config) *Repository {
-	database := config.Database.Connection
+	database := config.Database().Connection
 	database.AutoMigrate(&entity.Account{})
-	redis := config.Redis
+	redis := config.Redis()
 	return &Repository{database: database, redis: redis}
 }
 

@@ -9,7 +9,8 @@ import (
 
 func TestUpdate(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.New(repository)
+	config := &mockedConfig{}
+	serviceInstance := service.New(repository, config)
 	data := &dto.Account{}
 	serviceInstance.Update("accountID", data.Email, data.Provider, data.SocialID, data.Password)
 }
