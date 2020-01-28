@@ -8,6 +8,7 @@ import (
 
 func TestDelete(t *testing.T) {
 	repository := &mockedRepository{}
-	serviceInstance := service.New(repository)
+	config := &mockedConfig{}
+	serviceInstance := service.New(repository, config)
 	serviceInstance.Delete("accountID")
 }
