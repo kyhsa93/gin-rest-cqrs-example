@@ -46,5 +46,8 @@ func (router *Router) SetupRoutes() {
 }
 
 func emailAndProviderValidation(email string, provider string) bool {
+	if provider == "email" {
+		return true
+	}
 	return strings.Contains(email, "@"+provider+".")
 }
