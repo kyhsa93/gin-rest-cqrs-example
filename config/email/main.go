@@ -16,7 +16,7 @@ type Email struct {
 }
 
 // Send send email with template
-func (email *Email) Send(receiver []string) {
+func (email *Email) Send(receiver []string, message string) {
 	if email.Address == "" {
 		log.Println("Can not use SMTP server")
 		return
@@ -29,14 +29,12 @@ func (email *Email) Send(receiver []string) {
 		email.SMTPHost,
 	)
 
-	message := []byte("test email message")
-
 	err := smtp.SendMail(
 		email.SMTPHost+":"+email.SMTPPort,
 		emailAuth,
 		email.Address,
 		receiver,
-		message,
+		[]byte(message),
 	)
 
 	if err != nil {
