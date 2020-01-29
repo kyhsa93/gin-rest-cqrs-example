@@ -198,7 +198,7 @@
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "test@test.com"
+                    "example": "test@gmail.com"
                 },
                 "password": {
                     "type": "string",
@@ -206,7 +206,7 @@
                 },
                 "provider": {
                     "type": "string",
-                    "example": "google"
+                    "example": "gmail"
                 },
                 "social_id": {
                     "type": "string",
@@ -223,7 +223,7 @@
                 },
                 "email": {
                     "type": "string",
-                    "example": "test@test.com"
+                    "example": "test@gmail.com"
                 },
                 "id": {
                     "type": "string",
