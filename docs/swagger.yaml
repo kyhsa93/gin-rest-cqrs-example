@@ -2,13 +2,13 @@ definitions:
   dto.Account:
     properties:
       email:
-        example: test@test.com
+        example: test@gmail.com
         type: string
       password:
         example: password
         type: string
       provider:
-        example: google
+        example: gmail
         type: string
       social_id:
         example: social_id
@@ -23,7 +23,7 @@ definitions:
         example: "2019-12-23 12:27:37"
         type: string
       email:
-        example: test@test.com
+        example: test@gmail.com
         type: string
       id:
         example: 389df385-ccaa-49c1-aee2-698ba1191857

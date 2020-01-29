@@ -3,8 +3,8 @@ package dto
 // Provider account service provider map
 func Provider() map[string]string {
 	return map[string]string{
-		"email":  "email",
-		"google": "google",
+		"email": "email",
+		"gmail": "gmail",
 	}
 }
 
@@ -31,8 +31,8 @@ func ValidateAccountAttributeByProvider(data *Account) bool {
 
 // Account account dto for command action
 type Account struct {
-	Email    string `json:"email" example:"test@test.com" binding:"required"`
-	Provider string `json:"provider" example:"google" binding:"required"`
+	Email    string `json:"email" example:"test@gmail.com" binding:"required"`
+	Provider string `json:"provider" example:"gmail" binding:"required"`
 	SocialID string `json:"social_id" example:"social_id"`
 	Password string `json:"password" example:"password"`
 }

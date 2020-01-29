@@ -52,6 +52,12 @@ func (router *Router) update(context *gin.Context) {
 		return
 	}
 
+	if !emailAndProviderValidation(data.Email, data.Provider) {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
 		httpError := router.util.Error.HTTP.BadRequest()

@@ -1,6 +1,8 @@
 package router
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-example/account/service"
 	"github.com/kyhsa93/gin-rest-example/util"
@@ -41,4 +43,8 @@ func (router *Router) SetupRoutes() {
 	router.route.DELETE("accounts/:id", func(context *gin.Context) {
 		router.delete(context)
 	})
+}
+
+func emailAndProviderValidation(email string, provider string) bool {
+	return strings.Contains(email, "@"+provider+".")
 }
