@@ -9,16 +9,20 @@ import (
 	"github.com/kyhsa93/gin-rest-example/account/model"
 )
 
-// @Description create account group
+// @Description update account
 // @Tags Accounts
-// @Accept  json
-// @Produce  json
-// @param id path string true "account Id"
-// @Param account body dto.Account true "Add account"
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path string true "accountId"
+// @Param email formData string true "account email address"
+// @Param provider formData string true "login service provider"
+// @Param gender formData string true "user's gender male of female"
+// @Param image formData file false "Profile image file"
+// @Param social_id formData string false "socialId when use social login"
+// @Param password formData string false "need if don't use social login"
 // @Success 200
 // @Router /accounts/{id} [put]
 // @Security AccessToken
-// @Security RefreshToken
 func (router *Router) update(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 
@@ -44,12 +48,24 @@ func (router *Router) update(context *gin.Context) {
 		return
 	}
 
-	var data dto.Account
+	email := context.PostForm("email")
+	provider := context.PostForm("provider")
+	socialID := context.PostForm("social_id")
+	password := context.PostForm("password")
+	gender := context.PostForm("gender")
 
-	if bindError := context.ShouldBindJSON(&data); bindError != nil {
+	if email == "" || provider == "" || gender == "" || (socialID == "" && password == "") {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
+	}
+
+	data := dto.Account{
+		Email:    email,
+		Provider: provider,
+		SocialID: socialID,
+		Password: password,
+		Gender:   gender,
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
@@ -89,7 +105,9 @@ func (router *Router) update(context *gin.Context) {
 		return
 	}
 
-	router.service.Update(id, data.Email, data.Provider, data.SocialID, data.Password)
+	image, _ := context.FormFile("image")
+
+	router.service.Update(id, data.Email, data.Provider, data.SocialID, data.Password, image, data.Gender)
 
 	context.JSON(http.StatusOK, "Account updated")
 }

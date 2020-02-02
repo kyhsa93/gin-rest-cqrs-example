@@ -1,22 +1,4 @@
 definitions:
-  dto.Account:
-    properties:
-      email:
-        example: test@gmail.com
-        type: string
-      password:
-        example: password
-        type: string
-      provider:
-        example: gmail
-        type: string
-      social_id:
-        example: social_id
-        type: string
-    required:
-    - email
-    - provider
-    type: object
   model.Account:
     properties:
       created_at:
@@ -25,8 +7,14 @@ definitions:
       email:
         example: test@gmail.com
         type: string
+      gender:
+        example: male
+        type: string
       id:
         example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      image_url:
+        example: profile.image_url.com
         type: string
       provider:
         type: string
@@ -79,20 +67,40 @@ paths:
       - Accounts
     post:
       consumes:
-      - application/json
-      description: create account group
+      - multipart/form-data
+      description: create account
       parameters:
-      - description: Add account
-        in: body
-        name: account
+      - description: account email address
+        in: formData
+        name: email
         required: true
-        schema:
-          $ref: '#/definitions/dto.Account'
-          type: object
+        type: string
+      - description: login service provider
+        in: formData
+        name: provider
+        required: true
+        type: string
+      - description: user's gender male of female
+        in: formData
+        name: gender
+        required: true
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
+      - description: socialId when use social login
+        in: formData
+        name: social_id
+        type: string
+      - description: need if don't use social login
+        in: formData
+        name: password
+        type: string
       produces:
       - application/json
       responses:
-        "200": {}
+        "201": {}
       tags:
       - Accounts
   /accounts/{id}:
@@ -134,28 +142,47 @@ paths:
       - Accounts
     put:
       consumes:
-      - application/json
-      description: create account group
+      - multipart/form-data
+      description: update account
       parameters:
-      - description: account Id
+      - description: accountId
         in: path
         name: id
         required: true
         type: string
-      - description: Add account
-        in: body
-        name: account
+      - description: account email address
+        in: formData
+        name: email
         required: true
-        schema:
-          $ref: '#/definitions/dto.Account'
-          type: object
+        type: string
+      - description: login service provider
+        in: formData
+        name: provider
+        required: true
+        type: string
+      - description: user's gender male of female
+        in: formData
+        name: gender
+        required: true
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
+      - description: socialId when use social login
+        in: formData
+        name: social_id
+        type: string
+      - description: need if don't use social login
+        in: formData
+        name: password
+        type: string
       produces:
       - application/json
       responses:
         "200": {}
       security:
       - AccessToken: []
-      - RefreshToken: []
       tags:
       - Accounts
 securityDefinitions:

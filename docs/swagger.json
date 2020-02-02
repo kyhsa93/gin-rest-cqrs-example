@@ -54,9 +54,9 @@
                 }
             },
             "post": {
-                "description": "create account group",
+                "description": "create account",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -66,18 +66,47 @@
                 ],
                 "parameters": [
                     {
-                        "description": "Add account",
-                        "name": "account",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/dto.Account"
-                        }
+                        "type": "string",
+                        "description": "account email address",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "login service provider",
+                        "name": "provider",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "user's gender male of female",
+                        "name": "gender",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile image file",
+                        "name": "image",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "socialId when use social login",
+                        "name": "social_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "need if don't use social login",
+                        "name": "password",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
-                    "200": {}
+                    "201": {}
                 }
             }
         },
@@ -122,14 +151,11 @@
                 "security": [
                     {
                         "AccessToken": []
-                    },
-                    {
-                        "RefreshToken": []
                     }
                 ],
-                "description": "create account group",
+                "description": "update account",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -140,20 +166,49 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "account Id",
+                        "description": "accountId",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Add account",
-                        "name": "account",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/dto.Account"
-                        }
+                        "type": "string",
+                        "description": "account email address",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "login service provider",
+                        "name": "provider",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "user's gender male of female",
+                        "name": "gender",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile image file",
+                        "name": "image",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "socialId when use social login",
+                        "name": "social_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "need if don't use social login",
+                        "name": "password",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -189,31 +244,6 @@
         }
     },
     "definitions": {
-        "dto.Account": {
-            "type": "object",
-            "required": [
-                "email",
-                "provider"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "test@gmail.com"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "password"
-                },
-                "provider": {
-                    "type": "string",
-                    "example": "gmail"
-                },
-                "social_id": {
-                    "type": "string",
-                    "example": "social_id"
-                }
-            }
-        },
         "model.Account": {
             "type": "object",
             "properties": {
@@ -225,9 +255,17 @@
                     "type": "string",
                     "example": "test@gmail.com"
                 },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
                 "id": {
                     "type": "string",
                     "example": "389df385-ccaa-49c1-aee2-698ba1191857"
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "profile.image_url.com"
                 },
                 "provider": {
                     "type": "string"

@@ -29,10 +29,27 @@ func ValidateAccountAttributeByProvider(data *Account) bool {
 	return true
 }
 
+// Gender user gender map
+func Gender() map[string]string {
+	return map[string]string{
+		"male":   "male",
+		"female": "female",
+	}
+}
+
+// ValidateAccountGender validation account gender attribute
+func ValidateAccountGender(data *Account) bool {
+	if Gender()[data.Gender] == "" {
+		return false
+	}
+	return true
+}
+
 // Account account dto for command action
 type Account struct {
 	Email    string `json:"email" example:"test@gmail.com" binding:"required"`
 	Provider string `json:"provider" example:"gmail" binding:"required"`
 	SocialID string `json:"social_id" example:"social_id"`
 	Password string `json:"password" example:"password"`
+	Gender   string `json:"gender" example:"male"`
 }
