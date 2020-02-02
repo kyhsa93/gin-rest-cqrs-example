@@ -19,6 +19,7 @@ type Interface interface {
 		password string,
 		image *multipart.FileHeader,
 		gender string,
+		intereste string,
 	)
 	ReadAccountByID(acountID string) *model.Account
 	ReadAccount(email string,
@@ -35,6 +36,7 @@ type Interface interface {
 		password string,
 		image *multipart.FileHeader,
 		gender string,
+		intereste string,
 	)
 	Delete(accountID string)
 }
@@ -52,6 +54,7 @@ func (service *Service) entityToModel(entity entity.Account) *model.Account {
 	accountModel.Provider = entity.Provider
 	accountModel.Gender = entity.Gender
 	accountModel.ImageURL = service.config.AWS.S3.Endpoint + "/" + service.config.AWS.S3.Bucket + "/" + entity.ImageKey
+	accountModel.Intereste = entity.Intereste
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 	return &accountModel

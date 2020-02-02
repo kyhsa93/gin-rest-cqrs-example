@@ -16,6 +16,9 @@ definitions:
       image_url:
         example: profile.image_url.com
         type: string
+      intereste:
+        example: develop
+        type: string
       provider:
         type: string
       updated_at:
@@ -80,15 +83,11 @@ paths:
         name: provider
         required: true
         type: string
-      - description: user's gender male of female
+      - description: user's gender male or female
         in: formData
         name: gender
         required: true
         type: string
-      - description: Profile image file
-        in: formData
-        name: image
-        type: file
       - description: socialId when use social login
         in: formData
         name: social_id
@@ -97,6 +96,14 @@ paths:
         in: formData
         name: password
         type: string
+      - description: interested part in develop, design, manage
+        in: formData
+        name: intereste
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
       produces:
       - application/json
       responses:
@@ -160,15 +167,11 @@ paths:
         name: provider
         required: true
         type: string
-      - description: user's gender male of female
+      - description: user's gender male or female
         in: formData
         name: gender
         required: true
         type: string
-      - description: Profile image file
-        in: formData
-        name: image
-        type: file
       - description: socialId when use social login
         in: formData
         name: social_id
@@ -177,6 +180,14 @@ paths:
         in: formData
         name: password
         type: string
+      - description: interested part in develop, design, manage
+        in: formData
+        name: intereste
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
       produces:
       - application/json
       responses:

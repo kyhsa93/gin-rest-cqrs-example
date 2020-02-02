@@ -13,6 +13,7 @@ func (service *Service) Update(
 	password string,
 	image *multipart.FileHeader,
 	gender string,
+	intereste string,
 ) {
 	oldData := service.ReadAccountByID(accountID)
 	if oldData == nil {
@@ -23,6 +24,15 @@ func (service *Service) Update(
 	if image != nil {
 		imageKey = service.config.AWS.AddFileToS3(image)
 	}
-	service.repository.Save(accountID, email, provider, hashedSocialID, hashedPassword, imageKey, gender)
+	service.repository.Save(
+		accountID,
+		email,
+		provider,
+		hashedSocialID,
+		hashedPassword,
+		imageKey,
+		gender,
+		intereste,
+	)
 	service.config.Email.Send([]string{email}, "Account is updated.")
 }

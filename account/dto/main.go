@@ -45,11 +45,29 @@ func ValidateAccountGender(data *Account) bool {
 	return true
 }
 
+// Intereste part of user interested
+func Intereste() map[string]string {
+	return map[string]string{
+		"develop": "develop",
+		"design":  "design",
+		"manage":  "manage",
+	}
+}
+
+// ValidateInteresteAttribute validation account's intereste
+func ValidateInteresteAttribute(data *Account) bool {
+	if Intereste()[data.Intereste] == "" {
+		return false
+	}
+	return true
+}
+
 // Account account dto for command action
 type Account struct {
-	Email    string `json:"email" example:"test@gmail.com" binding:"required"`
-	Provider string `json:"provider" example:"gmail" binding:"required"`
-	SocialID string `json:"social_id" example:"social_id"`
-	Password string `json:"password" example:"password"`
-	Gender   string `json:"gender" example:"male"`
+	Email     string `json:"email" example:"test@gmail.com" binding:"required"`
+	Provider  string `json:"provider" example:"gmail" binding:"required"`
+	SocialID  string `json:"social_id" example:"social_id"`
+	Password  string `json:"password" example:"password"`
+	Gender    string `json:"gender" example:"male"`
+	Intereste string `json:"intereste" example:"develop"`
 }
