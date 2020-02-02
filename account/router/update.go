@@ -16,10 +16,11 @@ import (
 // @Param id path string true "accountId"
 // @Param email formData string true "account email address"
 // @Param provider formData string true "login service provider"
-// @Param gender formData string true "user's gender male of female"
-// @Param image formData file false "Profile image file"
+// @Param gender formData string true "user's gender male or female"
+// @Param intereste formData string true "interested part in develop, design, manage"
 // @Param social_id formData string false "socialId when use social login"
 // @Param password formData string false "need if don't use social login"
+// @Param image formData file false "Profile image file"
 // @Success 200
 // @Router /accounts/{id} [put]
 // @Security AccessToken
@@ -53,19 +54,21 @@ func (router *Router) update(context *gin.Context) {
 	socialID := context.PostForm("social_id")
 	password := context.PostForm("password")
 	gender := context.PostForm("gender")
+	intereste := context.PostForm("intereste")
 
-	if email == "" || provider == "" || gender == "" || (socialID == "" && password == "") {
+	if email == "" || provider == "" || gender == "" || intereste == "" || (socialID == "" && password == "") {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	data := dto.Account{
-		Email:    email,
-		Provider: provider,
-		SocialID: socialID,
-		Password: password,
-		Gender:   gender,
+		Email:     email,
+		Provider:  provider,
+		SocialID:  socialID,
+		Password:  password,
+		Gender:    gender,
+		Intereste: intereste,
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
@@ -98,8 +101,13 @@ func (router *Router) update(context *gin.Context) {
 
 	dto.FilterAccountAttributeByProvider(&data)
 
-	validate := dto.ValidateAccountAttributeByProvider(&data)
-	if validate == false {
+	if validate := dto.ValidateAccountAttributeByProvider(&data); validate == false {
+		httpError := router.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	if validate := dto.ValidateInteresteAttribute(&data); validate == false {
 		httpError := router.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
@@ -107,7 +115,16 @@ func (router *Router) update(context *gin.Context) {
 
 	image, _ := context.FormFile("image")
 
-	router.service.Update(id, data.Email, data.Provider, data.SocialID, data.Password, image, data.Gender)
+	router.service.Update(
+		id,
+		data.Email,
+		data.Provider,
+		data.SocialID,
+		data.Password,
+		image,
+		data.Gender,
+		data.Intereste,
+	)
 
 	context.JSON(http.StatusOK, "Account updated")
 }

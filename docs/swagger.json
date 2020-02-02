@@ -81,16 +81,10 @@
                     },
                     {
                         "type": "string",
-                        "description": "user's gender male of female",
+                        "description": "user's gender male or female",
                         "name": "gender",
                         "in": "formData",
                         "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Profile image file",
-                        "name": "image",
-                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -102,6 +96,18 @@
                         "type": "string",
                         "description": "need if don't use social login",
                         "name": "password",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "interested part in develop, design, manage",
+                        "name": "intereste",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile image file",
+                        "name": "image",
                         "in": "formData"
                     }
                 ],
@@ -187,16 +193,10 @@
                     },
                     {
                         "type": "string",
-                        "description": "user's gender male of female",
+                        "description": "user's gender male or female",
                         "name": "gender",
                         "in": "formData",
                         "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Profile image file",
-                        "name": "image",
-                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -208,6 +208,18 @@
                         "type": "string",
                         "description": "need if don't use social login",
                         "name": "password",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "interested part in develop, design, manage",
+                        "name": "intereste",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile image file",
+                        "name": "image",
                         "in": "formData"
                     }
                 ],
@@ -266,6 +278,10 @@
                 "image_url": {
                     "type": "string",
                     "example": "profile.image_url.com"
+                },
+                "intereste": {
+                    "type": "string",
+                    "example": "develop"
                 },
                 "provider": {
                     "type": "string"
