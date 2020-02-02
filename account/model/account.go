@@ -11,6 +11,8 @@ type Account struct {
 	ID        string    `json:"id" example:"389df385-ccaa-49c1-aee2-698ba1191857"`
 	Email     string    `json:"email" example:"test@gmail.com"`
 	Provider  string    `json:"provider" exmaple:"gmail"`
+	ImageURL  string    `json:"image_url" example:"profile.image_url.com"`
+	Gender    string    `json:"gender" example:"male"`
 	CreatedAt time.Time `json:"created_at" example:"2019-12-23 12:27:37"`
 	UpdatedAt time.Time `json:"updated_at" example:"2019-12-23 12:27:37"`
 }

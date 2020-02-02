@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"github.com/kyhsa93/gin-rest-example/account/dto"
 	"github.com/kyhsa93/gin-rest-example/account/entity"
 	"github.com/kyhsa93/gin-rest-example/config"
 	"github.com/kyhsa93/gin-rest-example/config/redis"
@@ -11,7 +10,15 @@ import (
 
 // Interface repository inteface
 type Interface interface {
-	Save(accountID string, email string, provider string, socialID string, password string)
+	Save(
+		accountID string,
+		email string,
+		provider string,
+		socialID string,
+		password string,
+		imageKey string,
+		gender string,
+	)
 	FindByEmailAndProvider(email string, provider string, unscoped bool) entity.Account
 	FindByID(id string) entity.Account
 	Delete(id string)
@@ -25,19 +32,10 @@ type Repository struct {
 
 // New create repository instance
 func New(config *config.Config) *Repository {
-	database := config.Database().Connection
+	database := config.Database.Connection
 	database.AutoMigrate(&entity.Account{})
-	redis := config.Redis()
+	redis := config.Redis
 	return &Repository{database: database, redis: redis}
-}
-
-func (repository *Repository) dtoToEntity(data *dto.Account) *entity.Account {
-	return &entity.Account{
-		Email:    data.Email,
-		Provider: data.Provider,
-		Password: data.Password,
-		SocialID: data.SocialID,
-	}
 }
 
 // Save create or update account
@@ -47,6 +45,8 @@ func (repository *Repository) Save(
 	provider string,
 	socialID string,
 	password string,
+	imageKey string,
+	gender string,
 ) {
 	accountEntity := &entity.Account{
 		Model:    entity.Model{ID: accountID},
@@ -54,6 +54,8 @@ func (repository *Repository) Save(
 		Provider: provider,
 		Password: password,
 		SocialID: socialID,
+		ImageKey: imageKey,
+		Gender:   gender,
 	}
 
 	err := repository.database.Save(accountEntity).Error

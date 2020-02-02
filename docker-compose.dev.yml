@@ -14,3 +14,12 @@ services:
       - 3306:3306
     env_file:
       - .env
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 4572:4572
+    environment:
+      - SERVICES=s3
+    volumes:
+      - ./aws:/docker-entrypoint-initaws.d

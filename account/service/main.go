@@ -1,6 +1,8 @@
 package service
 
 import (
+	"mime/multipart"
+
 	"github.com/kyhsa93/gin-rest-example/account/entity"
 	"github.com/kyhsa93/gin-rest-example/account/model"
 	"github.com/kyhsa93/gin-rest-example/account/repository"
@@ -10,7 +12,14 @@ import (
 
 // Interface service interface
 type Interface interface {
-	Create(email string, provider string, socialID string, password string)
+	Create(
+		email string,
+		provider string,
+		socialID string,
+		password string,
+		image *multipart.FileHeader,
+		gender string,
+	)
 	ReadAccountByID(acountID string) *model.Account
 	ReadAccount(email string,
 		provider string,
@@ -18,14 +27,22 @@ type Interface interface {
 		password string,
 		unscoped bool,
 	) (*model.Account, error)
-	Update(accountID string, email string, provider string, socialID string, password string)
+	Update(
+		accountID string,
+		email string,
+		provider string,
+		socialID string,
+		password string,
+		image *multipart.FileHeader,
+		gender string,
+	)
 	Delete(accountID string)
 }
 
 // Service account service struct
 type Service struct {
 	repository repository.Interface
-	config     config.Interface
+	config     *config.Config
 }
 
 func (service *Service) entityToModel(entity entity.Account) *model.Account {
@@ -33,6 +50,8 @@ func (service *Service) entityToModel(entity entity.Account) *model.Account {
 	accountModel.ID = entity.ID
 	accountModel.Email = entity.Email
 	accountModel.Provider = entity.Provider
+	accountModel.Gender = entity.Gender
+	accountModel.ImageURL = service.config.AWS.S3.Endpoint + "/" + service.config.AWS.S3.Bucket + "/" + entity.ImageKey
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 	return &accountModel
@@ -52,6 +71,6 @@ func getHashedPasswordAndSocialID(password string, socialID string) (string, str
 }
 
 // New create account service instance
-func New(repository repository.Interface, config config.Interface) *Service {
+func New(repository repository.Interface, config *config.Config) *Service {
 	return &Service{repository: repository, config: config}
 }
