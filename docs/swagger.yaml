@@ -88,6 +88,11 @@ paths:
         name: gender
         required: true
         type: string
+      - description: interested part in develop, design, manage
+        in: formData
+        name: intereste
+        required: true
+        type: string
       - description: socialId when use social login
         in: formData
         name: social_id
@@ -95,10 +100,6 @@ paths:
       - description: need if don't use social login
         in: formData
         name: password
-        type: string
-      - description: interested part in develop, design, manage
-        in: formData
-        name: intereste
         type: string
       - description: Profile image file
         in: formData
@@ -172,6 +173,11 @@ paths:
         name: gender
         required: true
         type: string
+      - description: interested part in develop, design, manage
+        in: formData
+        name: intereste
+        required: true
+        type: string
       - description: socialId when use social login
         in: formData
         name: social_id
@@ -179,10 +185,6 @@ paths:
       - description: need if don't use social login
         in: formData
         name: password
-        type: string
-      - description: interested part in develop, design, manage
-        in: formData
-        name: intereste
         type: string
       - description: Profile image file
         in: formData
