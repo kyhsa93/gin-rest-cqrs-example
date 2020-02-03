@@ -40,4 +40,4 @@ services:
     environment:
       - SERVICES=s3
     volumes:
-      - ./aws:/docker-entrypoint-initaws.d
+      - ./.aws:/docker-entrypoint-initaws.d
