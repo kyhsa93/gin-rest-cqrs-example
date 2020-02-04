@@ -1,10 +1,10 @@
-package router
+package controller
 
 import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
-	"github.com/kyhsa93/gin-rest-example/account/dto"
+	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +22,7 @@ import (
 // @Param image formData file false "Profile image file"
 // @Success 201
 // @Router /accounts [post]
-func (router *Router) create(context *gin.Context) {
+func (controller *Controller) create(context *gin.Context) {
 	email := context.PostForm("email")
 	provider := context.PostForm("provider")
 	socialID := context.PostForm("social_id")
@@ -31,7 +31,7 @@ func (router *Router) create(context *gin.Context) {
 	intereste := context.PostForm("intereste")
 
 	if email == "" || provider == "" || gender == "" || intereste == "" || (socialID == "" && password == "") {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -46,37 +46,35 @@ func (router *Router) create(context *gin.Context) {
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
 	if emaiHostlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	_, existedProvider := dto.Provider()[data.Provider]
-
 	if existedProvider == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	duplicated, _ := router.service.ReadAccount(data.Email, "", "", "", true)
-
+	duplicated, _ := controller.application.ReadAccount(data.Email, "", "", "", true)
 	if duplicated != nil {
-		httpError := router.util.Error.HTTP.Conflict()
+		httpError := controller.util.Error.HTTP.Conflict()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -84,20 +82,20 @@ func (router *Router) create(context *gin.Context) {
 	dto.FilterAccountAttributeByProvider(&data)
 
 	if validate := dto.ValidateAccountAttributeByProvider(&data); validate == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	if validate := dto.ValidateInteresteAttribute(&data); validate == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	image, _ := context.FormFile("image")
 
-	router.service.Create(
+	controller.application.Create(
 		data.Email, data.Provider, data.SocialID, data.Password, image, data.Gender, data.Intereste,
 	)
 

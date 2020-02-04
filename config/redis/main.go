@@ -7,7 +7,7 @@ import (
 
 	"github.com/caarlos0/env"
 	"github.com/go-redis/redis"
-	"github.com/kyhsa93/gin-rest-example/account/entity"
+	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
 )
 
 type redisEnvironmentValue struct {

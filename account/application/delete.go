@@ -1,6 +1,6 @@
-package service
+package application
 
 // Delete account by accountID
 func (service *Service) Delete(accountID string) {
-	service.repository.Delete(accountID)
+	service.infrastructure.Repository.Delete(accountID)
 }

@@ -1,12 +1,12 @@
-package router
+package controller
 
 import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/dto"
-	"github.com/kyhsa93/gin-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 )
 
 // @Description update account
@@ -24,11 +24,11 @@ import (
 // @Success 200
 // @Router /accounts/{id} [put]
 // @Security AccessToken
-func (router *Router) update(context *gin.Context) {
+func (controller *Controller) update(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 
 	if accessHeader == "" {
-		httpError := router.util.Error.HTTP.Unauthorized()
+		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -36,7 +36,7 @@ func (router *Router) update(context *gin.Context) {
 	id := context.Param("id")
 
 	if id == "" {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -44,7 +44,7 @@ func (router *Router) update(context *gin.Context) {
 	token := &model.Token{ID: id, Access: accessHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := router.util.Error.HTTP.Forbidden()
+		httpError := controller.util.Error.HTTP.Forbidden()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -57,7 +57,7 @@ func (router *Router) update(context *gin.Context) {
 	intereste := context.PostForm("intereste")
 
 	if email == "" || provider == "" || gender == "" || intereste == "" || (socialID == "" && password == "") {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -72,21 +72,21 @@ func (router *Router) update(context *gin.Context) {
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
 	if emaiHostlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -94,7 +94,7 @@ func (router *Router) update(context *gin.Context) {
 	_, existedProvider := dto.Provider()[data.Provider]
 
 	if existedProvider == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -102,20 +102,20 @@ func (router *Router) update(context *gin.Context) {
 	dto.FilterAccountAttributeByProvider(&data)
 
 	if validate := dto.ValidateAccountAttributeByProvider(&data); validate == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	if validate := dto.ValidateInteresteAttribute(&data); validate == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	image, _ := context.FormFile("image")
 
-	router.service.Update(
+	controller.application.Update(
 		id,
 		data.Email,
 		data.Provider,

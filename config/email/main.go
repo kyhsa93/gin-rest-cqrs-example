@@ -1,9 +1,6 @@
 package email
 
 import (
-	"log"
-	"net/smtp"
-
 	"github.com/caarlos0/env"
 )
 
@@ -13,33 +10,6 @@ type Email struct {
 	Password string `env:"EMAIL_PASSWORD" envDefault:""`
 	SMTPHost string `env:"SMTP_HOST" envDefault:"smtp.gmail.com"`
 	SMTPPort string `env:"SMTP_PORT" envDefault:"587"`
-}
-
-// Send send email with template
-func (email *Email) Send(receiver []string, message string) {
-	if email.Address == "" {
-		log.Println("Can not use SMTP server")
-		return
-	}
-
-	emailAuth := smtp.PlainAuth(
-		"",
-		email.Address,
-		email.Password,
-		email.SMTPHost,
-	)
-
-	err := smtp.SendMail(
-		email.SMTPHost+":"+email.SMTPPort,
-		emailAuth,
-		email.Address,
-		receiver,
-		[]byte(message),
-	)
-
-	if err != nil {
-		log.Println(err)
-	}
 }
 
 // New create email config instance

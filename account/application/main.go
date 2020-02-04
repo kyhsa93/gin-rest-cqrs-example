@@ -1,11 +1,11 @@
-package service
+package application
 
 import (
 	"mime/multipart"
 
-	"github.com/kyhsa93/gin-rest-example/account/entity"
-	"github.com/kyhsa93/gin-rest-example/account/model"
-	"github.com/kyhsa93/gin-rest-example/account/repository"
+	"github.com/kyhsa93/gin-rest-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-example/account/infrastructure"
+	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
 	"github.com/kyhsa93/gin-rest-example/config"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -43,8 +43,8 @@ type Interface interface {
 
 // Service account service struct
 type Service struct {
-	repository repository.Interface
-	config     *config.Config
+	infrastructure *infrastructure.Infrastructure
+	config         *config.Config
 }
 
 func (service *Service) entityToModel(entity entity.Account) *model.Account {
@@ -74,6 +74,6 @@ func getHashedPasswordAndSocialID(password string, socialID string) (string, str
 }
 
 // New create account service instance
-func New(repository repository.Interface, config *config.Config) *Service {
-	return &Service{repository: repository, config: config}
+func New(infrastructure *infrastructure.Infrastructure, config *config.Config) *Service {
+	return &Service{infrastructure: infrastructure, config: config}
 }

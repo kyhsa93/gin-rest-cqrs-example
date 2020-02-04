@@ -1,13 +1,12 @@
-package service
+package application
 
 import (
 	"mime/multipart"
-
-	"github.com/google/uuid"
 )
 
-// Create create account
-func (service *Service) Create(
+// Update update account by accountID
+func (service *Service) Update(
+	accountID string,
 	email string,
 	provider string,
 	socialID string,
@@ -16,15 +15,17 @@ func (service *Service) Create(
 	gender string,
 	intereste string,
 ) {
-	uuid, _ := uuid.NewRandom()
+	oldData := service.ReadAccountByID(accountID)
+	if oldData == nil {
+		return
+	}
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(password, socialID)
-
 	imageKey := ""
 	if image != nil {
-		imageKey = service.config.AWS.AddFileToS3(image)
+		imageKey = service.infrastructure.AWS.S3.Upload(image)
 	}
-	service.repository.Save(
-		uuid.String(),
+	service.infrastructure.Repository.Save(
+		accountID,
 		email,
 		provider,
 		hashedSocialID,
@@ -33,5 +34,5 @@ func (service *Service) Create(
 		gender,
 		intereste,
 	)
-	service.config.Email.Send([]string{email}, "Account is created.")
+	service.infrastructure.Email.Send([]string{email}, "Account is updated.")
 }

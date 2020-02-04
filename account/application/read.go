@@ -1,7 +1,7 @@
-package service
+package application
 
 import (
-	"github.com/kyhsa93/gin-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/domain/model"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,7 +14,7 @@ func compareHashAndPassword(hashed string, password string) error {
 
 // ReadAccountByID read account by acountID
 func (service *Service) ReadAccountByID(acountID string) *model.Account {
-	entity := service.repository.FindByID(acountID)
+	entity := service.infrastructure.Repository.FindByID(acountID)
 
 	if entity.ID == "" {
 		return nil
@@ -31,7 +31,7 @@ func (service *Service) ReadAccount(
 	password string,
 	unscoped bool,
 ) (*model.Account, error) {
-	entity := service.repository.FindByEmailAndProvider(email, provider, unscoped)
+	entity := service.infrastructure.Repository.FindByEmailAndProvider(email, provider, unscoped)
 
 	if entity.ID == "" {
 		return nil, nil
