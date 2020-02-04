@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/kyhsa93/gin-rest-example/account/entity"
+	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
 	"github.com/kyhsa93/gin-rest-example/config"
 	"github.com/kyhsa93/gin-rest-example/config/redis"
 

@@ -1,10 +1,10 @@
-package router
+package controller
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/domain/model"
 )
 
 // @Description delete account by id
@@ -14,11 +14,11 @@ import (
 // @Router /accounts/{id} [delete]
 // @Security AccessToken
 // @Security RefreshToken
-func (router *Router) delete(context *gin.Context) {
+func (controller *Controller) delete(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 
 	if accessHeader == "" {
-		httpError := router.util.Error.HTTP.Unauthorized()
+		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -26,7 +26,7 @@ func (router *Router) delete(context *gin.Context) {
 	id := context.Param("id")
 
 	if id == "" {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -34,12 +34,12 @@ func (router *Router) delete(context *gin.Context) {
 	token := &model.Token{ID: id, Access: accessHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := router.util.Error.HTTP.Forbidden()
+		httpError := controller.util.Error.HTTP.Forbidden()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	router.service.Delete(id)
+	controller.application.Delete(id)
 
 	context.JSON(http.StatusOK, "Account deleted")
 }

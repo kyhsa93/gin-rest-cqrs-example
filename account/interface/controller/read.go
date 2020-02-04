@@ -1,12 +1,12 @@
-package router
+package controller
 
 import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/dto"
-	"github.com/kyhsa93/gin-rest-example/account/model"
+	"github.com/kyhsa93/gin-rest-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 )
 
 // @Tags Accounts
@@ -17,11 +17,11 @@ import (
 // @Router /accounts/{id} [get]
 // @Security AccessToken
 // @Security RefreshToken
-func (router *Router) readAccountByID(context *gin.Context) {
+func (controller *Controller) readAccountByID(context *gin.Context) {
 	accessHeader := context.GetHeader("Authorization")
 
 	if accessHeader == "" {
-		httpError := router.util.Error.HTTP.Unauthorized()
+		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -29,7 +29,7 @@ func (router *Router) readAccountByID(context *gin.Context) {
 	id := context.Param("id")
 
 	if id == "" {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -37,15 +37,15 @@ func (router *Router) readAccountByID(context *gin.Context) {
 	token := &model.Token{ID: id, Access: accessHeader}
 
 	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := router.util.Error.HTTP.Forbidden()
+		httpError := controller.util.Error.HTTP.Forbidden()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	account := router.service.ReadAccountByID(id)
+	account := controller.application.ReadAccountByID(id)
 
 	if account == nil {
-		httpError := router.util.Error.HTTP.NotFound()
+		httpError := controller.util.Error.HTTP.NotFound()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -62,7 +62,7 @@ func (router *Router) readAccountByID(context *gin.Context) {
 // @Param provider query string true "account service provider"
 // @Param password query string false "account password (email provider only)"
 // @Param social_id query string false "account social_id"
-func (router *Router) readAccount(context *gin.Context) {
+func (controller *Controller) readAccount(context *gin.Context) {
 	email := context.Query("email")
 	socialID := context.Query("social_id")
 	provider := context.Query("provider")
@@ -74,21 +74,21 @@ func (router *Router) readAccount(context *gin.Context) {
 	}
 
 	if email == "" || provider == "" || socialIDAndPasswordBothEmpty {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiFormatlValidationError := checkmail.ValidateFormat(email)
 	if emaiFormatlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
 	emaiHostlValidationError := checkmail.ValidateHost(email)
 	if emaiHostlValidationError != nil {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -98,7 +98,7 @@ func (router *Router) readAccount(context *gin.Context) {
 	_, existedProvider := dto.Provider()[data.Provider]
 
 	if existedProvider == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -107,15 +107,15 @@ func (router *Router) readAccount(context *gin.Context) {
 
 	validate := dto.ValidateAccountAttributeByProvider(data)
 	if validate == false {
-		httpError := router.util.Error.HTTP.BadRequest()
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	account, err := router.service.ReadAccount(email, provider, socialID, password, false)
+	account, err := controller.application.ReadAccount(email, provider, socialID, password, false)
 
 	if account == nil || err != nil {
-		httpError := router.util.Error.HTTP.NotFound()
+		httpError := controller.util.Error.HTTP.NotFound()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
@@ -123,7 +123,7 @@ func (router *Router) readAccount(context *gin.Context) {
 	accessToken := account.CreateAccessToken()
 
 	if accessToken == "" {
-		httpError := router.util.Error.HTTP.InternalServerError()
+		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
