@@ -1,6 +1,8 @@
 package infrastructure
 
 import (
+	"github.com/go-redis/redis"
+	"github.com/jinzhu/gorm"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure/aws"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure/email"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure/repository"
@@ -15,9 +17,9 @@ type Infrastructure struct {
 }
 
 // New create infra instance
-func New(config *config.Config) *Infrastructure {
+func New(databaseConnection *gorm.DB, redisClient *redis.Client, config *config.Config) *Infrastructure {
 	return &Infrastructure{
-		Repository: repository.New(config),
+		Repository: repository.New(redisClient, databaseConnection),
 		Email:      email.New(config),
 		AWS:        aws.New(config),
 	}
