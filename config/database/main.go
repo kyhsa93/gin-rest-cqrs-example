@@ -2,11 +2,11 @@ package database
 
 import (
 	"github.com/caarlos0/env"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql package for gorm
 )
 
-type databaseEnvironmentValue struct {
+// Database database struct
+type Database struct {
 	Port     string `env:"DATABASE_PORT" envDefault:"3306"`
 	Host     string `env:"DATABASE_HOST" envDefault:"localhost"`
 	Name     string `env:"DATABASE_NAME" envDefault:"gin-rest-example"`
@@ -15,36 +15,9 @@ type databaseEnvironmentValue struct {
 	Logging  bool   `env:"DATABASE_LOGGING" envDefault:"true"`
 }
 
-// Database database struct
-type Database struct {
-	databaseEnvironmentValue *databaseEnvironmentValue
-	Connection               *gorm.DB
-}
-
-// NewDatabase create database instance
-func NewDatabase() *Database {
-	databaseENV := &databaseEnvironmentValue{}
+// New create database instance
+func New() *Database {
 	database := &Database{}
-	env.Parse(databaseENV)
-	database.getConnection(databaseENV)
+	env.Parse(database)
 	return database
-}
-
-func (database *Database) getConnection(databaseENV *databaseEnvironmentValue) {
-
-	User := databaseENV.User
-	Password := databaseENV.Password
-	Name := databaseENV.Name
-	Host := databaseENV.Host
-	Port := databaseENV.Port
-
-	db, err := gorm.Open("mysql", User+":"+Password+"@tcp("+Host+":"+Port+")/"+Name+"?parseTime=true")
-
-	if err != nil {
-		panic(err)
-	}
-
-	db.LogMode(databaseENV.Logging)
-
-	database.Connection = db
 }

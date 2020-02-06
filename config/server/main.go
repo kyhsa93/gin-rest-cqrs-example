@@ -8,8 +8,8 @@ type Server struct {
 	Mode string `env:"MODE" envDefault:"debug"`
 }
 
-// NewServer create server config struct instance
-func NewServer() *Server {
+// New create server config struct instance
+func New() *Server {
 	server := &Server{}
 	env.Parse(server)
 	if server.Mode != "release" && server.Mode != "debug" {

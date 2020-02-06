@@ -7,8 +7,8 @@ import (
 // Swagger swagger config struct
 type Swagger struct{}
 
-// NewSwagger create swagger configuration instance
-func NewSwagger() *Swagger {
+// New create swagger configuration instance
+func New() *Swagger {
 	docs.SwaggerInfo.Title = "Gin REST api Example"
 	docs.SwaggerInfo.Description = "This is Example for REST api using Gin"
 	docs.SwaggerInfo.Version = "1.0.0"

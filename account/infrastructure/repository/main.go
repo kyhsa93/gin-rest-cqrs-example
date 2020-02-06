@@ -1,9 +1,12 @@
 package repository
 
 import (
+	"encoding/json"
+	"log"
+	"time"
+
+	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
-	"github.com/kyhsa93/gin-rest-example/config"
-	"github.com/kyhsa93/gin-rest-example/config/redis"
 
 	"github.com/jinzhu/gorm"
 )
@@ -27,16 +30,43 @@ type Interface interface {
 
 // Repository repository for query to database
 type Repository struct {
-	redis    redis.Interface
+	redis    *redis.Client
 	database *gorm.DB
 }
 
 // New create repository instance
-func New(config *config.Config) *Repository {
-	database := config.Database.Connection
-	database.AutoMigrate(&entity.Account{})
-	redis := config.Redis
+func New(redis *redis.Client, database *gorm.DB) *Repository {
 	return &Repository{database: database, redis: redis}
+}
+
+func (repository *Repository) setCache(key string, accountEntity *entity.Account) {
+	marshaledEntity, _ := json.Marshal(&accountEntity)
+	setRedisDataError := repository.redis.Set(
+		"account:"+key, string(marshaledEntity), time.Second,
+	).Err()
+	if setRedisDataError != nil {
+		log.Println(setRedisDataError)
+	}
+}
+
+func (repository *Repository) getCache(key string) *entity.Account {
+	data, getDataFromRedisErrorByKey := repository.redis.Get("account:" + key).Result()
+	if getDataFromRedisErrorByKey != nil {
+		log.Println(getDataFromRedisErrorByKey)
+		return nil
+	}
+
+	entity := &entity.Account{}
+	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
+	if jsonUnmarshalError != nil {
+		log.Println(jsonUnmarshalError)
+		return nil
+	}
+
+	if entity.ID == "" {
+		return nil
+	}
+	return entity
 }
 
 // Save create or update account
@@ -66,7 +96,7 @@ func (repository *Repository) Save(
 	if err != nil {
 		panic(err)
 	}
-	repository.redis.Set(accountID, accountEntity)
+	repository.setCache(accountID, accountEntity)
 }
 
 // FindByEmailAndProvider find all account
@@ -83,11 +113,11 @@ func (repository *Repository) FindByEmailAndProvider(
 		return accountEntity
 	}
 
-	if cache := repository.redis.Get(email); cache != nil {
+	if cache := repository.getCache(email); cache != nil {
 		return *cache
 	}
 	repository.database.Where(&condition).First(&accountEntity)
-	repository.redis.Set(email, &accountEntity)
+	repository.setCache(email, &accountEntity)
 
 	return accountEntity
 }
@@ -97,11 +127,11 @@ func (repository *Repository) FindByID(id string) entity.Account {
 	accountEntity := entity.Account{}
 	condition := entity.Account{Model: entity.Model{ID: id}}
 
-	if cache := repository.redis.Get(id); cache != nil {
+	if cache := repository.getCache(id); cache != nil {
 		return *cache
 	}
 	repository.database.Where(&condition).First(&accountEntity)
-	repository.redis.Set(id, &accountEntity)
+	repository.setCache(id, &accountEntity)
 	return accountEntity
 }
 

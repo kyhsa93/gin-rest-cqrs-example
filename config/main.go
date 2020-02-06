@@ -23,10 +23,10 @@ type Config struct {
 
 // InitializeConfig initialize config
 func InitializeConfig() *Config {
-	server := server.NewServer()
-	database := database.NewDatabase()
+	server := server.New()
+	database := database.New()
 	redis := redis.New()
-	swagger := swagger.NewSwagger()
+	swagger := swagger.New()
 	auth := auth.New()
 	email := email.New()
 	aws := aws.New()
