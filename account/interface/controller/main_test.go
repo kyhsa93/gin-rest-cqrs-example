@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/application"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-example/account/application/query"
 	"github.com/kyhsa93/gin-rest-example/account/interface/controller"
 	"github.com/kyhsa93/gin-rest-example/util"
 )
@@ -13,9 +14,10 @@ import (
 // TestNew test controller's New method
 func TestNew(t *testing.T) {
 	_, engine := gin.CreateTestContext(httptest.NewRecorder())
-	service := &application.Service{}
 	util := &util.Util{}
-	controllerInstance := controller.New(engine, service, util)
+	commandBus := &command.CommandBus{}
+	queryBus := &query.QueryBus{}
+	controllerInstance := controller.New(engine, commandBus, queryBus, util)
 	if controllerInstance == nil {
 		t.Error("Can not create controller instance")
 	}

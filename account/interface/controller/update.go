@@ -5,6 +5,7 @@ import (
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
 	"github.com/kyhsa93/gin-rest-example/account/domain/model"
 	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 )
@@ -115,16 +116,22 @@ func (controller *Controller) update(context *gin.Context) {
 
 	image, _ := context.FormFile("image")
 
-	controller.application.Update(
-		id,
-		data.Email,
-		data.Provider,
-		data.SocialID,
-		data.Password,
-		image,
-		data.Gender,
-		data.Intereste,
-	)
+	command := &command.UpdateCommand{
+		AccountID: id,
+		Email:     email,
+		Provider:  provider,
+		SocialID:  socialID,
+		Password:  password,
+		Gender:    gender,
+		Intereste: intereste,
+		Image:     image,
+	}
+
+	if err := controller.commandBus.Handle(command); err != nil {
+		httpError := controller.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
 
 	context.JSON(http.StatusOK, "Account updated")
 }

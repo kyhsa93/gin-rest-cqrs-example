@@ -5,6 +5,7 @@ import (
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-example/account/application/query"
 	"github.com/kyhsa93/gin-rest-example/account/domain/model"
 	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 )
@@ -42,7 +43,8 @@ func (controller *Controller) readAccountByID(context *gin.Context) {
 		return
 	}
 
-	account := controller.application.ReadAccountByID(id)
+	query := &query.ReadAccountByIDQuery{AccountID: id}
+	account, _ := controller.queryBus.Handle(query)
 
 	if account == nil {
 		httpError := controller.util.Error.HTTP.NotFound()
@@ -112,8 +114,14 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		return
 	}
 
-	account, err := controller.application.ReadAccount(email, provider, socialID, password, false)
-
+	query := &query.ReadAccountQuery{
+		Email:    email,
+		Provider: provider,
+		SocialID: socialID,
+		Password: password,
+		Unscoped: false,
+	}
+	account, err := controller.queryBus.Handle(query)
 	if account == nil || err != nil {
 		httpError := controller.util.Error.HTTP.NotFound()
 		context.JSON(httpError.Code(), httpError.Message())

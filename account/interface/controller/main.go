@@ -4,20 +4,27 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/application"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-example/account/application/query"
 	"github.com/kyhsa93/gin-rest-example/util"
 )
 
 // Controller account controller struct
 type Controller struct {
-	route       *gin.Engine
-	application application.Interface
-	util        *util.Util
+	route      *gin.Engine
+	commandBus *command.CommandBus
+	queryBus   *query.QueryBus
+	util       *util.Util
 }
 
 // New create account controller instance
-func New(route *gin.Engine, application application.Interface, util *util.Util) *Controller {
-	controller := &Controller{route: route, application: application, util: util}
+func New(
+	route *gin.Engine,
+	commandBus *command.CommandBus,
+	queryBus *query.QueryBus,
+	util *util.Util,
+) *Controller {
+	controller := &Controller{route: route, commandBus: commandBus, queryBus: queryBus, util: util}
 	controller.SetupRoutes()
 	return controller
 }

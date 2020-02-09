@@ -4,7 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kyhsa93/gin-rest-example/account/application"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-example/account/application/query"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure"
 	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
 	"github.com/kyhsa93/gin-rest-example/account/interface/controller"
@@ -46,6 +47,7 @@ func InitializeAccount(engine *gin.Engine, config *config.Config, util *util.Uti
 	databaseConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
 	infra := infrastructure.New(databaseConnection, redisClient, config)
-	application := application.New(infra, config)
-	controller.New(engine, application, util)
+	commandBus := command.New(infra)
+	queryBus := query.New(infra, config)
+	controller.New(engine, commandBus, queryBus, util)
 }

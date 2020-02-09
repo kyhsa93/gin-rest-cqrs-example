@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
 	"github.com/kyhsa93/gin-rest-example/account/domain/model"
 )
 
@@ -39,7 +40,15 @@ func (controller *Controller) delete(context *gin.Context) {
 		return
 	}
 
-	controller.application.Delete(id)
+	command := &command.DeleteCommand{
+		AccountID: id,
+	}
+
+	if err := controller.commandBus.Handle(command); err != nil {
+		httpError := controller.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
 
 	context.JSON(http.StatusOK, "Account deleted")
 }

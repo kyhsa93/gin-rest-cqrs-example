@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
+	"github.com/kyhsa93/gin-rest-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-example/account/application/query"
 	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
 
 	"github.com/gin-gonic/gin"
@@ -72,7 +74,10 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	duplicated, _ := controller.application.ReadAccount(data.Email, "", "", "", true)
+	query := &query.ReadAccountQuery{
+		Email: data.Email, Password: "", Provider: "", SocialID: "", Unscoped: true,
+	}
+	duplicated, _ := controller.queryBus.Handle(query)
 	if duplicated != nil {
 		httpError := controller.util.Error.HTTP.Conflict()
 		context.JSON(httpError.Code(), httpError.Message())
@@ -95,9 +100,21 @@ func (controller *Controller) create(context *gin.Context) {
 
 	image, _ := context.FormFile("image")
 
-	controller.application.Create(
-		data.Email, data.Provider, data.SocialID, data.Password, image, data.Gender, data.Intereste,
-	)
+	command := &command.CreateCommand{
+		Email:     email,
+		Provider:  provider,
+		SocialID:  socialID,
+		Password:  password,
+		Gender:    gender,
+		Intereste: intereste,
+		Image:     image,
+	}
+
+	if err := controller.commandBus.Handle(command); err != nil {
+		httpError := controller.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
 
 	context.JSON(http.StatusCreated, "Account created")
 }
