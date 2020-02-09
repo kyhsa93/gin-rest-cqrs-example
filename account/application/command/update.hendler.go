@@ -18,7 +18,7 @@ func (commandBus *CommandBus) handleUpdateCommand(command *UpdateCommand) {
 		hashedPassword,
 		imageKey,
 		command.Gender,
-		command.Intereste,
+		command.Interest,
 	)
 	commandBus.infrastructure.Email.Send([]string{command.Email}, "Account is created.")
 }

@@ -18,7 +18,7 @@ import (
 // @Param email formData string true "account email address"
 // @Param provider formData string true "login service provider"
 // @Param gender formData string true "user's gender male or female"
-// @Param intereste formData string true "interested part in develop, design, manage"
+// @Param interest formData string true "interested part in develop, design, manage"
 // @Param social_id formData string false "socialId when use social login"
 // @Param password formData string false "need if don't use social login"
 // @Param image formData file false "Profile image file"
@@ -55,48 +55,47 @@ func (controller *Controller) update(context *gin.Context) {
 	socialID := context.PostForm("social_id")
 	password := context.PostForm("password")
 	gender := context.PostForm("gender")
-	intereste := context.PostForm("intereste")
+	interest := context.PostForm("interest")
 
-	if email == "" || provider == "" || gender == "" || intereste == "" || (socialID == "" && password == "") {
+	if email == "" || provider == "" || gender == "" || interest == "" || (socialID == "" && password == "") {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Empty data is included.")
 		return
 	}
 
 	data := dto.Account{
-		Email:     email,
-		Provider:  provider,
-		SocialID:  socialID,
-		Password:  password,
-		Gender:    gender,
-		Intereste: intereste,
+		Email:    email,
+		Provider: provider,
+		SocialID: socialID,
+		Password: password,
+		Gender:   gender,
+		Interest: interest,
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Email and Provider is not matched.")
 		return
 	}
 
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Email format is not valid.")
 		return
 	}
 
 	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
 	if emaiHostlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Email host is not existed.")
 		return
 	}
 
 	_, existedProvider := dto.Provider()[data.Provider]
-
 	if existedProvider == false {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
 		return
 	}
 
@@ -108,9 +107,9 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	if validate := dto.ValidateInteresteAttribute(&data); validate == false {
+	if validate := dto.ValidateInterestAttribute(&data); validate == false {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Interest is must be one of 'develop', 'design' and 'manage'.")
 		return
 	}
 
@@ -123,7 +122,7 @@ func (controller *Controller) update(context *gin.Context) {
 		SocialID:  socialID,
 		Password:  password,
 		Gender:    gender,
-		Intereste: intereste,
+		Interest:  interest,
 		Image:     image,
 	}
 

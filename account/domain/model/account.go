@@ -13,7 +13,7 @@ type Account struct {
 	Provider  string    `json:"provider" exmaple:"gmail"`
 	ImageURL  string    `json:"image_url" example:"profile.image_url.com"`
 	Gender    string    `json:"gender" example:"male"`
-	Intereste string    `json:"intereste" example:"develop"`
+	Interest  string    `json:"interest" example:"develop"`
 	CreatedAt time.Time `json:"created_at" example:"2019-12-23 12:27:37"`
 	UpdatedAt time.Time `json:"updated_at" example:"2019-12-23 12:27:37"`
 }
