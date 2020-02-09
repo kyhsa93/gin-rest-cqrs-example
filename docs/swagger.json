@@ -89,7 +89,7 @@
                     {
                         "type": "string",
                         "description": "interested part in develop, design, manage",
-                        "name": "intereste",
+                        "name": "interest",
                         "in": "formData",
                         "required": true
                     },
@@ -202,7 +202,7 @@
                     {
                         "type": "string",
                         "description": "interested part in develop, design, manage",
-                        "name": "intereste",
+                        "name": "interest",
                         "in": "formData",
                         "required": true
                     },
@@ -281,7 +281,7 @@
                     "type": "string",
                     "example": "profile.image_url.com"
                 },
-                "intereste": {
+                "interest": {
                     "type": "string",
                     "example": "develop"
                 },

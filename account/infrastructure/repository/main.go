@@ -21,7 +21,7 @@ type Interface interface {
 		password string,
 		imageKey string,
 		gender string,
-		Intereste string,
+		Interest string,
 	)
 	FindByEmailAndProvider(email string, provider string, unscoped bool) entity.Account
 	FindByID(id string) entity.Account
@@ -78,17 +78,17 @@ func (repository *Repository) Save(
 	password string,
 	imageKey string,
 	gender string,
-	intereste string,
+	interest string,
 ) {
 	accountEntity := &entity.Account{
-		Model:     entity.Model{ID: accountID},
-		Email:     email,
-		Provider:  provider,
-		Password:  password,
-		SocialID:  socialID,
-		ImageKey:  imageKey,
-		Gender:    gender,
-		Intereste: intereste,
+		Model:    entity.Model{ID: accountID},
+		Email:    email,
+		Provider: provider,
+		Password: password,
+		SocialID: socialID,
+		ImageKey: imageKey,
+		Gender:   gender,
+		Interest: interest,
 	}
 
 	err := repository.database.Save(accountEntity).Error

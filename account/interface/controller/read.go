@@ -91,17 +91,16 @@ func (controller *Controller) readAccount(context *gin.Context) {
 	emaiHostlValidationError := checkmail.ValidateHost(email)
 	if emaiHostlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Email host is not existed.")
 		return
 	}
 
 	data := &dto.Account{Email: email, Provider: provider, SocialID: socialID, Password: password}
 
 	_, existedProvider := dto.Provider()[data.Provider]
-
 	if existedProvider == false {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
+		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
 		return
 	}
 

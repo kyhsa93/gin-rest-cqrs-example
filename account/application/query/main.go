@@ -40,7 +40,7 @@ func (queryBus *QueryBus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.Provider = entity.Provider
 	accountModel.Gender = entity.Gender
 	accountModel.ImageURL = queryBus.config.AWS.S3.Endpoint + "/" + queryBus.config.AWS.S3.Bucket + "/" + entity.ImageKey
-	accountModel.Intereste = entity.Intereste
+	accountModel.Interest = entity.Interest
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 	return &accountModel

@@ -11,5 +11,5 @@ type UpdateCommand struct {
 	Password  string
 	Image     *multipart.FileHeader
 	Gender    string
-	Intereste string
+	Interest  string
 }
