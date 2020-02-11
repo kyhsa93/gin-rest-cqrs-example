@@ -3,7 +3,7 @@ package query
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
 )
 
 func (queryBus *QueryBus) handleReadAccountByIDQuery(query *ReadAccountByIDQuery) (*model.Account, error) {

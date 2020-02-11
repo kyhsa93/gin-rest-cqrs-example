@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
 
 	"github.com/jinzhu/gorm"
 )

@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/google/uuid"
-	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
 // S3 struct

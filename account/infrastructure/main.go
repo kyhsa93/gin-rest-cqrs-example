@@ -3,10 +3,10 @@ package infrastructure
 import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/aws"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/email"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/repository"
-	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/aws"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/email"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/repository"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
 // Infrastructure infra struct

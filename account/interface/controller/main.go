@@ -4,9 +4,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-example/util"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
+	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
 // Controller account controller struct

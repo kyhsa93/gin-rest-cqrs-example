@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
 )
 
 // @Description delete account by id
