@@ -3,7 +3,7 @@ package http_test
 import (
 	"testing"
 
-	"github.com/kyhsa93/gin-rest-example/util/error/http"
+	"github.com/kyhsa93/gin-rest-cqrs-example/util/error/http"
 )
 
 // TestCode test test http error method named Code

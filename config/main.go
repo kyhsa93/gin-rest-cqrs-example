@@ -1,13 +1,13 @@
 package config
 
 import (
-	"github.com/kyhsa93/gin-rest-example/config/auth"
-	"github.com/kyhsa93/gin-rest-example/config/aws"
-	"github.com/kyhsa93/gin-rest-example/config/database"
-	"github.com/kyhsa93/gin-rest-example/config/email"
-	"github.com/kyhsa93/gin-rest-example/config/redis"
-	"github.com/kyhsa93/gin-rest-example/config/server"
-	"github.com/kyhsa93/gin-rest-example/config/swagger"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/auth"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/aws"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/database"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/email"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/redis"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/server"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config/swagger"
 )
 
 // Config config stcut

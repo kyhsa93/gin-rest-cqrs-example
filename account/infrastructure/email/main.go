@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/smtp"
 
-	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
 // Email email struct

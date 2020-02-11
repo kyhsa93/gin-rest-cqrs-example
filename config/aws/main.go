@@ -2,7 +2,7 @@ package aws
 
 import (
 	"github.com/caarlos0/env"
-	s3Config "github.com/kyhsa93/gin-rest-example/config/aws/s3"
+	s3Config "github.com/kyhsa93/gin-rest-cqrs-example/config/aws/s3"
 )
 
 // EnvironmentValue aws environment values

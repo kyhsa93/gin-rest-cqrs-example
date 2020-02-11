@@ -5,8 +5,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/aws/s3"
-	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/aws/s3"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
 // AWS aws struct

@@ -3,10 +3,10 @@ package query
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-example/account/domain/model"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
-	"github.com/kyhsa93/gin-rest-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"golang.org/x/crypto/bcrypt"
 )
 

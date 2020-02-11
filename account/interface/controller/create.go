@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
-	"github.com/kyhsa93/gin-rest-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-example/account/interface/dto"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/interface/dto"
 
 	"github.com/gin-gonic/gin"
 )

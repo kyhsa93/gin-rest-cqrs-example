@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/caarlos0/env"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
 )
 
 // Interface interface for redis client

@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
 	"golang.org/x/crypto/bcrypt"
 )
 

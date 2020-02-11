@@ -4,13 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kyhsa93/gin-rest-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure"
-	"github.com/kyhsa93/gin-rest-example/account/infrastructure/entity"
-	"github.com/kyhsa93/gin-rest-example/account/interface/controller"
-	"github.com/kyhsa93/gin-rest-example/config"
-	"github.com/kyhsa93/gin-rest-example/util"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/interface/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
 func getDatabaseConnection(config *config.Config) *gorm.DB {
