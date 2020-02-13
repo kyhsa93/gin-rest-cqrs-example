@@ -1,5 +1,5 @@
 package command
 
 func (commandBus *CommandBus) handleDeleteCommand(command *DeleteCommand) {
-	commandBus.infrastructure.Repository.Delete(command.AccountID)
+	commandBus.repository.Delete(command.AccountID)
 }

@@ -4,11 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/interface/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/aws"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/email"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
@@ -46,8 +48,10 @@ func getRedisClient(config *config.Config) *redis.Client {
 func InitializeAccount(engine *gin.Engine, config *config.Config, util *util.Util) {
 	databaseConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
-	infra := infrastructure.New(databaseConnection, redisClient, config)
-	commandBus := command.New(infra)
-	queryBus := query.New(infra, config)
+	repository := repository.New(redisClient, databaseConnection)
+	email := email.New(config)
+	aws := aws.New(config)
+	commandBus := command.New(repository, email, aws)
+	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util)
 }

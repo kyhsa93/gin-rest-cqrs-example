@@ -3,11 +3,11 @@ package query
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 )
 
 func (queryBus *QueryBus) handleReadAccountByIDQuery(query *ReadAccountByIDQuery) (*model.Account, error) {
-	entity := queryBus.infrastructure.Repository.FindByID(query.AccountID)
+	entity := queryBus.repository.FindByID(query.AccountID)
 
 	if entity.ID == "" {
 		return nil, errors.New("Account is not found")
@@ -17,7 +17,7 @@ func (queryBus *QueryBus) handleReadAccountByIDQuery(query *ReadAccountByIDQuery
 }
 
 func (queryBus *QueryBus) handleReadAccountQuery(query *ReadAccountQuery) (*model.Account, error) {
-	entity := queryBus.infrastructure.Repository.FindByEmailAndProvider(
+	entity := queryBus.repository.FindByEmailAndProvider(
 		query.Email, query.Provider, query.Unscoped,
 	)
 
