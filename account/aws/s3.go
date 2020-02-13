@@ -1,4 +1,4 @@
-package s3
+package aws
 
 import (
 	"bytes"
@@ -13,8 +13,8 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
-// Interface aws s3 service interface
-type Interface interface {
+// S3Interface aws s3 service interface
+type S3Interface interface {
 	Upload(fileHeader *multipart.FileHeader) string
 }
 
@@ -28,8 +28,8 @@ type S3 struct {
 	storageClass         string
 }
 
-// New create S3 instance
-func New(config *config.Config, awsSession *session.Session) *S3 {
+// NewS3 create S3 instance
+func NewS3(config *config.Config, awsSession *session.Session) *S3 {
 	return &S3{
 		session:              awsSession,
 		bucket:               config.AWS.S3.Bucket,
