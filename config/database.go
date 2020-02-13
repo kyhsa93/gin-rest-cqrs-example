@@ -1,4 +1,4 @@
-package database
+package config
 
 import (
 	"github.com/caarlos0/env"
@@ -15,8 +15,8 @@ type Database struct {
 	Logging  bool   `env:"DATABASE_LOGGING" envDefault:"true"`
 }
 
-// New create database instance
-func New() *Database {
+// NewDatabase create database instance
+func NewDatabase() *Database {
 	database := &Database{}
 	env.Parse(database)
 	return database

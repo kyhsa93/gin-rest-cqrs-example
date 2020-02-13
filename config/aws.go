@@ -1,6 +1,31 @@
-package s3
+package config
 
-import "github.com/caarlos0/env"
+import (
+	"github.com/caarlos0/env"
+)
+
+// EnvironmentValue aws environment values
+type EnvironmentValue struct {
+	SecretID  string `env:"AWS_SECRET_ID" envDefault:"aws_secret_id"`
+	SecretKey string `env:"AWS_SECRET_KEY" envDefault:"aws_secret_key"`
+	Token     string `env:"AWS_TOKEN" envDefault:"aws_token"`
+}
+
+// AWS default aws config
+type AWS struct {
+	EnvironmentValue *EnvironmentValue
+	S3               *S3
+}
+
+// NewAWS create aws config instance
+func NewAWS() *AWS {
+	awsENV := &EnvironmentValue{}
+	config := &AWS{}
+	env.Parse(awsENV)
+	config.EnvironmentValue = awsENV
+	config.S3 = NewS3()
+	return config
+}
 
 // S3 default aws s3 config
 type S3 struct {
@@ -14,8 +39,8 @@ type S3 struct {
 	S3ForcePathStyle     bool   `env:"AWS_S3_FORCE_PATH_STYLE" envDefault:"true"`
 }
 
-// New create s3 config instance
-func New() *S3 {
+// NewS3 create s3 config instance
+func NewS3() *S3 {
 	config := &S3{}
 	env.Parse(config)
 	return config

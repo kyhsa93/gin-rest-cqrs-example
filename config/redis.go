@@ -1,15 +1,8 @@
-package redis
+package config
 
 import (
 	"github.com/caarlos0/env"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
 )
-
-// Interface interface for redis client
-type Interface interface {
-	Set(key string, accountEntity *entity.Account)
-	Get(key string) *entity.Account
-}
 
 // Redis redis struct
 type Redis struct {
@@ -18,8 +11,8 @@ type Redis struct {
 	Password string `env:"REDIS_PASSWORD" envDefault:""`
 }
 
-// New create redis instance
-func New() *Redis {
+// NewRedis create redis instance
+func NewRedis() *Redis {
 	redis := &Redis{}
 	env.Parse(redis)
 	return redis

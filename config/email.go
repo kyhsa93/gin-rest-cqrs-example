@@ -1,4 +1,4 @@
-package email
+package config
 
 import (
 	"github.com/caarlos0/env"
@@ -12,8 +12,8 @@ type Email struct {
 	SMTPPort string `env:"SMTP_PORT" envDefault:"587"`
 }
 
-// New create email config instance
-func New() *Email {
+// NewEmail create email config instance
+func NewEmail() *Email {
 	email := &Email{}
 	env.Parse(email)
 	return email
