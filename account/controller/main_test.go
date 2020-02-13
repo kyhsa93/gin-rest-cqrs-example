@@ -15,8 +15,8 @@ import (
 func TestNew(t *testing.T) {
 	_, engine := gin.CreateTestContext(httptest.NewRecorder())
 	util := &util.Util{}
-	commandBus := &command.CommandBus{}
-	queryBus := &query.QueryBus{}
+	commandBus := &command.Bus{}
+	queryBus := &query.Bus{}
 	controllerInstance := controller.New(engine, commandBus, queryBus, util)
 	if controllerInstance == nil {
 		t.Error("Can not create controller instance")

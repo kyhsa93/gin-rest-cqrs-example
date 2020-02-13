@@ -10,36 +10,36 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// QueryBus account query bus
-type QueryBus struct {
+// Bus account query bus
+type Bus struct {
 	config     *config.Config
 	repository repository.Interface
 }
 
-// New create queryBus instance
-func New(config *config.Config, repository repository.Interface) *QueryBus {
-	return &QueryBus{config: config, repository: repository}
+// New create Bus instance
+func New(config *config.Config, repository repository.Interface) *Bus {
+	return &Bus{config: config, repository: repository}
 }
 
 // Handle handle query
-func (queryBus *QueryBus) Handle(query interface{}) (*model.Account, error) {
+func (bus *Bus) Handle(query interface{}) (*model.Account, error) {
 	switch query := query.(type) {
 	case *ReadAccountByIDQuery:
-		return queryBus.handleReadAccountByIDQuery(query)
+		return bus.handleReadAccountByIDQuery(query)
 	case *ReadAccountQuery:
-		return queryBus.handleReadAccountQuery(query)
+		return bus.handleReadAccountQuery(query)
 	default:
 		return nil, errors.New("Query can not handled")
 	}
 }
 
-func (queryBus *QueryBus) entityToModel(entity entity.Account) *model.Account {
+func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	var accountModel model.Account
 	accountModel.ID = entity.ID
 	accountModel.Email = entity.Email
 	accountModel.Provider = entity.Provider
 	accountModel.Gender = entity.Gender
-	accountModel.ImageURL = queryBus.config.AWS.S3.Endpoint + "/" + queryBus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+	accountModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
 	accountModel.Interest = entity.Interest
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt

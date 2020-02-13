@@ -9,33 +9,33 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// CommandBus account command
-type CommandBus struct {
+// Bus account command
+type Bus struct {
 	repository repository.Interface
 	email      email.Interface
 	aws        aws.Interface
 }
 
-// New create commandBus instance
+// New create Bus instance
 func New(
 	repository repository.Interface,
 	email email.Interface,
 	aws aws.Interface,
-) *CommandBus {
-	return &CommandBus{repository: repository, email: email, aws: aws}
+) *Bus {
+	return &Bus{repository: repository, email: email, aws: aws}
 }
 
 // Handle handle command
-func (commandBus *CommandBus) Handle(command interface{}) error {
+func (bus *Bus) Handle(command interface{}) error {
 	switch command := command.(type) {
 	case *CreateCommand:
-		commandBus.handleCreateCommand(command)
+		bus.handleCreateCommand(command)
 		return nil
 	case *UpdateCommand:
-		commandBus.handleUpdateCommand(command)
+		bus.handleUpdateCommand(command)
 		return nil
 	case *DeleteCommand:
-		commandBus.handleDeleteCommand(command)
+		bus.handleDeleteCommand(command)
 		return nil
 	default:
 		return errors.New("Command is not handled")

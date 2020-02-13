@@ -12,16 +12,16 @@ import (
 // Controller account controller struct
 type Controller struct {
 	route      *gin.Engine
-	commandBus *command.CommandBus
-	queryBus   *query.QueryBus
+	commandBus *command.Bus
+	queryBus   *query.Bus
 	util       *util.Util
 }
 
 // New create account controller instance
 func New(
 	route *gin.Engine,
-	commandBus *command.CommandBus,
-	queryBus *query.QueryBus,
+	commandBus *command.Bus,
+	queryBus *query.Bus,
 	util *util.Util,
 ) *Controller {
 	controller := &Controller{route: route, commandBus: commandBus, queryBus: queryBus, util: util}
