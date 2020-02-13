@@ -1,4 +1,4 @@
-package auth
+package config
 
 import "github.com/caarlos0/env"
 
@@ -10,8 +10,8 @@ type Auth struct {
 	Refreshexpiration int    `env:"REFRESH_EXPIRATION" envDefault:"60"`
 }
 
-// New create Auth cconfig instance
-func New() (authConfig *Auth) {
+// NewAuth create Auth cconfig instance
+func NewAuth() (authConfig *Auth) {
 	env.Parse(authConfig)
 	return
 }

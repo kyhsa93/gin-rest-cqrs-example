@@ -1,4 +1,4 @@
-package server
+package config
 
 import "github.com/caarlos0/env"
 
@@ -8,8 +8,8 @@ type Server struct {
 	Mode string `env:"MODE" envDefault:"debug"`
 }
 
-// New create server config struct instance
-func New() *Server {
+// NewServer create server config struct instance
+func NewServer() *Server {
 	server := &Server{}
 	env.Parse(server)
 	if server.Mode != "release" && server.Mode != "debug" {
