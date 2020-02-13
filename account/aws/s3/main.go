@@ -13,6 +13,11 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
+// Interface aws s3 service interface
+type Interface interface {
+	Upload(fileHeader *multipart.FileHeader) string
+}
+
 // S3 struct
 type S3 struct {
 	session              *session.Session

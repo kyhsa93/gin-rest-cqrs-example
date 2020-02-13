@@ -5,16 +5,21 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/aws/s3"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/aws/s3"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
+
+// Interface aws service interface
+type Interface interface {
+	S3() s3.Interface
+}
 
 // AWS aws struct
 type AWS struct {
 	secretID   string
 	secretKey  string
 	token      string
-	S3         *s3.S3
+	s3         *s3.S3
 	s3Endpoint string
 	s3Region   string
 }
@@ -28,8 +33,13 @@ func New(config *config.Config) *AWS {
 		secretKey:  config.AWS.EnvironmentValue.SecretKey,
 		token:      config.AWS.EnvironmentValue.Token,
 	}
-	awsInfra.S3 = s3.New(config, awsInfra.getAWSSession())
+	awsInfra.s3 = s3.New(config, awsInfra.getAWSSession())
 	return awsInfra
+}
+
+// S3 get aws s3 interface
+func (awsInfra *AWS) S3() s3.Interface {
+	return awsInfra.s3
 }
 
 func (awsInfra *AWS) awsEndpointResolver(

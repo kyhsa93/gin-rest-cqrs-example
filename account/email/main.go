@@ -7,6 +7,11 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 )
 
+// Interface email interface
+type Interface interface {
+	Send(receivers []string, message string)
+}
+
 // Email email struct
 type Email struct {
 	Address  string

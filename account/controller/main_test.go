@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/command"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/interface/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 

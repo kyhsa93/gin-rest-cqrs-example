@@ -3,18 +3,26 @@ package command
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/aws"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/email"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // CommandBus account command
 type CommandBus struct {
-	infrastructure *infrastructure.Infrastructure
+	repository repository.Interface
+	email      email.Interface
+	aws        aws.Interface
 }
 
 // New create commandBus instance
-func New(infrastructure *infrastructure.Infrastructure) *CommandBus {
-	return &CommandBus{infrastructure: infrastructure}
+func New(
+	repository repository.Interface,
+	email email.Interface,
+	aws aws.Interface,
+) *CommandBus {
+	return &CommandBus{repository: repository, email: email, aws: aws}
 }
 
 // Handle handle command

@@ -10,10 +10,10 @@ func (commandBus *CommandBus) handleCreateCommand(command *CreateCommand) {
 
 	imageKey := ""
 	if command.Image != nil {
-		imageKey = commandBus.infrastructure.AWS.S3.Upload(command.Image)
+		imageKey = commandBus.aws.S3().Upload(command.Image)
 	}
 
-	commandBus.infrastructure.Repository.Save(
+	commandBus.repository.Save(
 		uuid.String(),
 		command.Email,
 		command.Provider,
@@ -24,5 +24,5 @@ func (commandBus *CommandBus) handleCreateCommand(command *CreateCommand) {
 		command.Interest,
 	)
 
-	commandBus.infrastructure.Email.Send([]string{command.Email}, "Account is created.")
+	commandBus.email.Send([]string{command.Email}, "Account is created.")
 }

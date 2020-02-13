@@ -3,22 +3,22 @@ package query
 import (
 	"errors"
 
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/infrastructure/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // QueryBus account query bus
 type QueryBus struct {
-	infrastructure *infrastructure.Infrastructure
-	config         *config.Config
+	config     *config.Config
+	repository repository.Interface
 }
 
 // New create queryBus instance
-func New(infrastructure *infrastructure.Infrastructure, config *config.Config) *QueryBus {
-	return &QueryBus{infrastructure: infrastructure, config: config}
+func New(config *config.Config, repository repository.Interface) *QueryBus {
+	return &QueryBus{config: config, repository: repository}
 }
 
 // Handle handle query

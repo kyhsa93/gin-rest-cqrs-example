@@ -5,9 +5,9 @@ import (
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/application/query"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain/model"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/interface/dto"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/dto"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
 )
 
 // @Tags Accounts
