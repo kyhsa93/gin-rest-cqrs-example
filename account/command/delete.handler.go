@@ -1,5 +1,5 @@
 package command
 
-func (commandBus *CommandBus) handleDeleteCommand(command *DeleteCommand) {
-	commandBus.repository.Delete(command.AccountID)
+func (bus *Bus) handleDeleteCommand(command *DeleteCommand) {
+	bus.repository.Delete(command.AccountID)
 }

@@ -4,16 +4,16 @@ import (
 	"github.com/google/uuid"
 )
 
-func (commandBus *CommandBus) handleCreateCommand(command *CreateCommand) {
+func (bus *Bus) handleCreateCommand(command *CreateCommand) {
 	uuid, _ := uuid.NewRandom()
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
 
 	imageKey := ""
 	if command.Image != nil {
-		imageKey = commandBus.aws.S3().Upload(command.Image)
+		imageKey = bus.aws.S3().Upload(command.Image)
 	}
 
-	commandBus.repository.Save(
+	bus.repository.Save(
 		uuid.String(),
 		command.Email,
 		command.Provider,
@@ -24,5 +24,5 @@ func (commandBus *CommandBus) handleCreateCommand(command *CreateCommand) {
 		command.Interest,
 	)
 
-	commandBus.email.Send([]string{command.Email}, "Account is created.")
+	bus.email.Send([]string{command.Email}, "Account is created.")
 }
