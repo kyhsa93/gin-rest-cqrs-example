@@ -198,6 +198,32 @@ paths:
       - AccessToken: []
       tags:
       - Accounts
+  /files:
+    post:
+      consumes:
+      - multipart/form-data
+      description: create file
+      parameters:
+      - description: accountId
+        in: formData
+        name: accountID
+        required: true
+        type: string
+      - description: file usage
+        in: formData
+        name: usage
+        required: true
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      tags:
+      - Files
 securityDefinitions:
   AccessToken:
     in: header

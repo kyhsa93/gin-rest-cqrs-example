@@ -255,6 +255,45 @@
                     "200": {}
                 }
             }
+        },
+        "/files": {
+            "post": {
+                "description": "create file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Files"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "accountId",
+                        "name": "accountID",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "file usage",
+                        "name": "usage",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile image file",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "201": {}
+                }
+            }
         }
     },
     "definitions": {
