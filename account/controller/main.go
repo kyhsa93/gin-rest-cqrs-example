@@ -52,6 +52,39 @@ func (controller *Controller) SetupRoutes() {
 	})
 }
 
+// AuthenticateHTTPRequest check http request auth
+func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
+	accessToken := context.GetHeader("Authorization")
+	if accessToken == "" {
+		httpError := controller.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	id := context.Param("id")
+	if id == "" {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	query := &query.ReadAccountByIDQuery{AccountID: id}
+	account, queryError := controller.queryBus.Handle(query)
+	if queryError != nil {
+		httpError := controller.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
+	account.AccessToken = accessToken
+	if !account.ValidateAccessToken() {
+		httpError := controller.util.Error.HTTP.Forbidden()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+	return
+}
+
 func emailAndProviderValidation(email string, provider string) bool {
 	if provider == "email" {
 		return true
