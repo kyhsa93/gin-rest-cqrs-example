@@ -104,7 +104,10 @@ paths:
       produces:
       - application/json
       responses:
-        "201": {}
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Account'
       tags:
       - Accounts
   /accounts/{id}:
@@ -117,7 +120,10 @@ paths:
         required: true
         type: string
       responses:
-        "200": {}
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
       security:
       - AccessToken: []
       - RefreshToken: []
@@ -189,7 +195,10 @@ paths:
       produces:
       - application/json
       responses:
-        "200": {}
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
       security:
       - AccessToken: []
       tags:

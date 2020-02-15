@@ -22,7 +22,7 @@ import (
 // @Param social_id formData string false "socialId when use social login"
 // @Param password formData string false "need if don't use social login"
 // @Param image formData file false "Profile image file"
-// @Success 201
+// @Success 201 {object} model.Account
 // @Router /accounts [post]
 func (controller *Controller) create(context *gin.Context) {
 	email := context.PostForm("email")
@@ -110,11 +110,12 @@ func (controller *Controller) create(context *gin.Context) {
 		Image:    image,
 	}
 
-	if err := controller.commandBus.Handle(command); err != nil {
+	createdAccount, hadlingError := controller.commandBus.Handle(command)
+	if hadlingError != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	context.JSON(http.StatusCreated, "Account created")
+	context.JSON(http.StatusCreated, createdAccount)
 }

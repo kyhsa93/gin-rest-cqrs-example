@@ -22,9 +22,9 @@ type Interface interface {
 		imageKey string,
 		gender string,
 		Interest string,
-	)
+	) *entity.Account
 	FindByEmailAndProvider(email string, provider string, unscoped bool) entity.Account
-	FindByID(id string) entity.Account
+	FindByID(id string, unscoped bool) entity.Account
 	Delete(id string)
 }
 
@@ -79,7 +79,7 @@ func (repository *Repository) Save(
 	imageKey string,
 	gender string,
 	interest string,
-) {
+) *entity.Account {
 	accountEntity := &entity.Account{
 		Model:    entity.Model{ID: accountID},
 		Email:    email,
@@ -97,6 +97,7 @@ func (repository *Repository) Save(
 		panic(err)
 	}
 	repository.setCache(accountID, accountEntity)
+	return accountEntity
 }
 
 // FindByEmailAndProvider find all account
@@ -123,9 +124,14 @@ func (repository *Repository) FindByEmailAndProvider(
 }
 
 // FindByID find account by accountId
-func (repository *Repository) FindByID(id string) entity.Account {
+func (repository *Repository) FindByID(id string, unscoped bool) entity.Account {
 	accountEntity := entity.Account{}
 	condition := entity.Account{Model: entity.Model{ID: id}}
+
+	if unscoped == true {
+		repository.database.Unscoped().Where(&condition).First(&accountEntity)
+		return accountEntity
+	}
 
 	if cache := repository.getCache(id); cache != nil {
 		return *cache
