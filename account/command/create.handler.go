@@ -2,9 +2,10 @@ package command
 
 import (
 	"github.com/google/uuid"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 )
 
-func (bus *Bus) handleCreateCommand(command *CreateCommand) {
+func (bus *Bus) handleCreateCommand(command *CreateCommand) *model.Account {
 	uuid, _ := uuid.NewRandom()
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
 
@@ -13,7 +14,7 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) {
 		imageKey = bus.aws.S3().Upload(command.Image)
 	}
 
-	bus.repository.Save(
+	createdAccountEntity := bus.repository.Save(
 		uuid.String(),
 		command.Email,
 		command.Provider,
@@ -25,4 +26,5 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) {
 	)
 
 	bus.email.Send([]string{command.Email}, "Account is created.")
+	return bus.entityToModel(*createdAccountEntity)
 }

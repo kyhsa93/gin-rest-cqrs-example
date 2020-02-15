@@ -10,7 +10,7 @@ import (
 // @Description delete account by id
 // @Tags Accounts
 // @Param id path string true "account Id"
-// @Success 200
+// @Success 200 {object} model.Account
 // @Router /accounts/{id} [delete]
 // @Security AccessToken
 // @Security RefreshToken
@@ -23,11 +23,13 @@ func (controller *Controller) delete(context *gin.Context) {
 		AccountID: id,
 	}
 
-	if err := controller.commandBus.Handle(command); err != nil {
+	deletedAccount, handlingError := controller.commandBus.Handle(command)
+
+	if handlingError != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	context.JSON(http.StatusOK, "Account deleted")
+	context.JSON(http.StatusOK, deletedAccount)
 }

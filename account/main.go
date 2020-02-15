@@ -51,7 +51,7 @@ func InitializeAccount(engine *gin.Engine, config *config.Config, util *util.Uti
 	repository := repository.New(redisClient, databaseConnection)
 	email := email.New(config)
 	aws := aws.New(config)
-	commandBus := command.New(repository, email, aws)
+	commandBus := command.New(repository, email, aws, config)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util)
 }

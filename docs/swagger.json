@@ -113,7 +113,12 @@
                     }
                 ],
                 "responses": {
-                    "201": {}
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    }
                 }
             }
         },
@@ -226,7 +231,12 @@
                     }
                 ],
                 "responses": {
-                    "200": {}
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    }
                 }
             },
             "delete": {
@@ -252,7 +262,12 @@
                     }
                 ],
                 "responses": {
-                    "200": {}
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    }
                 }
             }
         },

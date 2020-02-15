@@ -7,7 +7,7 @@ import (
 )
 
 func (bus *Bus) handleReadAccountByIDQuery(query *ReadAccountByIDQuery) (*model.Account, error) {
-	entity := bus.repository.FindByID(query.AccountID)
+	entity := bus.repository.FindByID(query.AccountID, false)
 
 	if entity.ID == "" {
 		return nil, errors.New("Account is not found")

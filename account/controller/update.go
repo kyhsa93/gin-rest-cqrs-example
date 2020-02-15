@@ -21,7 +21,7 @@ import (
 // @Param social_id formData string false "socialId when use social login"
 // @Param password formData string false "need if don't use social login"
 // @Param image formData file false "Profile image file"
-// @Success 200
+// @Success 200 {object} model.Account
 // @Router /accounts/{id} [put]
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
@@ -104,11 +104,13 @@ func (controller *Controller) update(context *gin.Context) {
 		Image:     image,
 	}
 
-	if err := controller.commandBus.Handle(command); err != nil {
+	updatedAccount, handlingError := controller.commandBus.Handle(command)
+
+	if handlingError != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	context.JSON(http.StatusOK, "Account updated")
+	context.JSON(http.StatusOK, updatedAccount)
 }

@@ -39,10 +39,14 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.Email = entity.Email
 	accountModel.Provider = entity.Provider
 	accountModel.Gender = entity.Gender
-	accountModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
 	accountModel.Interest = entity.Interest
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
+
+	if entity.ImageKey != "" {
+		accountModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+	}
+
 	return &accountModel
 }
 
