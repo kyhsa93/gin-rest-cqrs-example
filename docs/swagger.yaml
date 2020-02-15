@@ -1,6 +1,9 @@
 definitions:
   model.Account:
     properties:
+      accessToken:
+        example: accesstoken
+        type: string
       created_at:
         example: "2019-12-23 12:27:37"
         type: string
@@ -23,13 +26,6 @@ definitions:
         type: string
       updated_at:
         example: "2019-12-23 12:27:37"
-        type: string
-    type: object
-  model.Token:
-    properties:
-      access:
-        type: string
-      id:
         type: string
     type: object
 info:
@@ -65,7 +61,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Token'
+            $ref: '#/definitions/model.Account'
       tags:
       - Accounts
     post:

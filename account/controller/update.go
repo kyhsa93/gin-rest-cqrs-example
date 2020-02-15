@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/dto"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 )
 
 // @Description update account
@@ -26,30 +25,9 @@ import (
 // @Router /accounts/{id} [put]
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
-	accessHeader := context.GetHeader("Authorization")
-
-	if accessHeader == "" {
-		httpError := controller.util.Error.HTTP.Unauthorized()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
+	controller.AuthenticateHTTPRequest(context)
 
 	id := context.Param("id")
-
-	if id == "" {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	token := &model.Token{ID: id, Access: accessHeader}
-
-	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := controller.util.Error.HTTP.Forbidden()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
 	email := context.PostForm("email")
 	provider := context.PostForm("provider")
 	socialID := context.PostForm("social_id")

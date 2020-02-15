@@ -6,7 +6,6 @@ import (
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/dto"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
 )
 
@@ -19,30 +18,9 @@ import (
 // @Security AccessToken
 // @Security RefreshToken
 func (controller *Controller) readAccountByID(context *gin.Context) {
-	accessHeader := context.GetHeader("Authorization")
-
-	if accessHeader == "" {
-		httpError := controller.util.Error.HTTP.Unauthorized()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
+	controller.AuthenticateHTTPRequest(context)
 
 	id := context.Param("id")
-
-	if id == "" {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	token := &model.Token{ID: id, Access: accessHeader}
-
-	if auth := token.Validate(); auth == "" || auth != id {
-		httpError := controller.util.Error.HTTP.Forbidden()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
 	query := &query.ReadAccountByIDQuery{AccountID: id}
 	account, _ := controller.queryBus.Handle(query)
 
@@ -58,7 +36,7 @@ func (controller *Controller) readAccountByID(context *gin.Context) {
 // @Tags Accounts
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.Token
+// @Success 200 {object} model.Account
 // @Router /accounts [get]
 // @Param email query string true "account email"
 // @Param provider query string true "account service provider"
@@ -134,6 +112,6 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
-
-	context.JSON(http.StatusOK, &model.Token{ID: account.ID, Access: accessToken})
+	account.AccessToken = accessToken
+	context.JSON(http.StatusOK, account)
 }
