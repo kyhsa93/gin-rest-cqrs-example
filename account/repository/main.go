@@ -27,7 +27,7 @@ type Interface interface {
 		gender string,
 		Interest string,
 		transaction *gorm.DB,
-	) (*entity.Account, error)
+	) (entity.Account, error)
 	Update(
 		accountID string,
 		email string,
@@ -38,7 +38,7 @@ type Interface interface {
 		gender string,
 		Interest string,
 		transaction *gorm.DB,
-	) (*entity.Account, error)
+	) (entity.Account, error)
 	FindByEmailAndProvider(
 		email string, provider string, unscoped bool,
 	) entity.Account
@@ -113,13 +113,13 @@ func (repository *Repository) Create(
 	gender string,
 	interest string,
 	transaction *gorm.DB,
-) (*entity.Account, error) {
+) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
 	transaction.Where(entity.Account{Email: email}).First(sameEmailAccount)
 	if sameEmailAccount.ID != "" {
-		return nil, errors.New("Duplicated Email")
+		return sameEmailAccount, errors.New("Duplicated Email")
 	}
-	accountEntity := &entity.Account{
+	accountEntity := entity.Account{
 		Model:    entity.Model{ID: accountID},
 		Email:    email,
 		Provider: provider,
@@ -129,12 +129,12 @@ func (repository *Repository) Create(
 		Gender:   gender,
 		Interest: interest,
 	}
-	insertError := transaction.Create(accountEntity).Error
+	insertError := transaction.Create(&accountEntity).Error
 	if insertError != nil {
 		repository.TransactionRollback(transaction)
 		panic(insertError)
 	}
-	repository.setCache(accountID, accountEntity)
+	repository.setCache(accountID, &accountEntity)
 	return accountEntity, nil
 }
 
@@ -149,8 +149,8 @@ func (repository *Repository) Update(
 	gender string,
 	interest string,
 	transaction *gorm.DB,
-) (*entity.Account, error) {
-	accountEntity := &entity.Account{
+) (entity.Account, error) {
+	accountEntity := entity.Account{
 		Model:    entity.Model{ID: accountID},
 		Email:    email,
 		Provider: provider,
@@ -166,7 +166,7 @@ func (repository *Repository) Update(
 		repository.TransactionRollback(transaction)
 		panic(err)
 	}
-	repository.setCache(accountID, accountEntity)
+	repository.setCache(accountID, &accountEntity)
 	return accountEntity, nil
 }
 

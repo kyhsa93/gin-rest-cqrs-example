@@ -56,7 +56,7 @@
             "post": {
                 "description": "create account",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -66,50 +66,14 @@
                 ],
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "account email address",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "login service provider",
-                        "name": "provider",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "user's gender male or female",
-                        "name": "gender",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "interested part in develop, design, manage",
-                        "name": "interest",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "socialId when use social login",
-                        "name": "social_id",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "need if don't use social login",
-                        "name": "password",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "Profile image file",
-                        "name": "image",
-                        "in": "formData"
+                        "description": "Account data",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/dto.Account"
+                        }
                     }
                 ],
                 "responses": {
@@ -312,6 +276,43 @@
         }
     },
     "definitions": {
+        "dto.Account": {
+            "type": "object",
+            "required": [
+                "email",
+                "provider"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "image_key": {
+                    "type": "string",
+                    "example": "image_key"
+                },
+                "interest": {
+                    "type": "string",
+                    "example": "develop"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "provider": {
+                    "type": "string",
+                    "example": "gmail"
+                },
+                "social_id": {
+                    "type": "string",
+                    "example": "social_id"
+                }
+            }
+        },
         "model.Account": {
             "type": "object",
             "properties": {

@@ -70,4 +70,5 @@ type Account struct {
 	Password string `json:"password" example:"password"`
 	Gender   string `json:"gender" example:"male"`
 	Interest string `json:"interest" example:"develop"`
+	ImageKey string `json:"image_key" example:"image_key"`
 }

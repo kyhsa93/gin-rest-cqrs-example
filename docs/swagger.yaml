@@ -1,4 +1,31 @@
 definitions:
+  dto.Account:
+    properties:
+      email:
+        example: test@gmail.com
+        type: string
+      gender:
+        example: male
+        type: string
+      image_key:
+        example: image_key
+        type: string
+      interest:
+        example: develop
+        type: string
+      password:
+        example: password
+        type: string
+      provider:
+        example: gmail
+        type: string
+      social_id:
+        example: social_id
+        type: string
+    required:
+    - email
+    - provider
+    type: object
   model.Account:
     properties:
       accessToken:
@@ -66,41 +93,16 @@ paths:
       - Accounts
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: create account
       parameters:
-      - description: account email address
-        in: formData
-        name: email
+      - description: Account data
+        in: body
+        name: account
         required: true
-        type: string
-      - description: login service provider
-        in: formData
-        name: provider
-        required: true
-        type: string
-      - description: user's gender male or female
-        in: formData
-        name: gender
-        required: true
-        type: string
-      - description: interested part in develop, design, manage
-        in: formData
-        name: interest
-        required: true
-        type: string
-      - description: socialId when use social login
-        in: formData
-        name: social_id
-        type: string
-      - description: need if don't use social login
-        in: formData
-        name: password
-        type: string
-      - description: Profile image file
-        in: formData
-        name: image
-        type: file
+        schema:
+          $ref: '#/definitions/dto.Account'
+          type: object
       produces:
       - application/json
       responses:

@@ -27,7 +27,7 @@ func New(
 	aws aws.Interface,
 	config *config.Config,
 ) *Bus {
-	return &Bus{repository: repository, email: email, aws: aws}
+	return &Bus{repository: repository, email: email, aws: aws, config: config}
 }
 
 // Handle handle command
@@ -53,9 +53,11 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.Interest = entity.Interest
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
+	imageURL := bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+	accountModel.ImageURL = imageURL
 
-	if entity.ImageKey != "" {
-		accountModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+	if entity.ImageKey == "" {
+		accountModel.ImageURL = ""
 	}
 
 	return &accountModel
