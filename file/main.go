@@ -34,12 +34,9 @@ func getDatabaseConnection(config *config.Config) *gorm.DB {
 }
 
 func getRedisClient(config *config.Config) *redis.Client {
-	host := config.Redis.Host
-	port := config.Redis.Password
-	password := config.Redis.Password
 	return redis.NewClient(&redis.Options{
-		Addr:     host + ":" + port,
-		Password: password,
+		Addr:     config.Redis.Address,
+		Password: config.Redis.Password,
 	})
 }
 
