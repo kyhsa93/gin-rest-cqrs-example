@@ -34,11 +34,11 @@ func New(
 func (bus *Bus) Handle(command interface{}) (*model.Account, error) {
 	switch command := command.(type) {
 	case *CreateCommand:
-		return bus.handleCreateCommand(command), nil
+		return bus.handleCreateCommand(command)
 	case *UpdateCommand:
-		return bus.handleUpdateCommand(command), nil
+		return bus.handleUpdateCommand(command)
 	case *DeleteCommand:
-		return bus.handleDeleteCommand(command), nil
+		return bus.handleDeleteCommand(command)
 	default:
 		return nil, errors.New("Command is not handled")
 	}
