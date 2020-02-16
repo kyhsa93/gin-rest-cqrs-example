@@ -9,10 +9,6 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 	uuid, _ := uuid.NewRandom()
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
 
-	imageKey := ""
-	if command.Image != nil {
-		imageKey = bus.aws.S3().Upload(command.Image)
-	}
 	transaction := bus.repository.TransactionStart()
 	createdAccountEntity, createError := bus.repository.Create(
 		uuid.String(),
@@ -20,7 +16,7 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
-		imageKey,
+		command.ImageKey,
 		command.Gender,
 		command.Interest,
 		transaction,
@@ -32,5 +28,5 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 	bus.repository.TransactionCommit(transaction)
 
 	bus.email.Send([]string{command.Email}, "Account is created.")
-	return bus.entityToModel(*createdAccountEntity), nil
+	return bus.entityToModel(createdAccountEntity), nil
 }

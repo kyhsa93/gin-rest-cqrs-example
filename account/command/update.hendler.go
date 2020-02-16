@@ -35,5 +35,5 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 	bus.repository.TransactionCommit(transaction)
 
 	bus.email.Send([]string{command.Email}, "Account is created.")
-	return bus.entityToModel(*updatedAccountEntity), nil
+	return bus.entityToModel(updatedAccountEntity), nil
 }
