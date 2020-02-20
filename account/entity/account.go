@@ -7,7 +7,7 @@ type Account struct {
 	SocialID string `gorm:"not null"`
 	Password string
 	Provider string `gorm:"not null"`
-	ImageKey string
+	FileID   string
 	Gender   string `gorm:"not null"`
 	Interest string `gorm:"not null"`
 }

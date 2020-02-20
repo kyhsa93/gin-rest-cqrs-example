@@ -43,10 +43,10 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 
-	if entity.ImageKey != "" {
+	if entity.FileID != "" {
 		accountModel.ImageURL =
 			bus.config.AWS.S3.Endpoint + "/" +
-				bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+				bus.config.AWS.S3.Bucket + "/" + entity.FileID
 	}
 
 	return &accountModel

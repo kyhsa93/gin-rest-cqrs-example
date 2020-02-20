@@ -92,7 +92,7 @@ func (controller *Controller) create(context *gin.Context) {
 		Password: data.Password,
 		Gender:   data.Gender,
 		Interest: data.Interest,
-		ImageKey: data.ImageKey,
+		FileID:   "",
 	}
 
 	createdAccount, hadlingError := controller.commandBus.Handle(command)

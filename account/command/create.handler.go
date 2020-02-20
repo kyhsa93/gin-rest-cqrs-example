@@ -16,7 +16,7 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
-		command.ImageKey,
+		command.FileID,
 		command.Gender,
 		command.Interest,
 		transaction,

@@ -98,12 +98,12 @@ func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
 	return
 }
 
-// ValidateImageKey validate image key
-func (controller *Controller) ValidateImageKey(imageKey string) bool {
-	/*
-		TODO: Get file data
-	*/
-	controller.api.GetFileByID(imageKey)
+// ValidateFileID validate image key
+func (controller *Controller) ValidateFileID(accountID string, fileID string) bool {
+	file, err := controller.api.GetFileByID(fileID)
+	if err != nil || file.AccountID != accountID {
+		return false
+	}
 	return true
 }
 
