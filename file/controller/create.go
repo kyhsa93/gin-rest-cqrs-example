@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
 )
@@ -9,7 +11,7 @@ import (
 // @Tags Files
 // @Accept multipart/form-data
 // @Produce json
-// @Param accountID formData string true "accountId"
+// @Param account_id formData string true "accountId"
 // @Param usage formData string true "file usage"
 // @Param image formData file false "Profile image file"
 // @Success 201
@@ -24,10 +26,12 @@ func (controller *Controller) create(context *gin.Context) {
 		Usage:     usage,
 		Image:     image,
 	}
-
-	if err := controller.commandBus.Handle(command); err != nil {
+	createdFile, handlingError := controller.commandBus.Handle(command)
+	if handlingError != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
+
+	context.JSON(http.StatusCreated, createdFile)
 }

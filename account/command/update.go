@@ -1,7 +1,5 @@
 package command
 
-import "mime/multipart"
-
 // UpdateCommand update account command
 type UpdateCommand struct {
 	AccountID string
@@ -9,7 +7,7 @@ type UpdateCommand struct {
 	Provider  string
 	SocialID  string
 	Password  string
-	Image     *multipart.FileHeader
+	ImageKey  string
 	Gender    string
 	Interest  string
 }

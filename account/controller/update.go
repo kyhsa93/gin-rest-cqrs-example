@@ -11,43 +11,35 @@ import (
 
 // @Description update account
 // @Tags Accounts
-// @Accept multipart/form-data
+// @Accept json
 // @Produce json
-// @Param id path string true "accountId"
-// @Param email formData string true "account email address"
-// @Param provider formData string true "login service provider"
-// @Param gender formData string true "user's gender male or female"
-// @Param interest formData string true "interested part in develop, design, manage"
-// @Param social_id formData string false "socialId when use social login"
-// @Param password formData string false "need if don't use social login"
-// @Param image formData file false "Profile image file"
+// @Param id path string true "account id"
+// @Param account body dto.Account true "Update Account data"
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [put]
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
 	controller.AuthenticateHTTPRequest(context)
+	var data dto.Account
 
-	id := context.Param("id")
-	email := context.PostForm("email")
-	provider := context.PostForm("provider")
-	socialID := context.PostForm("social_id")
-	password := context.PostForm("password")
-	gender := context.PostForm("gender")
-	interest := context.PostForm("interest")
-
-	if email == "" || provider == "" || gender == "" || interest == "" || (socialID == "" && password == "") {
+	if bindError := context.ShouldBindJSON(&data); bindError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Empty data is included.")
+		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	data := dto.Account{
-		Email:    email,
-		Provider: provider,
-		SocialID: socialID,
-		Password: password,
-		Gender:   gender,
-		Interest: interest,
+	id := context.Param("id")
+	if id == "" {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), "Account id is not valid.")
+		return
+	}
+
+	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
+		data.Interest == "" || (data.SocialID == "" && data.Password == "") {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), "Empty data is included.")
+		return
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
@@ -91,17 +83,15 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	image, _ := context.FormFile("image")
-
 	command := &command.UpdateCommand{
 		AccountID: id,
-		Email:     email,
-		Provider:  provider,
-		SocialID:  socialID,
-		Password:  password,
-		Gender:    gender,
-		Interest:  interest,
-		Image:     image,
+		Email:     data.Email,
+		Provider:  data.Provider,
+		SocialID:  data.SocialID,
+		Password:  data.Password,
+		Gender:    data.Gender,
+		Interest:  data.Interest,
+		ImageKey:  data.ImageKey,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)

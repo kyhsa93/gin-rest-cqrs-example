@@ -44,14 +44,18 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.UpdatedAt = entity.UpdatedAt
 
 	if entity.ImageKey != "" {
-		accountModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
+		accountModel.ImageURL =
+			bus.config.AWS.S3.Endpoint + "/" +
+				bus.config.AWS.S3.Bucket + "/" + entity.ImageKey
 	}
 
 	return &accountModel
 }
 
 func compareHashAndPassword(hashed string, password string) error {
-	if err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword(
+		[]byte(hashed), []byte(password),
+	); err != nil {
 		return err
 	}
 	return nil
