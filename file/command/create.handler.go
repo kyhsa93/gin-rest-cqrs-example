@@ -1,11 +1,16 @@
 package command
 
-import (
-	"github.com/google/uuid"
-)
+import "github.com/kyhsa93/gin-rest-cqrs-example/file/model"
 
-func (bus *Bus) handleCreateCommand(command *CreateCommand) {
-	uuid, _ := uuid.NewRandom()
+func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.File, error) {
+	transaction := bus.repository.TransactionStart()
 	imageKey := bus.aws.S3().Upload(command.Image)
-	bus.repository.Save(uuid.String(), command.AccountID, command.Usage, imageKey)
+	fileEntity, err := bus.repository.Create(imageKey, command.AccountID, command.Usage, transaction)
+	if err != nil {
+		bus.repository.TransactionRollback(transaction)
+		bus.aws.S3().Delete(imageKey)
+		panic(err)
+	}
+	bus.repository.TransactionCommit(transaction)
+	return bus.entityToModel(fileEntity), nil
 }

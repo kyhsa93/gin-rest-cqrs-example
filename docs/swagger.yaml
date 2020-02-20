@@ -55,6 +55,27 @@ definitions:
         example: "2019-12-23 12:27:37"
         type: string
     type: object
+  model.File:
+    properties:
+      account_id:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      created_at:
+        example: "2019-12-23 12:27:37"
+        type: string
+      id:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      image_url:
+        example: profile.image_url.com
+        type: string
+      updated_at:
+        example: "2019-12-23 12:27:37"
+        type: string
+      usage:
+        example: profile
+        type: string
+    type: object
 info:
   contact: {}
   license: {}
@@ -96,7 +117,7 @@ paths:
       - application/json
       description: create account
       parameters:
-      - description: Account data
+      - description: Create Account data
         in: body
         name: account
         required: true
@@ -149,51 +170,25 @@ paths:
             $ref: '#/definitions/model.Account'
       security:
       - AccessToken: []
-      - RefreshToken: []
       tags:
       - Accounts
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: update account
       parameters:
-      - description: accountId
+      - description: account id
         in: path
         name: id
         required: true
         type: string
-      - description: account email address
-        in: formData
-        name: email
+      - description: Update Account data
+        in: body
+        name: account
         required: true
-        type: string
-      - description: login service provider
-        in: formData
-        name: provider
-        required: true
-        type: string
-      - description: user's gender male or female
-        in: formData
-        name: gender
-        required: true
-        type: string
-      - description: interested part in develop, design, manage
-        in: formData
-        name: interest
-        required: true
-        type: string
-      - description: socialId when use social login
-        in: formData
-        name: social_id
-        type: string
-      - description: need if don't use social login
-        in: formData
-        name: password
-        type: string
-      - description: Profile image file
-        in: formData
-        name: image
-        type: file
+        schema:
+          $ref: '#/definitions/dto.Account'
+          type: object
       produces:
       - application/json
       responses:
@@ -213,7 +208,7 @@ paths:
       parameters:
       - description: accountId
         in: formData
-        name: accountID
+        name: account_id
         required: true
         type: string
       - description: file usage
@@ -229,6 +224,25 @@ paths:
       - application/json
       responses:
         "201": {}
+      tags:
+      - Files
+  /files/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: file Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.File'
       tags:
       - Files
 securityDefinitions:

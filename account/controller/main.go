@@ -4,8 +4,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
+	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
@@ -15,6 +17,8 @@ type Controller struct {
 	commandBus *command.Bus
 	queryBus   *query.Bus
 	util       *util.Util
+	config     *config.Config
+	api        api.Interface
 }
 
 // New create account controller instance
@@ -23,8 +27,17 @@ func New(
 	commandBus *command.Bus,
 	queryBus *query.Bus,
 	util *util.Util,
+	config *config.Config,
+	api api.Interface,
 ) *Controller {
-	controller := &Controller{route: route, commandBus: commandBus, queryBus: queryBus, util: util}
+	controller := &Controller{
+		route:      route,
+		commandBus: commandBus,
+		queryBus:   queryBus,
+		util:       util,
+		config:     config,
+		api:        api,
+	}
 	controller.SetupRoutes()
 	return controller
 }
@@ -83,6 +96,15 @@ func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
 		return
 	}
 	return
+}
+
+// ValidateImageKey validate image key
+func (controller *Controller) ValidateImageKey(imageKey string) bool {
+	/*
+		TODO: Get file data
+	*/
+	controller.api.GetFileByID(imageKey)
+	return true
 }
 
 func emailAndProviderValidation(email string, provider string) bool {

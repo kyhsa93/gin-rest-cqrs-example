@@ -10,13 +10,12 @@ import (
 )
 
 // @Tags Accounts
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Param id path string true "account id"
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [get]
 // @Security AccessToken
-// @Security RefreshToken
 func (controller *Controller) readAccountByID(context *gin.Context) {
 	controller.AuthenticateHTTPRequest(context)
 

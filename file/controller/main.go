@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/file/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
@@ -10,6 +11,7 @@ import (
 type Controller struct {
 	route      *gin.Engine
 	commandBus *command.Bus
+	queryBus   *query.Bus
 	util       *util.Util
 }
 
@@ -17,9 +19,15 @@ type Controller struct {
 func New(
 	route *gin.Engine,
 	commandBus *command.Bus,
+	queryBus *query.Bus,
 	util *util.Util,
 ) *Controller {
-	controller := &Controller{route: route, commandBus: commandBus, util: util}
+	controller := &Controller{
+		route:      route,
+		commandBus: commandBus,
+		queryBus:   queryBus,
+		util:       util,
+	}
 	controller.SetupRoutes()
 	return controller
 }
@@ -28,6 +36,10 @@ func New(
 func (controller *Controller) SetupRoutes() {
 	controller.route.POST("/files", func(context *gin.Context) {
 		controller.create(context)
+	})
+
+	controller.route.GET("/files/:id", func(context *gin.Context) {
+		controller.readFileByID(context)
 	})
 
 	controller.route.PUT("/files/:id", func(context *gin.Context) {

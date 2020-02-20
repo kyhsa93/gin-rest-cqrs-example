@@ -16,6 +16,7 @@ import (
 // S3Interface aws s3 service interface
 type S3Interface interface {
 	Upload(fileHeader *multipart.FileHeader) string
+	Delete(fileKey string) error
 }
 
 // S3 struct
@@ -38,6 +39,19 @@ func NewS3(config *config.Config, awsSession *session.Session) *S3 {
 		serverSideEncryption: config.AWS.S3.ServerSideEncryption,
 		storageClass:         config.AWS.S3.StorageClass,
 	}
+}
+
+// Delete delete aws s3 object using object key
+func (s3Infra *S3) Delete(objectKey string) error {
+	request := &s3.DeleteObjectInput{
+		Bucket: aws.String(s3Infra.bucket),
+		Key:    aws.String(objectKey),
+	}
+	_, err := s3.New(s3Infra.session).DeleteObject(request)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Upload upload file to aws s3 storage

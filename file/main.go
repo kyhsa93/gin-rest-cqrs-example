@@ -10,6 +10,7 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/controller"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/entity"
+	"github.com/kyhsa93/gin-rest-cqrs-example/file/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
@@ -46,6 +47,7 @@ func InitializeFile(engine *gin.Engine, config *config.Config, util *util.Util) 
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, databaseConnection)
 	aws := aws.New(config)
-	commandBus := command.New(repository, aws)
-	controller.New(engine, commandBus, util)
+	commandBus := command.New(repository, aws, config)
+	queryBus := query.New(config, repository)
+	controller.New(engine, commandBus, queryBus, util)
 }

@@ -161,7 +161,7 @@ func (repository *Repository) Update(
 		Interest: interest,
 	}
 
-	err := transaction.Save(accountEntity).Error
+	err := transaction.Save(&accountEntity).Error
 	if err != nil {
 		repository.TransactionRollback(transaction)
 		panic(err)

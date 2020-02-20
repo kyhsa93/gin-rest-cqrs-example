@@ -12,10 +12,7 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 		return nil, errors.New("Update target Account data is not found")
 	}
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
-	imageKey := ""
-	if command.Image != nil {
-		imageKey = bus.aws.S3().Upload(command.Image)
-	}
+
 	transaction := bus.repository.TransactionStart()
 	updatedAccountEntity, updateError := bus.repository.Update(
 		oldData.ID,
@@ -23,7 +20,7 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
-		imageKey,
+		command.ImageKey,
 		command.Gender,
 		command.Interest,
 		transaction,
@@ -34,6 +31,8 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 	}
 	bus.repository.TransactionCommit(transaction)
 
-	bus.email.Send([]string{command.Email}, "Account is created.")
-	return bus.entityToModel(updatedAccountEntity), nil
+	bus.email.Send([]string{command.Email}, "Account is updated.")
+	accountModel := bus.entityToModel(updatedAccountEntity)
+	accountModel.AccessToken = accountModel.CreateAccessToken()
+	return accountModel, nil
 }

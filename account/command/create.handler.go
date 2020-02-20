@@ -28,5 +28,7 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 	bus.repository.TransactionCommit(transaction)
 
 	bus.email.Send([]string{command.Email}, "Account is created.")
-	return bus.entityToModel(createdAccountEntity), nil
+	accountModel := bus.entityToModel(createdAccountEntity)
+	accountModel.AccessToken = accountModel.CreateAccessToken()
+	return accountModel, nil
 }
