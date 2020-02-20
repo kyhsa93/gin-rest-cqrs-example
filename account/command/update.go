@@ -7,7 +7,7 @@ type UpdateCommand struct {
 	Provider  string
 	SocialID  string
 	Password  string
-	ImageKey  string
+	FileID    string
 	Gender    string
 	Interest  string
 }

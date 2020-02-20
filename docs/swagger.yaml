@@ -4,11 +4,11 @@ definitions:
       email:
         example: test@gmail.com
         type: string
+      file_id:
+        example: file_id
+        type: string
       gender:
         example: male
-        type: string
-      image_key:
-        example: image_key
         type: string
       interest:
         example: develop

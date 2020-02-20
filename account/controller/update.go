@@ -83,6 +83,12 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
+	if !controller.ValidateFileID(id, data.FileID) {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), "FileId is not matched.")
+		return
+	}
+
 	command := &command.UpdateCommand{
 		AccountID: id,
 		Email:     data.Email,
@@ -91,7 +97,7 @@ func (controller *Controller) update(context *gin.Context) {
 		Password:  data.Password,
 		Gender:    data.Gender,
 		Interest:  data.Interest,
-		ImageKey:  data.ImageKey,
+		FileID:    data.FileID,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)
