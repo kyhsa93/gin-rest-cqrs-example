@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/file/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/aws"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/controller"
@@ -46,8 +47,9 @@ func InitializeFile(engine *gin.Engine, config *config.Config, util *util.Util) 
 	databaseConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, databaseConnection)
+	api := api.New(config)
 	aws := aws.New(config)
 	commandBus := command.New(repository, aws, config)
 	queryBus := query.New(config, repository)
-	controller.New(engine, commandBus, queryBus, util)
+	controller.New(engine, commandBus, queryBus, util, api)
 }

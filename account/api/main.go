@@ -25,9 +25,9 @@ func New(config *config.Config) *API {
 
 // GetFileByID get file data from file endpoint using file id
 func (api *API) GetFileByID(fileID string) (*model.File, error) {
-	response, htttRequestError := http.Get(api.fileAPIURL + "/" + fileID)
-	if htttRequestError != nil {
-		return nil, htttRequestError
+	response, httpRequestError := http.Get(api.fileAPIURL + "/" + fileID)
+	if httpRequestError != nil {
+		return nil, httpRequestError
 	}
 	defer response.Body.Close()
 
