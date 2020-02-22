@@ -22,16 +22,18 @@ func (bus *Bus) handleReadAccountQuery(query *ReadAccountQuery) (*model.Account,
 	)
 
 	if entity.ID == "" {
-		return nil, nil
+		return &model.Account{}, nil
 	}
 
 	if err := compareHashAndPassword(entity.Password, query.Password); err != nil {
-		return bus.entityToModel(entity), err
+		return &model.Account{}, err
 	}
 
 	if err := compareHashAndPassword(entity.SocialID, query.SocialID); err != nil {
-		return bus.entityToModel(entity), err
+		return &model.Account{}, err
 	}
 
-	return bus.entityToModel(entity), nil
+	model := bus.entityToModel(entity)
+	model.AccessToken = model.CreateAccessToken()
+	return model, nil
 }
