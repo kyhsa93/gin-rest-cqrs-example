@@ -39,7 +39,7 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.Email = entity.Email
 	accountModel.Provider = entity.Provider
 	accountModel.Gender = entity.Gender
-	accountModel.Interest = entity.Interest
+	accountModel.InterestedField = entity.InterestedField
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 

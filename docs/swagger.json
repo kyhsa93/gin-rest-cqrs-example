@@ -293,7 +293,7 @@
                     "type": "string",
                     "example": "male"
                 },
-                "interest": {
+                "interested_field": {
                     "type": "string",
                     "example": "develop"
                 },
@@ -338,7 +338,7 @@
                     "type": "string",
                     "example": "profile.image_url.com"
                 },
-                "interest": {
+                "interested_field": {
                     "type": "string",
                     "example": "develop"
                 },

@@ -28,7 +28,7 @@ func (controller *Controller) create(context *gin.Context) {
 	}
 
 	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
-		data.Interest == "" || (data.SocialID == "" && data.Password == "") {
+		data.InterestedField == "" || (data.SocialID == "" && data.Password == "") {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
 		return
@@ -65,7 +65,7 @@ func (controller *Controller) create(context *gin.Context) {
 		Email: data.Email, Password: "", Provider: "", SocialID: "", Unscoped: true,
 	}
 	duplicated, _ := controller.queryBus.Handle(query)
-	if duplicated != nil {
+	if duplicated.ID != "" {
 		httpError := controller.util.Error.HTTP.Conflict()
 		context.JSON(httpError.Code(), "Email is duplicated.")
 		return
@@ -79,20 +79,20 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if validate := dto.ValidateInterestAttribute(&data); validate == false {
+	if validate := dto.ValidateInterestedFieldAttribute(&data); validate == false {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Interest is must be one of 'develop', 'design' and 'manage'.")
+		context.JSON(httpError.Code(), "InterestedField is must be one of 'develop', 'design' and 'manage'.")
 		return
 	}
 
 	command := &command.CreateCommand{
-		Email:    data.Email,
-		Provider: data.Provider,
-		SocialID: data.SocialID,
-		Password: data.Password,
-		Gender:   data.Gender,
-		Interest: data.Interest,
-		FileID:   "",
+		Email:           data.Email,
+		Provider:        data.Provider,
+		SocialID:        data.SocialID,
+		Password:        data.Password,
+		Gender:          data.Gender,
+		InterestedField: data.InterestedField,
+		FileID:          "",
 	}
 
 	createdAccount, hadlingError := controller.commandBus.Handle(command)

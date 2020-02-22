@@ -10,7 +10,7 @@ definitions:
       gender:
         example: male
         type: string
-      interest:
+      interested_field:
         example: develop
         type: string
       password:
@@ -46,7 +46,7 @@ definitions:
       image_url:
         example: profile.image_url.com
         type: string
-      interest:
+      interested_field:
         example: develop
         type: string
       provider:
