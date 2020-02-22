@@ -97,20 +97,11 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		Password: password,
 		Unscoped: false,
 	}
-	account, err := controller.queryBus.Handle(query)
-	if account == nil || err != nil {
-		httpError := controller.util.Error.HTTP.NotFound()
-		context.JSON(httpError.Code(), httpError.Message())
+	account, _ := controller.queryBus.Handle(query)
+	if account == nil {
+		context.JSON(http.StatusOK, account)
 		return
 	}
 
-	accessToken := account.CreateAccessToken()
-
-	if accessToken == "" {
-		httpError := controller.util.Error.HTTP.InternalServerError()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-	account.AccessToken = accessToken
 	context.JSON(http.StatusOK, account)
 }
