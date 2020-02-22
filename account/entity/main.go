@@ -2,8 +2,6 @@ package entity
 
 import (
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql package for gorm
 )
 
 // Model default entity struct

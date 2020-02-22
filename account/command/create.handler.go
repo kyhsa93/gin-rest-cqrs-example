@@ -18,7 +18,7 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 		hashedPassword,
 		command.FileID,
 		command.Gender,
-		command.Interest,
+		command.InterestedField,
 		transaction,
 	)
 	if createError != nil {

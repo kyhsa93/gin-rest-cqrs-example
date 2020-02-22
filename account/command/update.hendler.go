@@ -22,7 +22,7 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 		hashedPassword,
 		command.FileID,
 		command.Gender,
-		command.Interest,
+		command.InterestedField,
 		transaction,
 	)
 	if updateError != nil {

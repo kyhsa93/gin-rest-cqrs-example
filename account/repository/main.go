@@ -25,7 +25,7 @@ type Interface interface {
 		password string,
 		fileID string,
 		gender string,
-		Interest string,
+		interestedField string,
 		transaction *gorm.DB,
 	) (entity.Account, error)
 	Update(
@@ -36,7 +36,7 @@ type Interface interface {
 		password string,
 		fileID string,
 		gender string,
-		Interest string,
+		interestedField string,
 		transaction *gorm.DB,
 	) (entity.Account, error)
 	FindByEmailAndProvider(
@@ -111,7 +111,7 @@ func (repository *Repository) Create(
 	password string,
 	fileID string,
 	gender string,
-	interest string,
+	interestedField string,
 	transaction *gorm.DB,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
@@ -120,14 +120,14 @@ func (repository *Repository) Create(
 		return sameEmailAccount, errors.New("Duplicated Email")
 	}
 	accountEntity := entity.Account{
-		Model:    entity.Model{ID: accountID},
-		Email:    email,
-		Provider: provider,
-		Password: password,
-		SocialID: socialID,
-		FileID:   fileID,
-		Gender:   gender,
-		Interest: interest,
+		Model:           entity.Model{ID: accountID},
+		Email:           email,
+		Provider:        provider,
+		Password:        password,
+		SocialID:        socialID,
+		FileID:          fileID,
+		Gender:          gender,
+		InterestedField: interestedField,
 	}
 	insertError := transaction.Create(&accountEntity).Error
 	if insertError != nil {
@@ -147,18 +147,18 @@ func (repository *Repository) Update(
 	password string,
 	fileID string,
 	gender string,
-	interest string,
+	interestedField string,
 	transaction *gorm.DB,
 ) (entity.Account, error) {
 	accountEntity := entity.Account{
-		Model:    entity.Model{ID: accountID},
-		Email:    email,
-		Provider: provider,
-		Password: password,
-		SocialID: socialID,
-		FileID:   fileID,
-		Gender:   gender,
-		Interest: interest,
+		Model:           entity.Model{ID: accountID},
+		Email:           email,
+		Provider:        provider,
+		Password:        password,
+		SocialID:        socialID,
+		FileID:          fileID,
+		Gender:          gender,
+		InterestedField: interestedField,
 	}
 
 	err := transaction.Save(&accountEntity).Error

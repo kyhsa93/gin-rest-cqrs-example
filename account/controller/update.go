@@ -36,7 +36,7 @@ func (controller *Controller) update(context *gin.Context) {
 	}
 
 	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
-		data.Interest == "" || (data.SocialID == "" && data.Password == "") {
+		data.InterestedField == "" || (data.SocialID == "" && data.Password == "") {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
 		return
@@ -77,9 +77,9 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	if validate := dto.ValidateInterestAttribute(&data); validate == false {
+	if validate := dto.ValidateInterestedFieldAttribute(&data); validate == false {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Interest is must be one of 'develop', 'design' and 'manage'.")
+		context.JSON(httpError.Code(), "InterestedField is must be one of 'develop', 'design' and 'manage'.")
 		return
 	}
 
@@ -90,14 +90,14 @@ func (controller *Controller) update(context *gin.Context) {
 	}
 
 	command := &command.UpdateCommand{
-		AccountID: id,
-		Email:     data.Email,
-		Provider:  data.Provider,
-		SocialID:  data.SocialID,
-		Password:  data.Password,
-		Gender:    data.Gender,
-		Interest:  data.Interest,
-		FileID:    data.FileID,
+		AccountID:       id,
+		Email:           data.Email,
+		Provider:        data.Provider,
+		SocialID:        data.SocialID,
+		Password:        data.Password,
+		Gender:          data.Gender,
+		InterestedField: data.InterestedField,
+		FileID:          data.FileID,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)
