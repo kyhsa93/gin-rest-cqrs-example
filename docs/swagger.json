@@ -168,9 +168,6 @@
                 "security": [
                     {
                         "AccessToken": []
-                    },
-                    {
-                        "RefreshToken": []
                     }
                 ],
                 "description": "delete account by id",
@@ -198,6 +195,11 @@
         },
         "/files": {
             "post": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    }
+                ],
                 "description": "create file",
                 "consumes": [
                     "multipart/form-data"
@@ -237,6 +239,11 @@
         },
         "/files/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],

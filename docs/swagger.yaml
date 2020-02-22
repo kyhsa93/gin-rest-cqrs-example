@@ -149,7 +149,6 @@ paths:
             $ref: '#/definitions/model.Account'
       security:
       - AccessToken: []
-      - RefreshToken: []
       tags:
       - Accounts
     get:
@@ -224,6 +223,8 @@ paths:
       - application/json
       responses:
         "201": {}
+      security:
+      - AccessToken: []
       tags:
       - Files
   /files/{id}:
@@ -243,6 +244,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.File'
+      security:
+      - AccessToken: []
       tags:
       - Files
 securityDefinitions:

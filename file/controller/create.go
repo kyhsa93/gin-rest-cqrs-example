@@ -16,6 +16,7 @@ import (
 // @Param image formData file false "Profile image file"
 // @Success 201
 // @Router /files [post]
+// @Security AccessToken
 func (controller *Controller) create(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")
 	accountID := context.PostForm("account_id")
@@ -28,6 +29,12 @@ func (controller *Controller) create(context *gin.Context) {
 
 	usage := context.PostForm("usage")
 	image, _ := context.FormFile("image")
+
+	if usage == "" || image == nil {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
 
 	command := &command.CreateCommand{
 		AccountID: accountID,

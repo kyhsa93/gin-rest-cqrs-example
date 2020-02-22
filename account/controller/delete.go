@@ -13,7 +13,6 @@ import (
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [delete]
 // @Security AccessToken
-// @Security RefreshToken
 func (controller *Controller) delete(context *gin.Context) {
 	controller.AuthenticateHTTPRequest(context)
 

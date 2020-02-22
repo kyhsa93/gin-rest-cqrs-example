@@ -45,14 +45,6 @@ func (controller *Controller) SetupRoutes() {
 	controller.route.GET("/files/:id", func(context *gin.Context) {
 		controller.readFileByID(context)
 	})
-
-	controller.route.PUT("/files/:id", func(context *gin.Context) {
-		controller.update(context)
-	})
-
-	controller.route.DELETE("/files/:id", func(context *gin.Context) {
-		controller.delete(context)
-	})
 }
 
 // AuthenticateHTTPReqeust check http request auth

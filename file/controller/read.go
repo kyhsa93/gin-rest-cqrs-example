@@ -13,6 +13,7 @@ import (
 // @Param id path string true "file Id"
 // @Success 200 {object} model.File
 // @Router /files/{id} [get]
+// @Security AccessToken
 func (controller *Controller) readFileByID(context *gin.Context) {
 	id := context.Param("id")
 	query := &query.ReadFileByIDQuery{FileID: id}

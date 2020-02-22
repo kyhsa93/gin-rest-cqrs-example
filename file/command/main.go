@@ -31,10 +31,6 @@ func (bus *Bus) Handle(command interface{}) (*model.File, error) {
 	switch command := command.(type) {
 	case *CreateCommand:
 		return bus.handleCreateCommand(command)
-	case *UpdateCommand:
-		return bus.handleUpdateCommand(command)
-	case *DeleteCommand:
-		return bus.handleDeleteCommand(command)
 	default:
 		return nil, errors.New("Command is not handled")
 	}
