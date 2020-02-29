@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/file/dto"
 )
 
 // @Description create file
@@ -29,8 +30,13 @@ func (controller *Controller) create(context *gin.Context) {
 
 	usage := context.PostForm("usage")
 	image, _ := context.FormFile("image")
+	dto := dto.File{
+		AccountID: accountID,
+		Usage:     usage,
+		File:      image,
+	}
 
-	if usage == "" || image == nil {
+	if !dto.ValidateUsage() || image == nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
