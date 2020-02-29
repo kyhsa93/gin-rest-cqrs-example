@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"log"
@@ -8,15 +9,12 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
-
-	"github.com/jinzhu/gorm"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Interface repository inteface
 type Interface interface {
-	TransactionStart() *gorm.DB
-	TransactionCommit(transaction *gorm.DB)
-	TransactionRollback(transaction *gorm.DB)
 	Create(
 		accountID string,
 		email string,
@@ -26,7 +24,6 @@ type Interface interface {
 		fileID string,
 		gender string,
 		interestedField string,
-		transaction *gorm.DB,
 	) (entity.Account, error)
 	Update(
 		accountID string,
@@ -37,39 +34,23 @@ type Interface interface {
 		fileID string,
 		gender string,
 		interestedField string,
-		transaction *gorm.DB,
 	) (entity.Account, error)
 	FindByEmailAndProvider(
 		email string, provider string, unscoped bool,
 	) entity.Account
 	FindByID(id string, unscoped bool) entity.Account
-	Delete(id string, transaction *gorm.DB) entity.Account
+	Delete(id string) entity.Account
 }
 
 // Repository repository for query to database
 type Repository struct {
-	redis    *redis.Client
-	database *gorm.DB
+	redis *redis.Client
+	mongo *mongo.Collection
 }
 
 // New create repository instance
-func New(redis *redis.Client, database *gorm.DB) *Repository {
-	return &Repository{database: database, redis: redis}
-}
-
-// TransactionStart start database transaction
-func (repository *Repository) TransactionStart() *gorm.DB {
-	return repository.database.Begin()
-}
-
-// TransactionCommit commit database transaction
-func (repository *Repository) TransactionCommit(transaction *gorm.DB) {
-	transaction.Commit()
-}
-
-// TransactionRollback rollback database transaction
-func (repository *Repository) TransactionRollback(transaction *gorm.DB) {
-	transaction.Rollback()
+func New(redis *redis.Client, mongo *mongo.Collection) *Repository {
+	return &Repository{mongo: mongo, redis: redis}
 }
 
 func (repository *Repository) setCache(key string, accountEntity *entity.Account) {
@@ -92,7 +73,7 @@ func (repository *Repository) getCache(key string) *entity.Account {
 	entity := &entity.Account{}
 	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
 	if jsonUnmarshalError != nil {
-		log.Println(jsonUnmarshalError)
+		log.Println("Fail to unmarshal cached data", jsonUnmarshalError)
 		return nil
 	}
 
@@ -112,15 +93,18 @@ func (repository *Repository) Create(
 	fileID string,
 	gender string,
 	interestedField string,
-	transaction *gorm.DB,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
-	transaction.Where(entity.Account{Email: email}).First(sameEmailAccount)
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"email": email},
+	).Decode(&sameEmailAccount)
+
 	if sameEmailAccount.ID != "" {
 		return sameEmailAccount, errors.New("Duplicated Email")
 	}
 	accountEntity := entity.Account{
-		Model:           entity.Model{ID: accountID},
+		ID:              accountID,
 		Email:           email,
 		Provider:        provider,
 		Password:        password,
@@ -128,11 +112,13 @@ func (repository *Repository) Create(
 		FileID:          fileID,
 		Gender:          gender,
 		InterestedField: interestedField,
+		CreatedAt:       time.Now(),
+		UpdatedAt:       time.Now(),
+		DeletedAt:       nil,
 	}
-	insertError := transaction.Create(&accountEntity).Error
-	if insertError != nil {
-		repository.TransactionRollback(transaction)
-		panic(insertError)
+	insertResult, err := repository.mongo.InsertOne(context.TODO(), accountEntity)
+	if err != nil || insertResult == nil {
+		panic(err)
 	}
 	repository.setCache(accountID, &accountEntity)
 	return accountEntity, nil
@@ -148,26 +134,28 @@ func (repository *Repository) Update(
 	fileID string,
 	gender string,
 	interestedField string,
-	transaction *gorm.DB,
 ) (entity.Account, error) {
-	accountEntity := entity.Account{
-		Model:           entity.Model{ID: accountID},
-		Email:           email,
-		Provider:        provider,
-		Password:        password,
-		SocialID:        socialID,
-		FileID:          fileID,
-		Gender:          gender,
-		InterestedField: interestedField,
-	}
-
-	err := transaction.Save(&accountEntity).Error
+	condition := bson.M{"_id": accountID}
+	_, err := repository.mongo.UpdateOne(
+		context.TODO(),
+		condition,
+		bson.M{
+			"$set": bson.M{
+				"updatedAt":       time.Now(),
+				"interestedField": interestedField,
+			},
+		},
+	)
 	if err != nil {
-		repository.TransactionRollback(transaction)
 		panic(err)
 	}
-	repository.setCache(accountID, &accountEntity)
-	return accountEntity, nil
+	updated := entity.Account{}
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": accountID},
+	).Decode(&updated)
+	repository.setCache(accountID, &updated)
+	return updated, nil
 }
 
 // FindByEmailAndProvider find all account
@@ -177,49 +165,72 @@ func (repository *Repository) FindByEmailAndProvider(
 	unscoped bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
-	condition := entity.Account{Email: email, Provider: provider}
 
 	if unscoped == true {
-		repository.database.Unscoped().Where(&condition).First(&accountEntity)
+		repository.mongo.FindOne(
+			context.TODO(),
+			bson.M{
+				"email": email, "provider": provider,
+				"$ne": []interface{}{bson.M{"deletedAt": nil}},
+			},
+		).Decode(accountEntity)
 		return accountEntity
 	}
 
 	if cache := repository.getCache(email); cache != nil {
 		return *cache
 	}
-	repository.database.Where(&condition).First(&accountEntity)
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"email": email, "provider": provider},
+	).Decode(&accountEntity)
 	repository.setCache(email, &accountEntity)
 
 	return accountEntity
 }
 
 // FindByID find account by accountId
-func (repository *Repository) FindByID(id string, unscoped bool) entity.Account {
+func (repository *Repository) FindByID(accountID string, unscoped bool) entity.Account {
 	accountEntity := entity.Account{}
-	condition := entity.Account{Model: entity.Model{ID: id}}
 
 	if unscoped == true {
-		repository.database.Unscoped().Where(&condition).First(&accountEntity)
+		repository.mongo.FindOne(
+			context.TODO(),
+			bson.M{
+				"_id": accountID, "deletedAt": nil,
+				"$ne": []interface{}{bson.M{"deletedAt": nil}},
+			},
+		).Decode(&accountEntity)
 		return accountEntity
 	}
 
-	if cache := repository.getCache(id); cache != nil {
+	if cache := repository.getCache(accountID); cache != nil {
 		return *cache
 	}
-	repository.database.Where(&condition).First(&accountEntity)
-	repository.setCache(id, &accountEntity)
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": accountID, "deletedAt": nil},
+	).Decode(&accountEntity)
+	repository.setCache(accountID, &accountEntity)
 	return accountEntity
 }
 
 // Delete delete account by accountId
-func (repository *Repository) Delete(id string, transaction *gorm.DB) entity.Account {
+func (repository *Repository) Delete(accountID string) entity.Account {
 	accountEntity := entity.Account{}
-	condition := &entity.Account{Model: entity.Model{ID: id}}
-	err := transaction.Delete(condition).Error
-	if err != nil {
-		repository.TransactionRollback(transaction)
-		panic(err)
-	}
-	transaction.Unscoped().Where(condition).First(&accountEntity)
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": accountID, "deletedAt": nil},
+	).Decode(&accountEntity)
+	condition := bson.M{"_id": accountID}
+	repository.mongo.UpdateOne(
+		context.TODO(),
+		condition,
+		bson.M{
+			"$set": bson.M{
+				"deletedAt": time.Now(),
+			},
+		},
+	)
 	return accountEntity
 }

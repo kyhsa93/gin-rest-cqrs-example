@@ -13,7 +13,6 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 	}
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
 
-	transaction := bus.repository.TransactionStart()
 	updatedAccountEntity, updateError := bus.repository.Update(
 		oldData.ID,
 		command.Email,
@@ -23,13 +22,10 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 		command.FileID,
 		command.Gender,
 		command.InterestedField,
-		transaction,
 	)
 	if updateError != nil {
-		bus.repository.TransactionRollback(transaction)
 		return nil, updateError
 	}
-	bus.repository.TransactionCommit(transaction)
 
 	bus.email.Send([]string{command.Email}, "Account is updated.")
 	accountModel := bus.entityToModel(updatedAccountEntity)

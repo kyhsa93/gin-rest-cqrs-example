@@ -1,39 +1,33 @@
 package account
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	"github.com/jinzhu/gorm"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/aws"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/controller"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/email"
-	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func getDatabaseConnection(config *config.Config) *gorm.DB {
-	user := config.Database.User
-	password := config.Database.Password
-	host := config.Database.Host
-	port := config.Database.Port
-	name := config.Database.Name
-	logging := config.Database.Logging
-
-	connection, err := gorm.Open(
-		"mysql",
-		user+":"+password+"@tcp("+host+":"+port+")/"+name+"?parseTime=true",
-	)
+func getMongoDBClient() *mongo.Collection {
+	clientOptions := options.Client().ApplyURI("mongodb://root:test@localhost:27017")
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
 	}
-	connection.LogMode(logging)
-	connection.AutoMigrate(&entity.Account{})
-	return connection
+	client.Ping(context.TODO(), nil)
+	collection := client.Database("gin-rest-cqrs-example").Collection("accounts")
+
+	return collection
 }
 
 func getRedisClient(config *config.Config) *redis.Client {
@@ -47,9 +41,9 @@ func getRedisClient(config *config.Config) *redis.Client {
 func InitializeAccount(
 	engine *gin.Engine, config *config.Config, util *util.Util,
 ) {
-	databaseConnection := getDatabaseConnection(config)
+	mongoClient := getMongoDBClient()
 	redisClient := getRedisClient(config)
-	repository := repository.New(redisClient, databaseConnection)
+	repository := repository.New(redisClient, mongoClient)
 	email := email.New(config)
 	aws := aws.New(config)
 	api := api.New(config)
