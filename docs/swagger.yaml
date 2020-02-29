@@ -69,9 +69,6 @@ definitions:
       image_url:
         example: profile.image_url.com
         type: string
-      updated_at:
-        example: "2019-12-23 12:27:37"
-        type: string
       usage:
         example: profile
         type: string

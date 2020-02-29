@@ -370,10 +370,6 @@
                     "type": "string",
                     "example": "profile.image_url.com"
                 },
-                "updated_at": {
-                    "type": "string",
-                    "example": "2019-12-23 12:27:37"
-                },
                 "usage": {
                     "type": "string",
                     "example": "profile"

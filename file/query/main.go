@@ -36,7 +36,6 @@ func (bus *Bus) entityToModel(entity entity.File) *model.File {
 	fileModel.AccountID = entity.AccountID
 	fileModel.Usage = entity.Usage
 	fileModel.CreatedAt = entity.CreatedAt
-	fileModel.UpdatedAt = entity.UpdatedAt
 	fileModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" +
 		bus.config.AWS.S3.Bucket + "/" + entity.ID
 	return &fileModel
