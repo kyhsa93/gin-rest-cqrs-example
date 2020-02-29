@@ -9,7 +9,6 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 	uuid, _ := uuid.NewRandom()
 	hashedPassword, hashedSocialID := getHashedPasswordAndSocialID(command.Password, command.SocialID)
 
-	transaction := bus.repository.TransactionStart()
 	createdAccountEntity, createError := bus.repository.Create(
 		uuid.String(),
 		command.Email,
@@ -19,14 +18,10 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 		command.FileID,
 		command.Gender,
 		command.InterestedField,
-		transaction,
 	)
 	if createError != nil {
-		bus.repository.TransactionRollback(transaction)
 		return nil, createError
 	}
-	bus.repository.TransactionCommit(transaction)
-
 	bus.email.Send([]string{command.Email}, "Account is created.")
 	accountModel := bus.entityToModel(createdAccountEntity)
 	accountModel.AccessToken = accountModel.CreateAccessToken()

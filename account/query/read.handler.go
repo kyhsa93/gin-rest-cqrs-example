@@ -13,7 +13,9 @@ func (bus *Bus) handleReadAccountByIDQuery(query *ReadAccountByIDQuery) (*model.
 		return nil, errors.New("Account is not found")
 	}
 
-	return bus.entityToModel(entity), nil
+	model := bus.entityToModel(entity)
+	model.AccessToken = model.CreateAccessToken()
+	return model, nil
 }
 
 func (bus *Bus) handleReadAccountQuery(query *ReadAccountQuery) (*model.Account, error) {
