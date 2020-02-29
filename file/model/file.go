@@ -9,5 +9,4 @@ type File struct {
 	Usage     string    `json:"usage" example:"profile"`
 	ImageURL  string    `json:"image_url" example:"profile.image_url.com"`
 	CreatedAt time.Time `json:"created_at" example:"2019-12-23 12:27:37"`
-	UpdatedAt time.Time `json:"updated_at" example:"2019-12-23 12:27:37"`
 }

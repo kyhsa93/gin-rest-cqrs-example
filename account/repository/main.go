@@ -190,14 +190,17 @@ func (repository *Repository) FindByEmailAndProvider(
 }
 
 // FindByID find account by accountId
-func (repository *Repository) FindByID(accountID string, unscoped bool) entity.Account {
+func (repository *Repository) FindByID(
+	accountID string,
+	unscoped bool,
+) entity.Account {
 	accountEntity := entity.Account{}
 
 	if unscoped == true {
 		repository.mongo.FindOne(
 			context.TODO(),
 			bson.M{
-				"_id": accountID, "deletedAt": nil,
+				"_id": accountID,
 				"$ne": []interface{}{bson.M{"deletedAt": nil}},
 			},
 		).Decode(&accountEntity)

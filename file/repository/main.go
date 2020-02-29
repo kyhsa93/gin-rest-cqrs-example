@@ -1,55 +1,36 @@
 package repository
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"time"
 
 	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/entity"
-
-	"github.com/jinzhu/gorm"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Interface repository inteface
 type Interface interface {
-	TransactionStart() *gorm.DB
-	TransactionCommit(transaction *gorm.DB)
-	TransactionRollback(transaction *gorm.DB)
 	Create(
 		fileID string,
 		accountID string,
 		usage string,
-		transaction *gorm.DB,
 	) (entity.File, error)
 	FindByID(fileID string) entity.File
-	Delete(id string, transaction *gorm.DB) entity.File
 }
 
 // Repository repository for query to database
 type Repository struct {
-	redis    *redis.Client
-	database *gorm.DB
+	redis *redis.Client
+	mongo *mongo.Collection
 }
 
 // New create repository instance
-func New(redis *redis.Client, database *gorm.DB) *Repository {
-	return &Repository{database: database, redis: redis}
-}
-
-// TransactionStart start database transaction
-func (repository *Repository) TransactionStart() *gorm.DB {
-	return repository.database.Begin()
-}
-
-// TransactionCommit commit database transaction
-func (repository *Repository) TransactionCommit(transaction *gorm.DB) {
-	transaction.Commit()
-}
-
-// TransactionRollback rollback database transaction
-func (repository *Repository) TransactionRollback(transaction *gorm.DB) {
-	transaction.Rollback()
+func New(redis *redis.Client, mongo *mongo.Collection) *Repository {
+	return &Repository{mongo: mongo, redis: redis}
 }
 
 func (repository *Repository) setCache(key string, fileEntity *entity.File) {
@@ -87,18 +68,19 @@ func (repository *Repository) Create(
 	fileID string,
 	accountID string,
 	usage string,
-	transaction *gorm.DB,
 ) (entity.File, error) {
 	fileEntity := entity.File{
-		Model:     entity.Model{ID: fileID},
+		ID:        fileID,
 		AccountID: accountID,
 		Usage:     usage,
 	}
 
-	insertError := transaction.Create(&fileEntity).Error
-	if insertError != nil {
-		repository.TransactionRollback(transaction)
-		panic(insertError)
+	insertResult, err := repository.mongo.InsertOne(
+		context.TODO(),
+		fileEntity,
+	)
+	if err != nil || insertResult == nil {
+		return fileEntity, err
 	}
 	repository.setCache(accountID, &fileEntity)
 	return fileEntity, nil
@@ -106,26 +88,14 @@ func (repository *Repository) Create(
 
 // FindByID fine file data using file id
 func (repository *Repository) FindByID(fileID string) entity.File {
-	fileEntity := entity.File{}
-	condition := entity.File{Model: entity.Model{ID: fileID}}
-
 	if cache := repository.getCache(fileID); cache != nil {
 		return *cache
 	}
-	repository.database.Where(&condition).First(&fileEntity)
-	repository.setCache(fileID, &fileEntity)
-	return fileEntity
-}
-
-// Delete delete file by fileId
-func (repository *Repository) Delete(id string, transaction *gorm.DB) entity.File {
 	fileEntity := entity.File{}
-	condition := &entity.File{Model: entity.Model{ID: id}}
-	err := transaction.Delete(condition).Error
-	if err != nil {
-		repository.TransactionRollback(transaction)
-		panic(err)
-	}
-	transaction.Unscoped().Where(condition).First(&fileEntity)
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": fileID},
+	).Decode(&fileEntity)
+	repository.setCache(fileID, &fileEntity)
 	return fileEntity
 }

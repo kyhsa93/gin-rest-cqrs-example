@@ -1,38 +1,33 @@
 package file
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	"github.com/jinzhu/gorm"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/aws"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/controller"
-	"github.com/kyhsa93/gin-rest-cqrs-example/file/entity"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
-func getDatabaseConnection(config *config.Config) *gorm.DB {
-	user := config.Database.User
-	password := config.Database.Password
-	host := config.Database.Host
-	port := config.Database.Port
-	name := config.Database.Name
-	logging := config.Database.Logging
-
-	connection, err := gorm.Open(
-		"mysql", user+":"+password+"@tcp("+host+":"+port+")/"+name+"?parseTime=true",
-	)
+func getMongoDBClient() *mongo.Collection {
+	clientOptions := options.Client().ApplyURI("mongodb://root:test@localhost:27017")
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
 	}
-	connection.LogMode(logging)
-	connection.AutoMigrate(&entity.File{})
-	return connection
+	client.Ping(context.TODO(), nil)
+	collection := client.Database("gin-rest-cqrs-example").Collection("files")
+
+	return collection
 }
 
 func getRedisClient(config *config.Config) *redis.Client {
@@ -44,9 +39,9 @@ func getRedisClient(config *config.Config) *redis.Client {
 
 // InitializeFile init file module
 func InitializeFile(engine *gin.Engine, config *config.Config, util *util.Util) {
-	databaseConnection := getDatabaseConnection(config)
+	mongoClient := getMongoDBClient()
 	redisClient := getRedisClient(config)
-	repository := repository.New(redisClient, databaseConnection)
+	repository := repository.New(redisClient, mongoClient)
 	api := api.New(config)
 	aws := aws.New(config)
 	commandBus := command.New(repository, aws, config)
