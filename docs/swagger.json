@@ -271,6 +271,45 @@
                     }
                 }
             }
+        },
+        "/profiles": {
+            "post": {
+                "security": [
+                    {
+                        "AccessToken": []
+                    }
+                ],
+                "description": "create profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profiles"
+                ],
+                "parameters": [
+                    {
+                        "description": "Create Profile data",
+                        "name": "profile",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/dto.Profile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Profile"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -308,6 +347,41 @@
                 "social_id": {
                     "type": "string",
                     "example": "social_id"
+                }
+            }
+        },
+        "dto.Profile": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string",
+                    "example": "account_id"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                },
+                "file_id": {
+                    "type": "string",
+                    "example": "file_id"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "interested_field": {
+                    "type": "string",
+                    "example": "develop"
+                },
+                "interested_field_detail": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "web",
+                        "server"
+                    ]
                 }
             }
         },
@@ -373,6 +447,44 @@
                 "usage": {
                     "type": "string",
                     "example": "profile"
+                }
+            }
+        },
+        "model.Profile": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2019-12-23 12:27:37"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "389df385-ccaa-49c1-aee2-698ba1191857"
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "profile.image_url.com"
+                },
+                "interested_field": {
+                    "type": "string",
+                    "example": "develop"
+                },
+                "interested_field_detail": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "web",
+                        "server"
+                    ]
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2019-12-23 12:27:37"
                 }
             }
         }

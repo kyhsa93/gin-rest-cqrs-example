@@ -6,6 +6,7 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/account"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file"
+	"github.com/kyhsa93/gin-rest-cqrs-example/profile"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,7 @@ func main() {
 
 	account.InitializeAccount(route, config, util)
 	file.InitializeFile(route, config, util)
+	profile.Initialize(route, config, util)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

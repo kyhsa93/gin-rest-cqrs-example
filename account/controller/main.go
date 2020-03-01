@@ -100,6 +100,9 @@ func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
 
 // ValidateFileID validate image key
 func (controller *Controller) ValidateFileID(accountID string, fileID string) bool {
+	if fileID == "" {
+		return true
+	}
 	file, err := controller.api.GetFileByID(fileID)
 	if err != nil || file.AccountID != accountID {
 		return false
