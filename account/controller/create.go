@@ -95,8 +95,8 @@ func (controller *Controller) create(context *gin.Context) {
 		FileID:          "",
 	}
 
-	createdAccount, hadlingError := controller.commandBus.Handle(command)
-	if hadlingError != nil {
+	createdAccount, handlingError := controller.commandBus.Handle(command)
+	if handlingError != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return

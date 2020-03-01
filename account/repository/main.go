@@ -114,7 +114,6 @@ func (repository *Repository) Create(
 		InterestedField: interestedField,
 		CreatedAt:       time.Now(),
 		UpdatedAt:       time.Now(),
-		DeletedAt:       nil,
 	}
 	insertResult, err := repository.mongo.InsertOne(context.TODO(), accountEntity)
 	if err != nil || insertResult == nil {

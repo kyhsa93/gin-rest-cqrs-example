@@ -26,6 +26,31 @@ definitions:
     - email
     - provider
     type: object
+  dto.Profile:
+    properties:
+      accountId:
+        example: account_id
+        type: string
+      email:
+        example: test@gmail.com
+        type: string
+      file_id:
+        example: file_id
+        type: string
+      gender:
+        example: male
+        type: string
+      interested_field:
+        example: develop
+        type: string
+      interested_field_detail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+    type: object
   model.Account:
     properties:
       accessToken:
@@ -71,6 +96,33 @@ definitions:
         type: string
       usage:
         example: profile
+        type: string
+    type: object
+  model.Profile:
+    properties:
+      created_at:
+        example: "2019-12-23 12:27:37"
+        type: string
+      gender:
+        type: string
+      id:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      image_url:
+        example: profile.image_url.com
+        type: string
+      interested_field:
+        example: develop
+        type: string
+      interested_field_detail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+      updated_at:
+        example: "2019-12-23 12:27:37"
         type: string
     type: object
 info:
@@ -245,6 +297,30 @@ paths:
       - AccessToken: []
       tags:
       - Files
+  /profiles:
+    post:
+      consumes:
+      - application/json
+      description: create profile
+      parameters:
+      - description: Create Profile data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Profile'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
 securityDefinitions:
   AccessToken:
     in: header
