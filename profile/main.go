@@ -22,7 +22,7 @@ func getMongoDBClient() *mongo.Collection {
 		panic(err)
 	}
 	client.Ping(context.TODO(), nil)
-	collection := client.Database("gin-rest-cqrs-example").Collection("files")
+	collection := client.Database("gin-rest-cqrs-example").Collection("profiles")
 
 	return collection
 }

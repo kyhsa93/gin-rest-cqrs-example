@@ -98,18 +98,6 @@ func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
 	return
 }
 
-// ValidateFileID validate image key
-func (controller *Controller) ValidateFileID(accountID string, fileID string) bool {
-	if fileID == "" {
-		return true
-	}
-	file, err := controller.api.GetFileByID(fileID)
-	if err != nil || file.AccountID != accountID {
-		return false
-	}
-	return true
-}
-
 func emailAndProviderValidation(email string, provider string) bool {
 	if provider == "email" {
 		return true

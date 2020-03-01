@@ -15,7 +15,7 @@ func (bus *Bus) handleCreateCommand(
 		command.Email,
 		command.Gender,
 		command.FileID,
-		command.InterestedFeild,
+		command.InterestedField,
 		command.InterestedFieldDetail,
 	)
 	if createError != nil {

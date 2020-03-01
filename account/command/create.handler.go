@@ -15,9 +15,6 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
-		command.FileID,
-		command.Gender,
-		command.InterestedField,
 	)
 	if createError != nil {
 		return nil, createError
@@ -25,5 +22,17 @@ func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, err
 	bus.email.Send([]string{command.Email}, "Account is created.")
 	accountModel := bus.entityToModel(createdAccountEntity)
 	accountModel.AccessToken = accountModel.CreateAccessToken()
+	profile, err := bus.api.CreateProfile(
+		accountModel.AccessToken,
+		accountModel.ID,
+		command.Email,
+		command.Gender,
+		command.InterestedField,
+		command.InterestedFieldDetail,
+	)
+
+	if err != nil || profile == nil {
+		panic(err)
+	}
 	return accountModel, nil
 }

@@ -33,7 +33,7 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if data.Email == "" || data.Gender == "" || data.InterestedFeild == "" {
+	if data.Email == "" || data.Gender == "" || data.InterestedField == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
 		return
@@ -50,7 +50,7 @@ func (controller *Controller) create(context *gin.Context) {
 		AccountID:             data.AccountID,
 		Gender:                data.Gender,
 		FileID:                data.FileID,
-		InterestedFeild:       data.InterestedFeild,
+		InterestedField:       data.InterestedField,
 		InterestedFieldDetail: data.InterestedFieldDetail,
 	}
 

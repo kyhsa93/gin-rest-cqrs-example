@@ -8,6 +8,7 @@ type Server struct {
 	Mode              string `env:"MODE" envDefault:"debug"`
 	FileAPIAddress    string `env:"FILE_API_ADDRESS" envDefault:"http://localhost:5000/files"`
 	AccountAPIAddress string `env:"ACCOUNT_API_ADDRESS" envDefault:"http://localhost:5000/accounts"`
+	ProfileAPIAddress string `env:"PROFILE_API_ADDRESS" envDefault:"http://localhost:5000/profiles"`
 }
 
 // NewServer create server config struct instance

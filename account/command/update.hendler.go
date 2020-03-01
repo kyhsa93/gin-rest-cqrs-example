@@ -19,9 +19,6 @@ func (bus *Bus) handleUpdateCommand(command *UpdateCommand) (*model.Account, err
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
-		command.FileID,
-		command.Gender,
-		command.InterestedField,
 	)
 	if updateError != nil {
 		return nil, updateError
