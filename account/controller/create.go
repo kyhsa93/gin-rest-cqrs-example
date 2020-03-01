@@ -92,7 +92,6 @@ func (controller *Controller) create(context *gin.Context) {
 		Password:        data.Password,
 		Gender:          data.Gender,
 		InterestedField: data.InterestedField,
-		FileID:          "",
 	}
 
 	createdAccount, handlingError := controller.commandBus.Handle(command)

@@ -64,11 +64,11 @@ func ValidateInterestedFieldAttribute(data *Account) bool {
 
 // Account account dto for command action
 type Account struct {
-	Email           string `json:"email" example:"test@gmail.com" binding:"required"`
-	Provider        string `json:"provider" example:"gmail" binding:"required"`
-	SocialID        string `json:"social_id" example:"social_id"`
-	Password        string `json:"password" example:"password"`
-	Gender          string `json:"gender" example:"male"`
-	InterestedField string `json:"interested_field" example:"develop"`
-	FileID          string `json:"file_id" example:"file_id"`
+	Email                 string   `json:"email" example:"test@gmail.com" binding:"required"`
+	Provider              string   `json:"provider" example:"gmail" binding:"required"`
+	SocialID              string   `json:"social_id" example:"social_id"`
+	Password              string   `json:"password" example:"password"`
+	Gender                string   `json:"gender" example:"male"`
+	InterestedField       string   `json:"interested_field" example:"develop"`
+	InterestedFieldDetail []string `json:"interested_field_detail" example:"web,server"`
 }

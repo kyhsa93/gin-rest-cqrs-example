@@ -3,6 +3,7 @@ package command
 import (
 	"errors"
 
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/aws"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/email"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/entity"
@@ -18,6 +19,7 @@ type Bus struct {
 	email      email.Interface
 	aws        aws.Interface
 	config     *config.Config
+	api        api.Interface
 }
 
 // New create Bus instance
@@ -26,8 +28,15 @@ func New(
 	email email.Interface,
 	aws aws.Interface,
 	config *config.Config,
+	api api.Interface,
 ) *Bus {
-	return &Bus{repository: repository, email: email, aws: aws, config: config}
+	return &Bus{
+		repository: repository,
+		email:      email,
+		aws:        aws,
+		config:     config,
+		api:        api,
+	}
 }
 
 // Handle handle command
@@ -49,16 +58,8 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	accountModel.ID = entity.ID
 	accountModel.Email = entity.Email
 	accountModel.Provider = entity.Provider
-	accountModel.Gender = entity.Gender
-	accountModel.InterestedField = entity.InterestedField
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
-	imageURL := bus.config.AWS.S3.Endpoint + "/" + bus.config.AWS.S3.Bucket + "/" + entity.FileID
-	accountModel.ImageURL = imageURL
-
-	if entity.FileID == "" {
-		accountModel.ImageURL = ""
-	}
 
 	return &accountModel
 }

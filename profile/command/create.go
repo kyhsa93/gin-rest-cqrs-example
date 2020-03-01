@@ -5,7 +5,7 @@ type CreateCommand struct {
 	Email                 string
 	AccountID             string
 	Gender                string
-	InterestedFeild       string
+	InterestedField       string
 	InterestedFieldDetail []string
 	FileID                string
 }

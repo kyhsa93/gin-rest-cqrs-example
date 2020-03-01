@@ -47,7 +47,7 @@ func InitializeAccount(
 	email := email.New(config)
 	aws := aws.New(config)
 	api := api.New(config)
-	commandBus := command.New(repository, email, aws, config)
+	commandBus := command.New(repository, email, aws, config, api)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, config, api)
 }

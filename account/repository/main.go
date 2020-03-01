@@ -21,9 +21,6 @@ type Interface interface {
 		provider string,
 		socialID string,
 		password string,
-		fileID string,
-		gender string,
-		interestedField string,
 	) (entity.Account, error)
 	Update(
 		accountID string,
@@ -31,9 +28,6 @@ type Interface interface {
 		provider string,
 		socialID string,
 		password string,
-		fileID string,
-		gender string,
-		interestedField string,
 	) (entity.Account, error)
 	FindByEmailAndProvider(
 		email string, provider string, unscoped bool,
@@ -90,9 +84,6 @@ func (repository *Repository) Create(
 	provider string,
 	socialID string,
 	password string,
-	fileID string,
-	gender string,
-	interestedField string,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
 	repository.mongo.FindOne(
@@ -104,16 +95,13 @@ func (repository *Repository) Create(
 		return sameEmailAccount, errors.New("Duplicated Email")
 	}
 	accountEntity := entity.Account{
-		ID:              accountID,
-		Email:           email,
-		Provider:        provider,
-		Password:        password,
-		SocialID:        socialID,
-		FileID:          fileID,
-		Gender:          gender,
-		InterestedField: interestedField,
-		CreatedAt:       time.Now(),
-		UpdatedAt:       time.Now(),
+		ID:        accountID,
+		Email:     email,
+		Provider:  provider,
+		Password:  password,
+		SocialID:  socialID,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	insertResult, err := repository.mongo.InsertOne(context.TODO(), accountEntity)
 	if err != nil || insertResult == nil {
@@ -130,9 +118,6 @@ func (repository *Repository) Update(
 	provider string,
 	socialID string,
 	password string,
-	fileID string,
-	gender string,
-	interestedField string,
 ) (entity.Account, error) {
 	condition := bson.M{"_id": accountID}
 	_, err := repository.mongo.UpdateOne(
@@ -140,8 +125,7 @@ func (repository *Repository) Update(
 		condition,
 		bson.M{
 			"$set": bson.M{
-				"updatedAt":       time.Now(),
-				"interestedField": interestedField,
+				"updatedAt": time.Now(),
 			},
 		},
 	)
