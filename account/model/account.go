@@ -8,12 +8,13 @@ import (
 
 // Account account model
 type Account struct {
-	ID          string    `json:"id" example:"389df385-ccaa-49c1-aee2-698ba1191857"`
+	ID          string    `json:"id" example:"accountId"`
+	ProfileID   []string  `json:"profileId" example:"profileId"`
 	Email       string    `json:"email" example:"test@gmail.com"`
 	Provider    string    `json:"provider" exmaple:"gmail"`
 	AccessToken string    `json:"accessToken" example:"accesstoken"`
-	CreatedAt   time.Time `json:"created_at" example:"2019-12-23 12:27:37"`
-	UpdatedAt   time.Time `json:"updated_at" example:"2019-12-23 12:27:37"`
+	CreatedAt   time.Time `json:"createdAt" example:"2019-12-23 12:27:37"`
+	UpdatedAt   time.Time `json:"updatedAt" example:"2019-12-23 12:27:37"`
 }
 
 // CreateAccessToken create access token with jwt

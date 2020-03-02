@@ -310,6 +310,36 @@
                     }
                 }
             }
+        },
+        "/profiles/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profiles"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "profile id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Profile"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -408,7 +438,16 @@
                 },
                 "id": {
                     "type": "string",
-                    "example": "389df385-ccaa-49c1-aee2-698ba1191857"
+                    "example": "accountId"
+                },
+                "profileId": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "profileId"
+                    ]
                 },
                 "provider": {
                     "type": "string"
@@ -447,7 +486,11 @@
         "model.Profile": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "accountId": {
+                    "type": "string",
+                    "example": "accountId"
+                },
+                "createdAt": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
                 },
@@ -456,17 +499,17 @@
                 },
                 "id": {
                     "type": "string",
-                    "example": "389df385-ccaa-49c1-aee2-698ba1191857"
+                    "example": "profileId"
                 },
-                "image_url": {
+                "imageUrl": {
                     "type": "string",
                     "example": "profile.image_url.com"
                 },
-                "interested_field": {
+                "interestedField": {
                     "type": "string",
                     "example": "develop"
                 },
-                "interested_field_detail": {
+                "interestedFieldDetail": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -476,7 +519,7 @@
                         "server"
                     ]
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
                 }

@@ -67,8 +67,14 @@ definitions:
         example: test@gmail.com
         type: string
       id:
-        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        example: accountId
         type: string
+      profileId:
+        example:
+        - profileId
+        items:
+          type: string
+        type: array
       provider:
         type: string
       updated_at:
@@ -95,28 +101,31 @@ definitions:
     type: object
   model.Profile:
     properties:
-      created_at:
+      accountId:
+        example: accountId
+        type: string
+      createdAt:
         example: "2019-12-23 12:27:37"
         type: string
       gender:
         type: string
       id:
-        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        example: profileId
         type: string
-      image_url:
+      imageUrl:
         example: profile.image_url.com
         type: string
-      interested_field:
+      interestedField:
         example: develop
         type: string
-      interested_field_detail:
+      interestedFieldDetail:
         example:
         - web
         - server
         items:
           type: string
         type: array
-      updated_at:
+      updatedAt:
         example: "2019-12-23 12:27:37"
         type: string
     type: object
@@ -314,6 +323,25 @@ paths:
             $ref: '#/definitions/model.Profile'
       security:
       - AccessToken: []
+      tags:
+      - Profiles
+  /profiles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: profile id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
       tags:
       - Profiles
 securityDefinitions:

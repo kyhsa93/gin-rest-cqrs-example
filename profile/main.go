@@ -9,6 +9,7 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/controller"
+	"github.com/kyhsa93/gin-rest-cqrs-example/profile/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/repository"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -43,5 +44,6 @@ func Initialize(
 	repository := repository.New(redisClient, mongoClient)
 	api := api.New(config)
 	commandBus := command.New(repository, config)
-	controller.New(engine, commandBus, util, config, api)
+	queryBus := query.New(config, repository)
+	controller.New(engine, commandBus, queryBus, util, config, api)
 }
