@@ -60,7 +60,7 @@ definitions:
       accessToken:
         example: accesstoken
         type: string
-      created_at:
+      createdAt:
         example: "2019-12-23 12:27:37"
         type: string
       email:
@@ -77,7 +77,7 @@ definitions:
         type: array
       provider:
         type: string
-      updated_at:
+      updatedAt:
         example: "2019-12-23 12:27:37"
         type: string
     type: object

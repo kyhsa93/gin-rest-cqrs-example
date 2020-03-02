@@ -32,6 +32,7 @@ type Interface interface {
 	FindByEmailAndProvider(
 		email string, provider string, unscoped bool,
 	) entity.Account
+	FindByEmail(email string) entity.Account
 	FindByID(id string, unscoped bool) entity.Account
 	Delete(id string) entity.Account
 }
@@ -152,17 +153,6 @@ func (repository *Repository) FindByEmailAndProvider(
 ) entity.Account {
 	accountEntity := entity.Account{}
 
-	if unscoped == true {
-		repository.mongo.FindOne(
-			context.TODO(),
-			bson.M{
-				"email": email, "provider": provider,
-				"$ne": []interface{}{bson.M{"deletedAt": nil}},
-			},
-		).Decode(accountEntity)
-		return accountEntity
-	}
-
 	if cache := repository.getCache(email); cache != nil {
 		return *cache
 	}
@@ -171,7 +161,23 @@ func (repository *Repository) FindByEmailAndProvider(
 		bson.M{"email": email, "provider": provider},
 	).Decode(&accountEntity)
 	repository.setCache(email, &accountEntity)
+	return accountEntity
+}
 
+// FindByEmail find account by email
+func (repository *Repository) FindByEmail(
+	email string,
+) entity.Account {
+	accountEntity := entity.Account{}
+
+	if cache := repository.getCache(email); cache != nil {
+		return *cache
+	}
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"email": email},
+	).Decode(&accountEntity)
+	repository.setCache(email, &accountEntity)
 	return accountEntity
 }
 

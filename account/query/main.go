@@ -28,6 +28,8 @@ func (bus *Bus) Handle(query interface{}) (*model.Account, error) {
 		return bus.handleReadAccountByIDQuery(query)
 	case *ReadAccountQuery:
 		return bus.handleReadAccountQuery(query)
+	case *ReadAccountByEmailQuery:
+		return bus.handleReadAccountByEmailquery(query)
 	default:
 		return nil, errors.New("Query can not handled")
 	}

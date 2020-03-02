@@ -13,3 +13,8 @@ type ReadAccountQuery struct {
 	Password string
 	Unscoped bool
 }
+
+// ReadAccountByEmailQuery read account by email
+type ReadAccountByEmailQuery struct {
+	Email string
+}
