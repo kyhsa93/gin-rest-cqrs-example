@@ -84,12 +84,13 @@ func (controller *Controller) create(context *gin.Context) {
 	}
 
 	command := &command.CreateCommand{
-		Email:           data.Email,
-		Provider:        data.Provider,
-		SocialID:        data.SocialID,
-		Password:        data.Password,
-		Gender:          data.Gender,
-		InterestedField: data.InterestedField,
+		Email:                 data.Email,
+		Provider:              data.Provider,
+		SocialID:              data.SocialID,
+		Password:              data.Password,
+		Gender:                data.Gender,
+		InterestedField:       data.InterestedField,
+		InterestedFieldDetail: data.InterestedFieldDetail,
 	}
 
 	createdAccount, handlingError := controller.commandBus.Handle(command)

@@ -7,10 +7,10 @@ definitions:
       gender:
         example: male
         type: string
-      interested_field:
+      interestedField:
         example: develop
         type: string
-      interested_field_detail:
+      interestedFieldDetail:
         example:
         - web
         - server
@@ -23,8 +23,8 @@ definitions:
       provider:
         example: gmail
         type: string
-      social_id:
-        example: social_id
+      socialId:
+        example: socialId
         type: string
     required:
     - email
