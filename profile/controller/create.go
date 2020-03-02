@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/dto"
+	"github.com/kyhsa93/gin-rest-cqrs-example/profile/query"
 )
 
 // @Description create profile
@@ -36,6 +37,21 @@ func (controller *Controller) create(context *gin.Context) {
 	if data.Email == "" || data.Gender == "" || data.InterestedField == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
+		return
+	}
+
+	query := &query.ReadProfileByAccountIDQuery{
+		AccountID: data.AccountID,
+	}
+	alreadyExisted, err := controller.queryBus.Handle(query)
+	if err != nil {
+		httpError := controller.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+	if alreadyExisted.ID != "" {
+		httpError := controller.util.Error.HTTP.Conflict()
+		context.JSON(httpError.Code(), "Profile is already existed.")
 		return
 	}
 
