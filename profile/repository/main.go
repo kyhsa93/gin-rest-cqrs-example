@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/entity"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -22,11 +23,9 @@ type Interface interface {
 		interestedField string,
 		interestedFieldDetail []string,
 	) (entity.Profile, error)
-	// Update(
-	// 	profileID string,
-	// 	fileID string,
-	// 	interestedField string,
-	// ) (entity.Profile, error)
+	FindByID(
+		profileID string,
+	) (entity.Profile, error)
 }
 
 // Repository repository for profile data
@@ -99,5 +98,20 @@ func (repository *Repository) Create(
 		panic(err)
 	}
 	repository.setCache(profileID, &profileEntity)
+	return profileEntity, nil
+}
+
+// FindByID find profile data by profile id
+func (repository *Repository) FindByID(
+	profileID string,
+) (entity.Profile, error) {
+	profileEntity := entity.Profile{}
+	if cache := repository.getCache(profileID); cache != nil {
+		return *cache, nil
+	}
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": profileID, "deletedAt": nil},
+	).Decode(&profileEntity)
 	return profileEntity, nil
 }

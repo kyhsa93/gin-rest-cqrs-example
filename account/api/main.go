@@ -56,7 +56,10 @@ func (api *API) CreateProfile(
 		InterestedFieldDetail: interestedFieldDetail,
 	}
 
-	byteData, _ := json.Marshal(profileDto)
+	byteData, err := json.Marshal(profileDto)
+	if err != nil {
+		panic(err)
+	}
 
 	request, err := http.NewRequest(
 		"POST",

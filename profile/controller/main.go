@@ -5,6 +5,7 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/profile/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
@@ -12,6 +13,7 @@ import (
 type Controller struct {
 	route      *gin.Engine
 	commandBus *command.Bus
+	queryBus   *query.Bus
 	util       *util.Util
 	config     *config.Config
 	api        api.Interface
@@ -21,6 +23,7 @@ type Controller struct {
 func New(
 	route *gin.Engine,
 	commandBus *command.Bus,
+	queryBus *query.Bus,
 	util *util.Util,
 	config *config.Config,
 	api api.Interface,
@@ -28,6 +31,7 @@ func New(
 	controller := &Controller{
 		route:      route,
 		commandBus: commandBus,
+		queryBus:   queryBus,
 		util:       util,
 		config:     config,
 		api:        api,
@@ -40,6 +44,9 @@ func New(
 func (controller *Controller) SetupRoutes() {
 	controller.route.POST("profiles", func(context *gin.Context) {
 		controller.create(context)
+	})
+	controller.route.GET("profiles/:id", func(context *gin.Context) {
+		controller.readByID(context)
 	})
 }
 

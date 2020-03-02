@@ -103,7 +103,10 @@ func (repository *Repository) Create(
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	insertResult, err := repository.mongo.InsertOne(context.TODO(), accountEntity)
+	insertResult, err := repository.mongo.InsertOne(
+		context.TODO(),
+		accountEntity,
+	)
 	if err != nil || insertResult == nil {
 		panic(err)
 	}
