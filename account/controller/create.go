@@ -61,9 +61,7 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	query := &query.ReadAccountQuery{
-		Email: data.Email, Password: "", Provider: "", SocialID: "", Unscoped: true,
-	}
+	query := &query.ReadAccountByEmailQuery{Email: data.Email}
 	duplicated, _ := controller.queryBus.Handle(query)
 	if duplicated.ID != "" {
 		httpError := controller.util.Error.HTTP.Conflict()

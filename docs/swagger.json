@@ -428,7 +428,7 @@
                     "type": "string",
                     "example": "accesstoken"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
                 },
@@ -452,7 +452,7 @@
                 "provider": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
                 }

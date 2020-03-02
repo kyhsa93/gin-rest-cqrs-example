@@ -49,3 +49,15 @@ func (bus *Bus) handleReadAccountQuery(
 	model.AccessToken = model.CreateAccessToken()
 	return model, nil
 }
+
+func (bus *Bus) handleReadAccountByEmailquery(
+	query *ReadAccountByEmailQuery,
+) (*model.Account, error) {
+	entity := bus.repository.FindByEmail(query.Email)
+	if entity.ID == "" {
+		return &model.Account{}, nil
+	}
+	model := bus.entityToModel(entity)
+	model.AccessToken = model.CreateAccessToken()
+	return model, nil
+}
