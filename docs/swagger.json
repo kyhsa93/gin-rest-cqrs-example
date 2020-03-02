@@ -358,11 +358,11 @@
                     "type": "string",
                     "example": "male"
                 },
-                "interested_field": {
+                "interestedField": {
                     "type": "string",
                     "example": "develop"
                 },
-                "interested_field_detail": {
+                "interestedFieldDetail": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -380,9 +380,9 @@
                     "type": "string",
                     "example": "gmail"
                 },
-                "social_id": {
+                "socialId": {
                     "type": "string",
-                    "example": "social_id"
+                    "example": "socialId"
                 }
             }
         },
