@@ -25,6 +25,8 @@ func (bus *Bus) Handle(query interface{}) (*model.Profile, error) {
 	switch query := query.(type) {
 	case *ReadProfileByIDQuery:
 		return bus.handleReadProfileByIDQuery(query)
+	case *ReadProfileByAccountIDQuery:
+		return bus.handleReadProfileByAccountIDQuery(query)
 	default:
 		return nil, errors.New("Invalid query")
 	}

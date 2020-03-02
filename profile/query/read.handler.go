@@ -19,3 +19,15 @@ func (bus *Bus) handleReadProfileByIDQuery(
 	}
 	return bus.entityToModel(profileEntity), nil
 }
+
+func (bus *Bus) handleReadProfileByAccountIDQuery(
+	query *ReadProfileByAccountIDQuery,
+) (*model.Profile, error) {
+	profileEntity, err := bus.repository.FindByAccountID(
+		query.AccountID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return bus.entityToModel(profileEntity), nil
+}

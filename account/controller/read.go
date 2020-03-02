@@ -72,7 +72,12 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		return
 	}
 
-	data := &dto.Account{Email: email, Provider: provider, SocialID: socialID, Password: password}
+	data := &dto.Account{
+		Email:    email,
+		Provider: provider,
+		SocialID: socialID,
+		Password: password,
+	}
 
 	_, existedProvider := dto.Provider()[data.Provider]
 	if existedProvider == false {

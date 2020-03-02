@@ -4,3 +4,8 @@ package query
 type ReadProfileByIDQuery struct {
 	ProfileID string
 }
+
+// ReadProfileByAccountIDQuery read profile data by accountID
+type ReadProfileByAccountIDQuery struct {
+	AccountID string
+}

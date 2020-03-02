@@ -26,6 +26,9 @@ type Interface interface {
 	FindByID(
 		profileID string,
 	) (entity.Profile, error)
+	FindByAccountID(
+		accountID string,
+	) (entity.Profile, error)
 }
 
 // Repository repository for profile data
@@ -112,6 +115,21 @@ func (repository *Repository) FindByID(
 	repository.mongo.FindOne(
 		context.TODO(),
 		bson.M{"_id": profileID, "deletedAt": nil},
+	).Decode(&profileEntity)
+	return profileEntity, nil
+}
+
+// FindByAccountID find profile by accountID
+func (repository *Repository) FindByAccountID(
+	accountID string,
+) (entity.Profile, error) {
+	profileEntity := entity.Profile{}
+	if cache := repository.getCache(accountID); cache != nil {
+		return *cache, nil
+	}
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"accountId": accountID, "deletedAt": nil},
 	).Decode(&profileEntity)
 	return profileEntity, nil
 }
