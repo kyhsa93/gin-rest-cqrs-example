@@ -16,7 +16,7 @@ func (bus *Bus) handleReadAccountByIDQuery(
 	}
 
 	model := bus.entityToModel(entity)
-	model.AccessToken = model.CreateAccessToken()
+	model.CreateAccessToken()
 	return model, nil
 }
 
@@ -46,7 +46,7 @@ func (bus *Bus) handleReadAccountQuery(
 	}
 
 	model := bus.entityToModel(entity)
-	model.AccessToken = model.CreateAccessToken()
+	model.CreateAccessToken()
 	return model, nil
 }
 
@@ -58,6 +58,6 @@ func (bus *Bus) handleReadAccountByEmailquery(
 		return &model.Account{}, nil
 	}
 	model := bus.entityToModel(entity)
-	model.AccessToken = model.CreateAccessToken()
+	model.CreateAccessToken()
 	return model, nil
 }

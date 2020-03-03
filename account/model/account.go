@@ -18,7 +18,7 @@ type Account struct {
 }
 
 // CreateAccessToken create access token with jwt
-func (account *Account) CreateAccessToken() string {
+func (account *Account) CreateAccessToken() {
 	expirationTime := time.Now().Add(500 * time.Minute)
 	claims := jwt.StandardClaims{ExpiresAt: expirationTime.Unix(), Issuer: account.ID}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -27,8 +27,7 @@ func (account *Account) CreateAccessToken() string {
 	if tokenError != nil {
 		panic(tokenError)
 	}
-
-	return tokenString
+	account.AccessToken = tokenString
 }
 
 // ValidateAccessToken validation token in Account model
