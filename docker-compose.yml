@@ -24,12 +24,12 @@ services:
     restart: always
 
   database:
-    image: mysql:5.7
+    image: mongo
     restart: always
     env_file:
       - .env
     volumes:
-      - ~/database/gin-rest-cqrs-example:/var/lib/mysql
+      - ~/database/gin-rest-cqrs-example:/data/db
 
   localstack:
     image: localstack/localstack
