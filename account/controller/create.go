@@ -71,15 +71,18 @@ func (controller *Controller) create(context *gin.Context) {
 
 	dto.FilterAccountAttributeByProvider(&data)
 
-	if validate := dto.ValidateAccountAttributeByProvider(&data); validate == false {
+	if !dto.ValidateAccountAttributeByProvider(&data) {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	if validate := dto.ValidateInterestedFieldAttribute(&data); validate == false {
+	if !dto.ValidateInterestedFieldAttribute(&data) {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "InterestedField is must be one of 'develop', 'design' and 'manage'.")
+		context.JSON(
+			httpError.Code(),
+			"InterestedField is must be one of 'develop', 'design' and 'manage'.",
+		)
 		return
 	}
 
