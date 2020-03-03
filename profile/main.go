@@ -16,14 +16,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func getMongoDBClient() *mongo.Collection {
-	clientOptions := options.Client().ApplyURI("mongodb://root:test@localhost:27017")
+func getMongoDBClient(config *config.Config) *mongo.Collection {
+	clientOptions := options.Client().ApplyURI(
+		"mongodb://" +
+			config.Database.User + ":" + config.Database.Password +
+			"@" + config.Database.Host + ":" + config.Database.Port,
+	)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
 	}
 	client.Ping(context.TODO(), nil)
-	collection := client.Database("gin-rest-cqrs-example").Collection("profiles")
+	collection := client.Database(
+		config.Database.Name,
+	).Collection("profiles")
 
 	return collection
 }
@@ -39,7 +45,7 @@ func getRedisClient(config *config.Config) *redis.Client {
 func Initialize(
 	engine *gin.Engine, config *config.Config, util *util.Util,
 ) {
-	mongoClient := getMongoDBClient()
+	mongoClient := getMongoDBClient(config)
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, mongoClient)
 	api := api.New(config)
