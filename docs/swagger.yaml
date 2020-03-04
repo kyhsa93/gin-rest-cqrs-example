@@ -1,8 +1,11 @@
 definitions:
-  dto.Account:
+  body.CreateAccount:
     properties:
       email:
         example: test@gmail.com
+        type: string
+      fcmToken:
+        example: fcmToken
         type: string
       gender:
         example: male
@@ -29,6 +32,22 @@ definitions:
     required:
     - email
     - provider
+    type: object
+  body.UpdateAccount:
+    properties:
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+      password:
+        example: password
+        type: string
     type: object
   dto.Profile:
     properties:
@@ -172,10 +191,10 @@ paths:
       parameters:
       - description: Create Account data
         in: body
-        name: account
+        name: CreateAccount
         required: true
         schema:
-          $ref: '#/definitions/dto.Account'
+          $ref: '#/definitions/body.CreateAccount'
           type: object
       produces:
       - application/json
@@ -236,10 +255,10 @@ paths:
         type: string
       - description: Update Account data
         in: body
-        name: account
+        name: UpdateAccount
         required: true
         schema:
-          $ref: '#/definitions/dto.Account'
+          $ref: '#/definitions/body.UpdateAccount'
           type: object
       produces:
       - application/json

@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path string true "account id"
-// @Param account body dto.Account true "Update Account data"
+// @Param UpdateAccount body body.UpdateAccount true "Update Account data"
 // @Success 200 {object} model.Account
 // @Router /accounts/{id} [put]
 // @Security AccessToken
