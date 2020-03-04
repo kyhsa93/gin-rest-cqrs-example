@@ -15,7 +15,7 @@ import (
 // @Tags Accounts
 // @Accept json
 // @Produce json
-// @Param account body dto.Account true "Create Account data"
+// @Param CreateAccount body body.CreateAccount true "Create Account data"
 // @Success 201 {object} model.Account
 // @Router /accounts [post]
 func (controller *Controller) create(context *gin.Context) {
