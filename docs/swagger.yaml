@@ -35,6 +35,9 @@ definitions:
     type: object
   body.UpdateAccount:
     properties:
+      fcmToken:
+        example: fcmToken
+        type: string
       interestedField:
         example: develop
         type: string
@@ -88,12 +91,6 @@ definitions:
       id:
         example: accountId
         type: string
-      profileId:
-        example:
-        - profileId
-        items:
-          type: string
-        type: array
       provider:
         type: string
       updatedAt:

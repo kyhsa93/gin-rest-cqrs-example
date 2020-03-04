@@ -92,6 +92,7 @@ func (controller *Controller) create(context *gin.Context) {
 		SocialID:              data.SocialID,
 		Password:              data.Password,
 		Gender:                data.Gender,
+		FCMToken:              data.FCMToken,
 		InterestedField:       data.InterestedField,
 		InterestedFieldDetail: data.InterestedFieldDetail,
 	}

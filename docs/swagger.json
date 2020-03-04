@@ -393,6 +393,10 @@
         "body.UpdateAccount": {
             "type": "object",
             "properties": {
+                "fcmToken": {
+                    "type": "string",
+                    "example": "fcmToken"
+                },
                 "interestedField": {
                     "type": "string",
                     "example": "develop"
@@ -466,15 +470,6 @@
                 "id": {
                     "type": "string",
                     "example": "accountId"
-                },
-                "profileId": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "profileId"
-                    ]
                 },
                 "provider": {
                     "type": "string"

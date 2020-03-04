@@ -21,6 +21,7 @@ type Interface interface {
 		provider string,
 		socialID string,
 		password string,
+		fcmToken string,
 	) (entity.Account, error)
 	Update(
 		accountID string,
@@ -85,6 +86,7 @@ func (repository *Repository) Create(
 	provider string,
 	socialID string,
 	password string,
+	fcmToken string,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
 	repository.mongo.FindOne(
@@ -101,6 +103,7 @@ func (repository *Repository) Create(
 		Provider:  provider,
 		Password:  password,
 		SocialID:  socialID,
+		FCMToken:  fcmToken,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
