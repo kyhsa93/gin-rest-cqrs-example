@@ -9,7 +9,6 @@ import (
 // Account account model
 type Account struct {
 	ID          string    `json:"id" example:"accountId"`
-	ProfileID   []string  `json:"profileId" example:"profileId"`
 	Email       string    `json:"email" example:"test@gmail.com"`
 	Provider    string    `json:"provider" exmaple:"gmail"`
 	AccessToken string    `json:"accessToken" example:"accesstoken"`

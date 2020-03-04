@@ -6,6 +6,7 @@ type CreateCommand struct {
 	Provider              string
 	SocialID              string
 	Password              string
+	FCMToken              string
 	Gender                string
 	InterestedField       string
 	InterestedFieldDetail []string

@@ -68,6 +68,7 @@ type Account struct {
 	Provider              string   `json:"provider" example:"gmail" binding:"required"`
 	SocialID              string   `json:"socialId" example:"socialId"`
 	Password              string   `json:"password" example:"password"`
+	FCMToken              string   `json:"fcmToken" example:"fcmToken"`
 	Gender                string   `json:"gender" example:"male"`
 	InterestedField       string   `json:"interestedField" example:"develop"`
 	InterestedFieldDetail []string `json:"interestedFieldDetail" example:"web,server"`

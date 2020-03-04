@@ -18,6 +18,7 @@ func (bus *Bus) handleCreateCommand(
 		command.Provider,
 		hashedSocialID,
 		hashedPassword,
+		command.FCMToken,
 	)
 	if createError != nil {
 		return nil, createError
