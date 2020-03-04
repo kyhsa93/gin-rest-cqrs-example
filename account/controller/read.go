@@ -72,24 +72,22 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		return
 	}
 
-	data := &dto.Account{
+	data := &dto.ReadAccount{
 		Email:    email,
 		Provider: provider,
 		SocialID: socialID,
 		Password: password,
 	}
 
-	_, existedProvider := dto.Provider()[data.Provider]
-	if existedProvider == false {
+	if !data.ValidateProvider() {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
 		return
 	}
 
-	dto.FilterAccountAttributeByProvider(data)
+	data.FilterAccountAttributeByProvider()
 
-	validate := dto.ValidateAccountAttributeByProvider(data)
-	if validate == false {
+	if !data.ValidateAccountAttributeByProvider() {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return

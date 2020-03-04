@@ -22,13 +22,12 @@ type Interface interface {
 		socialID string,
 		password string,
 		fcmToken string,
+		gender string,
 	) (entity.Account, error)
 	Update(
 		accountID string,
-		email string,
-		provider string,
-		socialID string,
 		password string,
+		fcmToken string,
 	) (entity.Account, error)
 	FindByEmailAndProvider(
 		email string, provider string, unscoped bool,
@@ -87,6 +86,7 @@ func (repository *Repository) Create(
 	socialID string,
 	password string,
 	fcmToken string,
+	gender string,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
 	repository.mongo.FindOne(
@@ -104,6 +104,7 @@ func (repository *Repository) Create(
 		Password:  password,
 		SocialID:  socialID,
 		FCMToken:  fcmToken,
+		Gender:    gender,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -121,10 +122,8 @@ func (repository *Repository) Create(
 // Update update account
 func (repository *Repository) Update(
 	accountID string,
-	email string,
-	provider string,
-	socialID string,
 	password string,
+	fcmToken string,
 ) (entity.Account, error) {
 	condition := bson.M{"_id": accountID}
 	_, err := repository.mongo.UpdateOne(
@@ -132,6 +131,8 @@ func (repository *Repository) Update(
 		condition,
 		bson.M{
 			"$set": bson.M{
+				"password":  password,
+				"fcmToken":  fcmToken,
 				"updatedAt": time.Now(),
 			},
 		},

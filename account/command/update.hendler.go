@@ -13,21 +13,23 @@ func (bus *Bus) handleUpdateCommand(
 	if oldData.ID == "" {
 		return nil, errors.New("Update target Account data is not found")
 	}
-	hashedPassword, hashedSocialID :=
-		getHashedPasswordAndSocialID(command.Password, command.SocialID)
+	hashedPassword, _ :=
+		getHashedPasswordAndSocialID(command.Password, "")
+
+	if command.Password == "" {
+		hashedPassword = oldData.Password
+	}
 
 	updatedAccountEntity, updateError := bus.repository.Update(
 		oldData.ID,
-		command.Email,
-		command.Provider,
-		hashedSocialID,
 		hashedPassword,
+		command.FCMToken,
 	)
 	if updateError != nil {
 		return nil, updateError
 	}
 
-	bus.email.Send([]string{command.Email}, "Account is updated.")
+	bus.email.Send([]string{oldData.Email}, "Account is updated.")
 	accountModel := bus.entityToModel(updatedAccountEntity)
 	accountModel.CreateAccessToken()
 	return accountModel, nil

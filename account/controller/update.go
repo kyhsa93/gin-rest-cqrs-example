@@ -3,7 +3,6 @@ package controller
 import (
 	"net/http"
 
-	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/dto"
@@ -20,7 +19,7 @@ import (
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
 	controller.AuthenticateHTTPRequest(context)
-	var data dto.Account
+	var data dto.UpdateAccount
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
@@ -35,62 +34,27 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
-		data.InterestedField == "" || (data.SocialID == "" && data.Password == "") {
+	if data.FCMToken == "" || data.InterestedField == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
 		return
 	}
 
-	if !emailAndProviderValidation(data.Email, data.Provider) {
+	if !data.ValidateInterestedFieldAttribute() {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email and Provider is not matched.")
-		return
-	}
-
-	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
-	if emaiFormatlValidationError != nil {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email format is not valid.")
-		return
-	}
-
-	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
-	if emaiHostlValidationError != nil {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email host is not existed.")
-		return
-	}
-
-	_, existedProvider := dto.Provider()[data.Provider]
-	if existedProvider == false {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
-		return
-	}
-
-	dto.FilterAccountAttributeByProvider(&data)
-
-	if validate := dto.ValidateAccountAttributeByProvider(&data); validate == false {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	if validate := dto.ValidateInterestedFieldAttribute(&data); validate == false {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "InterestedField is must be one of 'develop', 'design' and 'manage'.")
+		context.JSON(
+			httpError.Code(),
+			"InterestedField is must be one of 'develop', 'design' and 'manage'.",
+		)
 		return
 	}
 
 	command := &command.UpdateCommand{
-		AccountID:       id,
-		Email:           data.Email,
-		Provider:        data.Provider,
-		SocialID:        data.SocialID,
-		Password:        data.Password,
-		Gender:          data.Gender,
-		InterestedField: data.InterestedField,
+		AccountID:             id,
+		Password:              data.Password,
+		InterestedField:       data.InterestedField,
+		FCMToken:              data.FCMToken,
+		InterestedFieldDetail: data.InterestedFieldDetail,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)

@@ -19,7 +19,7 @@ import (
 // @Success 201 {object} model.Account
 // @Router /accounts [post]
 func (controller *Controller) create(context *gin.Context) {
-	var data dto.Account
+	var data dto.CreateAccount
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
@@ -30,34 +30,39 @@ func (controller *Controller) create(context *gin.Context) {
 	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
 		data.InterestedField == "" || (data.SocialID == "" && data.Password == "") {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Empty data is included.")
+		context.JSON(httpError.Code(), "Empty data is included")
 		return
 	}
 
 	if !emailAndProviderValidation(data.Email, data.Provider) {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email and Provider is not matched.")
+		context.JSON(httpError.Code(), "Email and Provider is not matched")
 		return
 	}
 
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email format is not valid.")
+		context.JSON(httpError.Code(), "Email format is not valid")
 		return
 	}
 
 	emaiHostlValidationError := checkmail.ValidateHost(data.Email)
 	if emaiHostlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email host is not existed.")
+		context.JSON(httpError.Code(), "Email host is not existed")
 		return
 	}
 
-	_, existedProvider := dto.Provider()[data.Provider]
-	if existedProvider == false {
+	if !data.ValidateAccountGender() {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
+		context.JSON(httpError.Code(), "Gender is nust one of 'male' or female")
+		return
+	}
+
+	if !data.ValidateProvider() {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'")
 		return
 	}
 
@@ -65,23 +70,23 @@ func (controller *Controller) create(context *gin.Context) {
 	duplicated, _ := controller.queryBus.Handle(query)
 	if duplicated.ID != "" {
 		httpError := controller.util.Error.HTTP.Conflict()
-		context.JSON(httpError.Code(), "Email is duplicated.")
+		context.JSON(httpError.Code(), "Email is duplicated")
 		return
 	}
 
-	dto.FilterAccountAttributeByProvider(&data)
+	data.FilterAccountAttributeByProvider()
 
-	if !dto.ValidateAccountAttributeByProvider(&data) {
+	if !data.ValidateAccountAttributeByProvider() {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	if !dto.ValidateInterestedFieldAttribute(&data) {
+	if !data.ValidateInterestedFieldAttribute() {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(
 			httpError.Code(),
-			"InterestedField is must be one of 'develop', 'design' and 'manage'.",
+			"InterestedField is must be one of 'develop', 'design' and 'manage'",
 		)
 		return
 	}
