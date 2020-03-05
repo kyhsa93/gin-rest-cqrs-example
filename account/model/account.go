@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -29,10 +30,10 @@ func (account *Account) CreateAccessToken() {
 	account.AccessToken = tokenString
 }
 
-// ValidateAccessToken validation token in Account model
-func (account *Account) ValidateAccessToken() bool {
+// GetTokenIssuer get accesstokrn issuer from jwt
+func (account *Account) GetTokenIssuer() (string, error) {
 	if account.AccessToken == "" {
-		return false
+		return "", errors.New("token does not exist")
 	}
 	claims := &jwt.StandardClaims{}
 	jwtToken, _ := jwt.ParseWithClaims(
@@ -42,7 +43,7 @@ func (account *Account) ValidateAccessToken() bool {
 			return []byte("access token secret"), nil
 		})
 	if jwtToken.Valid == true && claims.Issuer != "" {
-		return true
+		return claims.Issuer, nil
 	}
-	return false
+	return "", errors.New("Token is invalid")
 }

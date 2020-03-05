@@ -7,7 +7,7 @@ type Server struct {
 	Port              string `env:"PORT" envDefault:"5000"`
 	Mode              string `env:"MODE" envDefault:"debug"`
 	FileAPIAddress    string `env:"FILE_API_ADDRESS" envDefault:"http://localhost:5000/files"`
-	AccountAPIAddress string `env:"ACCOUNT_API_ADDRESS" envDefault:"http://localhost:5000/accounts"`
+	AccountAPIAddress string `env:"ACCOUNT_API_ADDRESS" envDefault:"http://localhost:5000/account"`
 	ProfileAPIAddress string `env:"PROFILE_API_ADDRESS" envDefault:"http://localhost:5000/profiles"`
 }
 

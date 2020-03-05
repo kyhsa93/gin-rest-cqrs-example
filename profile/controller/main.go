@@ -1,7 +1,10 @@
 package controller
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/command"
@@ -50,18 +53,20 @@ func (controller *Controller) SetupRoutes() {
 	})
 }
 
-// AuthenticateHTTPReqeust check http request auth
-func (controller *Controller) AuthenticateHTTPReqeust(
-	accessToken string, accountID string,
-) bool {
-	if accessToken == "" || accountID == "" {
-		return false
+// GetAccountByAccessToken check http request auth
+func (controller *Controller) GetAccountByAccessToken(
+	accessToken string,
+) (model.Account, error) {
+	if accessToken == "" {
+		return model.Account{}, errors.New("token is empty")
 	}
-	account, err := controller.api.GetAccountByID(accessToken, accountID)
-	if err != nil || account.ID != accountID {
-		return false
+	account, err := controller.api.GetAccountByAccessToken(
+		accessToken,
+	)
+	if account == nil || err != nil {
+		return model.Account{}, errors.New("token is invalid")
 	}
-	return true
+	return *account, nil
 }
 
 // ValidateFileID validate image key

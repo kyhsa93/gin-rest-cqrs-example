@@ -18,18 +18,21 @@ import (
 // @Router /profiles [post]
 // @Security AccessToken
 func (controller *Controller) create(context *gin.Context) {
-	var data dto.Profile
+	accessToken := context.GetHeader("Authorization")
 
-	if bindError := context.ShouldBindJSON(&data); bindError != nil {
-		httpError := controller.util.Error.HTTP.BadRequest()
+	account, err := controller.GetAccountByAccessToken(accessToken)
+	if account.ID == "" || err != nil {
+		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	accessToken := context.GetHeader("Authorization")
-	auth := controller.AuthenticateHTTPReqeust(accessToken, data.AccountID)
-	if !auth {
-		httpError := controller.util.Error.HTTP.Unauthorized()
+	var data dto.Profile
+
+	data.AccountID = account.ID
+
+	if bindError := context.ShouldBindJSON(&data); bindError != nil {
+		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}

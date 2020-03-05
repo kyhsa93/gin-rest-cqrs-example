@@ -12,12 +12,12 @@ import (
 )
 
 // @Description create account
-// @Tags Accounts
+// @Tags Account
 // @Accept json
 // @Produce json
 // @Param CreateAccount body body.CreateAccount true "Create Account data"
 // @Success 201 {object} model.Account
-// @Router /accounts [post]
+// @Router /account [post]
 func (controller *Controller) create(context *gin.Context) {
 	var data dto.CreateAccount
 

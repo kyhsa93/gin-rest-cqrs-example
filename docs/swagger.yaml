@@ -149,7 +149,18 @@ info:
   contact: {}
   license: {}
 paths:
-  /accounts:
+  /account:
+    delete:
+      description: delete account
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
+      tags:
+      - Account
     get:
       consumes:
       - application/json
@@ -157,12 +168,10 @@ paths:
       - description: account email
         in: query
         name: email
-        required: true
         type: string
       - description: account service provider
         in: query
         name: provider
-        required: true
         type: string
       - description: account password (email provider only)
         in: query
@@ -179,8 +188,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
       tags:
-      - Accounts
+      - Account
     post:
       consumes:
       - application/json
@@ -201,55 +212,12 @@ paths:
           schema:
             $ref: '#/definitions/model.Account'
       tags:
-      - Accounts
-  /accounts/{id}:
-    delete:
-      description: delete account by id
-      parameters:
-      - description: account Id
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Account'
-      security:
-      - AccessToken: []
-      tags:
-      - Accounts
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: account id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Account'
-      security:
-      - AccessToken: []
-      tags:
-      - Accounts
+      - Account
     put:
       consumes:
       - application/json
       description: update account
       parameters:
-      - description: account id
-        in: path
-        name: id
-        required: true
-        type: string
       - description: Update Account data
         in: body
         name: UpdateAccount
@@ -267,7 +235,7 @@ paths:
       security:
       - AccessToken: []
       tags:
-      - Accounts
+      - Account
   /files:
     post:
       consumes:
