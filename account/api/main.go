@@ -48,7 +48,7 @@ func (api *API) CreateProfile(
 	interestedField string,
 	interestedFieldDetail []string,
 ) (*profile.Profile, error) {
-	profileDto := dto.Profile{
+	profileDto := dto.CreateProfile{
 		AccountID:             accountID,
 		Email:                 email,
 		Gender:                gender,

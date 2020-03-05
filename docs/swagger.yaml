@@ -33,6 +33,28 @@ definitions:
     - email
     - provider
     type: object
+  body.CreateProfile:
+    properties:
+      accountId:
+        example: accountId
+        type: string
+      email:
+        example: test@gmail.com
+        type: string
+      gender:
+        example: male
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+    type: object
   body.UpdateAccount:
     properties:
       fcmToken:
@@ -51,31 +73,6 @@ definitions:
       password:
         example: password
         type: string
-    type: object
-  dto.Profile:
-    properties:
-      accountId:
-        example: account_id
-        type: string
-      email:
-        example: test@gmail.com
-        type: string
-      fileId:
-        example: fileId
-        type: string
-      gender:
-        example: male
-        type: string
-      interestedField:
-        example: develop
-        type: string
-      interestedFieldDetail:
-        example:
-        - web
-        - server
-        items:
-          type: string
-        type: array
     type: object
   model.Account:
     properties:
@@ -99,16 +96,16 @@ definitions:
     type: object
   model.File:
     properties:
-      account_id:
+      accountId:
         example: 389df385-ccaa-49c1-aee2-698ba1191857
         type: string
-      created_at:
+      createdAt:
         example: "2019-12-23 12:27:37"
         type: string
       id:
         example: 389df385-ccaa-49c1-aee2-698ba1191857
         type: string
-      image_url:
+      imageUrl:
         example: profile.image_url.com
         type: string
       usage:
@@ -291,7 +288,7 @@ paths:
         name: profile
         required: true
         schema:
-          $ref: '#/definitions/dto.Profile'
+          $ref: '#/definitions/body.CreateProfile'
           type: object
       produces:
       - application/json

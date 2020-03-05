@@ -13,7 +13,7 @@ import (
 // @Tags Profiles
 // @Accept json
 // @Produce json
-// @Param profile body dto.Profile true "Create Profile data"
+// @Param profile body body.CreateProfile true "Create Profile data"
 // @Success 201 {object} model.Profile
 // @Router /profiles [post]
 // @Security AccessToken
@@ -27,7 +27,7 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	var data dto.Profile
+	var data dto.CreateProfile
 
 	data.AccountID = account.ID
 
@@ -58,17 +58,10 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if !controller.ValidateFileID(data.AccountID, data.FileID) {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Invalid fileId")
-		return
-	}
-
 	command := &command.CreateCommand{
 		Email:                 data.Email,
 		AccountID:             data.AccountID,
 		Gender:                data.Gender,
-		FileID:                data.FileID,
 		InterestedField:       data.InterestedField,
 		InterestedFieldDetail: data.InterestedFieldDetail,
 	}
