@@ -10,7 +10,9 @@ import (
 
 // Interface api interface
 type Interface interface {
-	GetAccountByID(accessToken string, accountID string) (*model.Account, error)
+	GetAccountByAccessToken(
+		accessToken string,
+	) (*model.Account, error)
 }
 
 // API api struct
@@ -23,12 +25,16 @@ func New(config *config.Config) *API {
 	return &API{accountAPIURL: config.Server.AccountAPIAddress}
 }
 
-// GetAccountByID get account data from account service using accountID
-func (api *API) GetAccountByID(
-	accessToken string, accountID string,
+// GetAccountByAccessToken get account data from account service by accesstoken
+func (api *API) GetAccountByAccessToken(
+	accessToken string,
 ) (*model.Account, error) {
-	accountServiceEndpoint := api.accountAPIURL + "/" + accountID
-	request, createNewReqeustError := http.NewRequest("GET", accountServiceEndpoint, nil)
+	accountServiceEndpoint := api.accountAPIURL
+	request, createNewReqeustError := http.NewRequest(
+		"GET",
+		accountServiceEndpoint,
+		nil,
+	)
 	if createNewReqeustError != nil {
 		return nil, createNewReqeustError
 	}

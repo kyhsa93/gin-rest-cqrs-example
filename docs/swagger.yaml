@@ -242,11 +242,6 @@ paths:
       - multipart/form-data
       description: create file
       parameters:
-      - description: accountId
-        in: formData
-        name: account_id
-        required: true
-        type: string
       - description: file usage
         in: formData
         name: usage

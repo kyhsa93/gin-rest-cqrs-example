@@ -12,7 +12,6 @@ import (
 // @Tags Files
 // @Accept multipart/form-data
 // @Produce json
-// @Param account_id formData string true "accountId"
 // @Param usage formData string true "file usage"
 // @Param image formData file false "Profile image file"
 // @Success 201
@@ -20,9 +19,8 @@ import (
 // @Security AccessToken
 func (controller *Controller) create(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")
-	accountID := context.PostForm("account_id")
-	auth := controller.AuthenticateHTTPReqeust(accessToken, accountID)
-	if !auth {
+	account, err := controller.GetAccountByAccessToken(accessToken)
+	if account.ID == "" || err != nil {
 		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
@@ -31,7 +29,7 @@ func (controller *Controller) create(context *gin.Context) {
 	usage := context.PostForm("usage")
 	image, _ := context.FormFile("image")
 	dto := dto.File{
-		AccountID: accountID,
+		AccountID: account.ID,
 		Usage:     usage,
 		File:      image,
 	}
@@ -43,7 +41,7 @@ func (controller *Controller) create(context *gin.Context) {
 	}
 
 	command := &command.CreateCommand{
-		AccountID: accountID,
+		AccountID: account.ID,
 		Usage:     usage,
 		Image:     image,
 	}
