@@ -165,13 +165,6 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "accountId",
-                        "name": "account_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "file usage",
                         "name": "usage",
                         "in": "formData",

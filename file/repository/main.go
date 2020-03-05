@@ -73,6 +73,7 @@ func (repository *Repository) Create(
 		ID:        fileID,
 		AccountID: accountID,
 		Usage:     usage,
+		CreatedAt: time.Now(),
 	}
 
 	insertResult, err := repository.mongo.InsertOne(
