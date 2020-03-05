@@ -242,7 +242,7 @@
                         "required": true,
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/dto.Profile"
+                            "$ref": "#/definitions/body.CreateProfile"
                         }
                     }
                 ],
@@ -335,6 +335,37 @@
                 }
             }
         },
+        "body.CreateProfile": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string",
+                    "example": "accountId"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "interestedField": {
+                    "type": "string",
+                    "example": "develop"
+                },
+                "interestedFieldDetail": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "web",
+                        "server"
+                    ]
+                }
+            }
+        },
         "body.UpdateAccount": {
             "type": "object",
             "properties": {
@@ -359,41 +390,6 @@
                 "password": {
                     "type": "string",
                     "example": "password"
-                }
-            }
-        },
-        "dto.Profile": {
-            "type": "object",
-            "properties": {
-                "accountId": {
-                    "type": "string",
-                    "example": "account_id"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "test@gmail.com"
-                },
-                "fileId": {
-                    "type": "string",
-                    "example": "fileId"
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "male"
-                },
-                "interestedField": {
-                    "type": "string",
-                    "example": "develop"
-                },
-                "interestedFieldDetail": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "web",
-                        "server"
-                    ]
                 }
             }
         },
@@ -428,11 +424,11 @@
         "model.File": {
             "type": "object",
             "properties": {
-                "account_id": {
+                "accountId": {
                     "type": "string",
                     "example": "389df385-ccaa-49c1-aee2-698ba1191857"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string",
                     "example": "2019-12-23 12:27:37"
                 },
@@ -440,7 +436,7 @@
                     "type": "string",
                     "example": "389df385-ccaa-49c1-aee2-698ba1191857"
                 },
-                "image_url": {
+                "imageUrl": {
                     "type": "string",
                     "example": "profile.image_url.com"
                 },

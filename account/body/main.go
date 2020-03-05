@@ -1,6 +1,6 @@
 package body
 
-// CreateAccount request body for POST /accounts
+// CreateAccount request body for POST /account
 type CreateAccount struct {
 	Email                 string   `json:"email" example:"test@gmail.com" binding:"required"`
 	Provider              string   `json:"provider" example:"gmail" binding:"required"`
@@ -12,7 +12,7 @@ type CreateAccount struct {
 	InterestedFieldDetail []string `json:"interestedFieldDetail" example:"web,server"`
 }
 
-// UpdateAccount request body for PUT /accounts
+// UpdateAccount request body for PUT /account
 type UpdateAccount struct {
 	Password              string   `json:"password" example:"password"`
 	FCMToken              string   `json:"fcmToken" example:"fcmToken"`
