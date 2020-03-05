@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
+	"github.com/kyhsa93/gin-rest-cqrs-example/account/model"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/query"
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
@@ -44,58 +46,44 @@ func New(
 
 // SetupRoutes setup accounts route handler
 func (controller *Controller) SetupRoutes() {
-	controller.route.POST("accounts", func(context *gin.Context) {
+	controller.route.POST("account", func(context *gin.Context) {
 		controller.create(context)
 	})
 
-	controller.route.GET("accounts/:id", func(context *gin.Context) {
-		controller.readAccountByID(context)
-	})
-
-	controller.route.GET("accounts", func(context *gin.Context) {
+	controller.route.GET("account", func(context *gin.Context) {
 		controller.readAccount(context)
 	})
 
-	controller.route.PUT("accounts/:id", func(context *gin.Context) {
+	controller.route.PUT("account", func(context *gin.Context) {
 		controller.update(context)
 	})
 
-	controller.route.DELETE("accounts/:id", func(context *gin.Context) {
+	controller.route.DELETE("account", func(context *gin.Context) {
 		controller.delete(context)
 	})
 }
 
-// AuthenticateHTTPRequest check http request auth
-func (controller *Controller) AuthenticateHTTPRequest(context *gin.Context) {
-	accessToken := context.GetHeader("Authorization")
+// GetAccountByAccessToken get account data by accesstoken
+func (controller *Controller) GetAccountByAccessToken(
+	accessToken string,
+) (model.Account, error) {
 	if accessToken == "" {
-		httpError := controller.util.Error.HTTP.Unauthorized()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
+		return model.Account{}, errors.New("token is empty")
 	}
 
-	id := context.Param("id")
-	if id == "" {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
+	account := &model.Account{AccessToken: accessToken}
+
+	accountID, err := account.GetTokenIssuer()
+	if accountID == "" || err != nil {
+		return model.Account{}, errors.New("token is invalid")
 	}
 
-	query := &query.ReadAccountByIDQuery{AccountID: id}
+	query := &query.ReadAccountByIDQuery{AccountID: accountID}
 	account, queryError := controller.queryBus.Handle(query)
 	if queryError != nil {
-		httpError := controller.util.Error.HTTP.Unauthorized()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
+		return model.Account{}, errors.New("account query error is occurred")
 	}
-
-	account.AccessToken = accessToken
-	if !account.ValidateAccessToken() {
-		httpError := controller.util.Error.HTTP.Forbidden()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-	return
+	return *account, nil
 }
 
 func emailAndProviderValidation(email string, provider string) bool {

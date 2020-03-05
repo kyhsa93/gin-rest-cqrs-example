@@ -7,19 +7,22 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/command"
 )
 
-// @Description delete account by id
-// @Tags Accounts
-// @Param id path string true "account Id"
+// @Description delete account
+// @Tags Account
 // @Success 200 {object} model.Account
-// @Router /accounts/{id} [delete]
+// @Router /account [delete]
 // @Security AccessToken
 func (controller *Controller) delete(context *gin.Context) {
-	controller.AuthenticateHTTPRequest(context)
-
-	id := context.Param("id")
+	accessToken := context.GetHeader("Authorization")
+	account, err := controller.GetAccountByAccessToken(accessToken)
+	if account.ID == "" || err != nil {
+		httpError := controller.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
 
 	command := &command.DeleteCommand{
-		AccountID: id,
+		AccountID: account.ID,
 	}
 
 	deletedAccount, handlingError := controller.commandBus.Handle(command)

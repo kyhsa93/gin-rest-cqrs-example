@@ -12,7 +12,9 @@ import (
 // Interface external api interface
 type Interface interface {
 	GetFileByID(fileID string) (*file.File, error)
-	GetAccountByID(accessToken string, accountID string) (*account.Account, error)
+	GetAccountByAccessToken(
+		accessToken string,
+	) (*account.Account, error)
 }
 
 // API api struct
@@ -29,12 +31,16 @@ func New(config *config.Config) *API {
 	}
 }
 
-// GetAccountByID get account data from account service using accountID
-func (api *API) GetAccountByID(
-	accessToken string, accountID string,
+// GetAccountByAccessToken get account data from account service by accesstoken
+func (api *API) GetAccountByAccessToken(
+	accessToken string,
 ) (*account.Account, error) {
-	accountServiceEndpoint := api.accountAPIURL + "/" + accountID
-	request, createNewRequestError := http.NewRequest("GET", accountServiceEndpoint, nil)
+	accountServiceEndpoint := api.accountAPIURL
+	request, createNewRequestError := http.NewRequest(
+		"GET",
+		accountServiceEndpoint,
+		nil,
+	)
 	if createNewRequestError != nil {
 		return nil, createNewRequestError
 	}

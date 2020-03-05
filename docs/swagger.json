@@ -5,88 +5,7 @@
         "license": {}
     },
     "paths": {
-        "/accounts": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Accounts"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "account email",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "account service provider",
-                        "name": "provider",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "account password (email provider only)",
-                        "name": "password",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "account social_id",
-                        "name": "social_id",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.Account"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create account",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Accounts"
-                ],
-                "parameters": [
-                    {
-                        "description": "Create Account data",
-                        "name": "CreateAccount",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/body.CreateAccount"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/model.Account"
-                        }
-                    }
-                }
-            }
-        },
-        "/accounts/{id}": {
+        "/account": {
             "get": {
                 "security": [
                     {
@@ -100,15 +19,32 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Accounts"
+                    "Account"
                 ],
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "account id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "account email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "account service provider",
+                        "name": "provider",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "account password (email provider only)",
+                        "name": "password",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "account social_id",
+                        "name": "social_id",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -134,16 +70,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Accounts"
+                    "Account"
                 ],
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "account id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "description": "Update Account data",
                         "name": "UpdateAccount",
@@ -164,24 +93,47 @@
                     }
                 }
             },
+            "post": {
+                "description": "create account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "parameters": [
+                    {
+                        "description": "Create Account data",
+                        "name": "CreateAccount",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/body.CreateAccount"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "security": [
                     {
                         "AccessToken": []
                     }
                 ],
-                "description": "delete account by id",
+                "description": "delete account",
                 "tags": [
-                    "Accounts"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "account Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
+                    "Account"
                 ],
                 "responses": {
                     "200": {

@@ -9,16 +9,22 @@ import (
 )
 
 // @Description update account
-// @Tags Accounts
+// @Tags Account
 // @Accept json
 // @Produce json
-// @Param id path string true "account id"
 // @Param UpdateAccount body body.UpdateAccount true "Update Account data"
 // @Success 200 {object} model.Account
-// @Router /accounts/{id} [put]
+// @Router /account [put]
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
-	controller.AuthenticateHTTPRequest(context)
+	accessToken := context.GetHeader("Authorization")
+	account, err := controller.GetAccountByAccessToken(accessToken)
+	if account.ID == "" || err != nil {
+		httpError := controller.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+
 	var data dto.UpdateAccount
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
@@ -27,7 +33,7 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	id := context.Param("id")
+	id := account.ID
 	if id == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Account id is not valid.")
