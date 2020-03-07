@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/kyhsa93/gin-rest-cqrs-example/config"
+	"github.com/kyhsa93/gin-rest-cqrs-example/file/api"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/aws"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/entity"
 	"github.com/kyhsa93/gin-rest-cqrs-example/file/model"
@@ -13,6 +14,7 @@ import (
 // Bus file command bus
 type Bus struct {
 	repository repository.Interface
+	api        api.Interface
 	aws        aws.Interface
 	config     *config.Config
 }
@@ -20,10 +22,16 @@ type Bus struct {
 // New create bus instance
 func New(
 	repository repository.Interface,
+	api api.Interface,
 	aws aws.Interface,
 	config *config.Config,
 ) *Bus {
-	return &Bus{repository: repository, aws: aws, config: config}
+	return &Bus{
+		repository: repository,
+		api:        api,
+		aws:        aws,
+		config:     config,
+	}
 }
 
 // Handle handle command

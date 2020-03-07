@@ -50,7 +50,7 @@ func InitializeFile(engine *gin.Engine, config *config.Config, util *util.Util) 
 	repository := repository.New(redisClient, mongoClient)
 	api := api.New(config)
 	aws := aws.New(config)
-	commandBus := command.New(repository, aws, config)
+	commandBus := command.New(repository, api, aws, config)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, api)
 }
