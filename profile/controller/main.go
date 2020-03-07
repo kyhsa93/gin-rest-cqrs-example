@@ -51,6 +51,9 @@ func (controller *Controller) SetupRoutes() {
 	controller.route.GET("profiles/:id", func(context *gin.Context) {
 		controller.readByID(context)
 	})
+	controller.route.GET("profiles", func(context *gin.Context) {
+		controller.read(context)
+	})
 	controller.route.PUT("profiles", func(context *gin.Context) {
 		controller.update(context)
 	})

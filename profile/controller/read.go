@@ -25,3 +25,29 @@ func (controller *Controller) readByID(context *gin.Context) {
 	}
 	context.JSON(http.StatusOK, profile)
 }
+
+// @Tags Profiles
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Profile
+// @Router /profiles [get]
+// @Security AccessToken
+func (controller *Controller) read(context *gin.Context) {
+	accessToken := context.GetHeader("Authorization")
+	account, err := controller.GetAccountByAccessToken(accessToken)
+	if account.ID == "" || err != nil {
+		httpError := controller.util.Error.HTTP.Unauthorized()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+	query := &query.ReadProfileByAccountIDQuery{
+		AccountID: account.ID,
+	}
+	profile, err := controller.queryBus.Handle(query)
+	if err != nil {
+		httpError := controller.util.Error.HTTP.NotFound()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+	context.JSON(http.StatusOK, profile)
+}
