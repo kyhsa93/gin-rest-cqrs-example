@@ -23,6 +23,12 @@ type Interface interface {
 		interestedField string,
 		interestedFieldDetail []string,
 	) (entity.Profile, error)
+	Update(
+		profileID string,
+		interestedField string,
+		interestedFieldDetail []string,
+		fileID string,
+	) (entity.Profile, error)
 	FindByID(
 		profileID string,
 	) (entity.Profile, error)
@@ -102,6 +108,38 @@ func (repository *Repository) Create(
 	}
 	repository.setCache(profileID, &profileEntity)
 	return profileEntity, nil
+}
+
+// Update update prfoile data by profileID
+func (repository *Repository) Update(
+	profileID string,
+	interestedField string,
+	interestedFieldDetail []string,
+	fileID string,
+) (entity.Profile, error) {
+	condition := bson.M{"_id": profileID}
+	_, err := repository.mongo.UpdateOne(
+		context.TODO(),
+		condition,
+		bson.M{
+			"$set": bson.M{
+				"interestedField":       interestedField,
+				"interestedFieldDetail": interestedFieldDetail,
+				"fileId":                fileID,
+				"updatedAt":             time.Now(),
+			},
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	updated := entity.Profile{}
+	repository.mongo.FindOne(
+		context.TODO(),
+		bson.M{"_id": profileID},
+	).Decode(&updated)
+	repository.setCache(profileID, &updated)
+	return updated, nil
 }
 
 // FindByID find profile data by profile id

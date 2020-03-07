@@ -10,7 +10,7 @@ import (
 // @Description delete account
 // @Tags Account
 // @Success 200 {object} model.Account
-// @Router /account [delete]
+// @Router /accounts [delete]
 // @Security AccessToken
 func (controller *Controller) delete(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")

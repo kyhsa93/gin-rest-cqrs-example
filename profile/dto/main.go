@@ -11,6 +11,7 @@ type CreateProfile struct {
 
 // UpdateProfile request body for PUT /profiles
 type UpdateProfile struct {
+	AccountID             string
 	InterestedField       string
 	InterestedFieldDetail []string
 	FileID                string

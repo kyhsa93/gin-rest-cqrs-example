@@ -9,15 +9,15 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/profile/query"
 )
 
-// @Description create profile
+// @Description update profile
 // @Tags Profiles
 // @Accept json
 // @Produce json
-// @Param CreateProfile body body.CreateProfile true "Create Profile data"
-// @Success 201 {object} model.Profile
-// @Router /profiles [post]
+// @Param UpdateProfile body body.UpdateProfile true "update profile data"
+// @Success 200 {object} model.Profile
+// @Router /profiles [put]
 // @Security AccessToken
-func (controller *Controller) create(context *gin.Context) {
+func (controller *Controller) update(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")
 
 	account, err := controller.GetAccountByAccessToken(accessToken)
@@ -27,8 +27,7 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	var data dto.CreateProfile
-
+	var data dto.UpdateProfile
 	data.AccountID = account.ID
 
 	if bindError := context.ShouldBindJSON(&data); bindError != nil {
@@ -37,41 +36,26 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if data.Email == "" || data.Gender == "" || data.InterestedField == "" {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Empty data is included.")
-		return
-	}
-
 	query := &query.ReadProfileByAccountIDQuery{
 		AccountID: data.AccountID,
 	}
-	alreadyExisted, err := controller.queryBus.Handle(query)
+	profile, err := controller.queryBus.Handle(query)
+	if profile.ID == "" || err != nil {
+		httpError := controller.util.Error.HTTP.InternalServerError()
+		context.JSON(httpError.Code(), httpError.Message())
+		return
+	}
+	command := &command.UpdateProfileCommand{
+		ID:                    profile.ID,
+		FileID:                data.FileID,
+		InterestedField:       data.InterestedField,
+		InterestedFieldDetail: data.InterestedFieldDetail,
+	}
+	updatedProfile, err := controller.commandBus.Handle(command)
 	if err != nil {
 		httpError := controller.util.Error.HTTP.InternalServerError()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
-	if alreadyExisted.ID != "" {
-		httpError := controller.util.Error.HTTP.Conflict()
-		context.JSON(httpError.Code(), "Profile is already existed.")
-		return
-	}
-
-	command := &command.CreateCommand{
-		Email:                 data.Email,
-		AccountID:             data.AccountID,
-		Gender:                data.Gender,
-		InterestedField:       data.InterestedField,
-		InterestedFieldDetail: data.InterestedFieldDetail,
-	}
-
-	createdProfile, handlingError := controller.commandBus.Handle(command)
-	if handlingError != nil {
-		httpError := controller.util.Error.HTTP.InternalServerError()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	context.JSON(http.StatusCreated, createdProfile)
+	context.JSON(http.StatusOK, updatedProfile)
 }

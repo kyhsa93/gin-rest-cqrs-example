@@ -51,6 +51,9 @@ func (controller *Controller) SetupRoutes() {
 	controller.route.GET("profiles/:id", func(context *gin.Context) {
 		controller.readByID(context)
 	})
+	controller.route.PUT("profiles", func(context *gin.Context) {
+		controller.update(context)
+	})
 }
 
 // GetAccountByAccessToken check http request auth
