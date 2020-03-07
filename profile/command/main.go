@@ -28,6 +28,8 @@ func (bus *Bus) Handle(command interface{}) (*model.Profile, error) {
 	switch command := command.(type) {
 	case *CreateCommand:
 		return bus.handleCreateCommand(command)
+	case *UpdateProfileCommand:
+		return bus.handleUpdateCommand(command)
 	default:
 		return nil, errors.New("Invalid command type")
 	}
@@ -36,6 +38,7 @@ func (bus *Bus) Handle(command interface{}) (*model.Profile, error) {
 func (bus *Bus) entityToModel(entity entity.Profile) *model.Profile {
 	var profileModel model.Profile
 	profileModel.ID = entity.ID
+	profileModel.AccountID = entity.AccountID
 	profileModel.Gender = entity.Gender
 	profileModel.InterestedField = entity.InterestedField
 	profileModel.CreatedAt = entity.CreatedAt

@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param UpdateAccount body body.UpdateAccount true "Update Account data"
 // @Success 200 {object} model.Account
-// @Router /account [put]
+// @Router /accounts [put]
 // @Security AccessToken
 func (controller *Controller) update(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")

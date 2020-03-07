@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} model.Account
-// @Router /account [get]
+// @Router /accounts [get]
 // @Param email query string false "account email"
 // @Param provider query string false "account service provider"
 // @Param password query string false "account password (email provider only)"

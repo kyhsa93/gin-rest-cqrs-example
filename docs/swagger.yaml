@@ -74,6 +74,22 @@ definitions:
         example: password
         type: string
     type: object
+  body.UpdateProfile:
+    properties:
+      fileId:
+        example: fileId
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+    type: object
   model.Account:
     properties:
       accessToken:
@@ -146,7 +162,7 @@ info:
   contact: {}
   license: {}
 paths:
-  /account:
+  /accounts:
     delete:
       description: delete account
       responses:
@@ -285,7 +301,7 @@ paths:
       parameters:
       - description: Create Profile data
         in: body
-        name: profile
+        name: CreateProfile
         required: true
         schema:
           $ref: '#/definitions/body.CreateProfile'
@@ -295,6 +311,29 @@ paths:
       responses:
         "201":
           description: Created
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
+    put:
+      consumes:
+      - application/json
+      description: update profile
+      parameters:
+      - description: update profile data
+        in: body
+        name: UpdateProfile
+        required: true
+        schema:
+          $ref: '#/definitions/body.UpdateProfile'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/model.Profile'
       security:

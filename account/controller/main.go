@@ -46,19 +46,19 @@ func New(
 
 // SetupRoutes setup accounts route handler
 func (controller *Controller) SetupRoutes() {
-	controller.route.POST("account", func(context *gin.Context) {
+	controller.route.POST("accounts", func(context *gin.Context) {
 		controller.create(context)
 	})
 
-	controller.route.GET("account", func(context *gin.Context) {
+	controller.route.GET("accounts", func(context *gin.Context) {
 		controller.readAccount(context)
 	})
 
-	controller.route.PUT("account", func(context *gin.Context) {
+	controller.route.PUT("accounts", func(context *gin.Context) {
 		controller.update(context)
 	})
 
-	controller.route.DELETE("account", func(context *gin.Context) {
+	controller.route.DELETE("accounts", func(context *gin.Context) {
 		controller.delete(context)
 	})
 }
