@@ -294,6 +294,20 @@ paths:
       tags:
       - Files
   /profiles:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
     post:
       consumes:
       - application/json
