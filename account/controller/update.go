@@ -40,27 +40,16 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	if data.FCMToken == "" || data.InterestedField == "" {
+	if data.FCMToken == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Empty data is included.")
 		return
 	}
 
-	if !data.ValidateInterestedFieldAttribute() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(
-			httpError.Code(),
-			"InterestedField is must be one of 'develop', 'design' and 'manage'.",
-		)
-		return
-	}
-
 	command := &command.UpdateCommand{
-		AccountID:             id,
-		Password:              data.Password,
-		InterestedField:       data.InterestedField,
-		FCMToken:              data.FCMToken,
-		InterestedFieldDetail: data.InterestedFieldDetail,
+		AccountID: id,
+		Password:  data.Password,
+		FCMToken:  data.FCMToken,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)

@@ -14,8 +14,6 @@ type CreateAccount struct {
 
 // UpdateAccount request body for PUT /account
 type UpdateAccount struct {
-	Password              string   `json:"password" example:"password"`
-	FCMToken              string   `json:"fcmToken" example:"fcmToken"`
-	InterestedField       string   `json:"interestedField" example:"develop"`
-	InterestedFieldDetail []string `json:"interestedFieldDetail" example:"web,server"`
+	Password string `json:"password" example:"password"`
+	FCMToken string `json:"fcmToken" example:"fcmToken"`
 }
