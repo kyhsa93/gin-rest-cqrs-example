@@ -82,18 +82,8 @@ func (dto *CreateAccount) ValidateAccountAttributeByProvider() bool {
 
 // UpdateAccount account dto for update command
 type UpdateAccount struct {
-	FCMToken              string
-	Password              string
-	InterestedField       string
-	InterestedFieldDetail []string
-}
-
-// ValidateInterestedFieldAttribute validation account's InterestedField
-func (dto *UpdateAccount) ValidateInterestedFieldAttribute() bool {
-	if InterestedField()[dto.InterestedField] == "" {
-		return false
-	}
-	return true
+	FCMToken string
+	Password string
 }
 
 // ReadAccount account dto for query

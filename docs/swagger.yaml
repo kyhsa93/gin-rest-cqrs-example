@@ -60,16 +60,6 @@ definitions:
       fcmToken:
         example: fcmToken
         type: string
-      interestedField:
-        example: develop
-        type: string
-      interestedFieldDetail:
-        example:
-        - web
-        - server
-        items:
-          type: string
-        type: array
       password:
         example: password
         type: string

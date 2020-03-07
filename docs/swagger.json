@@ -434,20 +434,6 @@
                     "type": "string",
                     "example": "fcmToken"
                 },
-                "interestedField": {
-                    "type": "string",
-                    "example": "develop"
-                },
-                "interestedFieldDetail": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "web",
-                        "server"
-                    ]
-                },
                 "password": {
                     "type": "string",
                     "example": "password"
