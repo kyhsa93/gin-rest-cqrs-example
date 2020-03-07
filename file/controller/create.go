@@ -41,9 +41,10 @@ func (controller *Controller) create(context *gin.Context) {
 	}
 
 	command := &command.CreateCommand{
-		AccountID: account.ID,
-		Usage:     usage,
-		Image:     image,
+		AccountID:   account.ID,
+		AccessToken: accessToken,
+		Usage:       usage,
+		Image:       image,
 	}
 	createdFile, handlingError := controller.commandBus.Handle(command)
 	if handlingError != nil {

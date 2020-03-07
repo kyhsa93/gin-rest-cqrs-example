@@ -8,7 +8,7 @@ type Profile struct {
 	AccountID             string     `json:"accountId" bson:"accountId"`
 	Email                 string     `json:"email" bson:"email"`
 	Gender                string     `json:"gender" bson:"gender"`
-	FileID                string     `json:"file_id" bson:"file_id"`
+	FileID                string     `json:"fileId" bson:"fileId"`
 	InterestedField       string     `json:"interestedField" bson:"interestedField"`
 	InterestedFieldDetail []string   `json:"interestedFieldDetail" bson:"interestedFieldDetail"`
 	CreatedAt             time.Time  `json:"createdAt" bson:"createdAt"`
