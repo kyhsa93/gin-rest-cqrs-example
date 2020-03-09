@@ -20,6 +20,6 @@ func InitializeConfig() *Config {
 		Auth:     NewAuthConfig(),
 		Redis:    NewRedis(),
 		Email:    NewEmail(),
-		AWS:      NewAWS(),
+		AWS:      NewAWSConfig(),
 	}
 }

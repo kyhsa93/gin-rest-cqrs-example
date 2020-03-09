@@ -32,11 +32,11 @@ type S3 struct {
 func NewS3(config *config.Config, awsSession *session.Session) *S3 {
 	return &S3{
 		session:              awsSession,
-		bucket:               config.AWS.S3.Bucket,
-		acl:                  config.AWS.S3.ACL,
-		contentDisposition:   config.AWS.S3.ContentDispositoin,
-		serverSideEncryption: config.AWS.S3.ServerSideEncryption,
-		storageClass:         config.AWS.S3.StorageClass,
+		bucket:               config.AWS.S3().Bucket(),
+		acl:                  config.AWS.S3().ACL(),
+		contentDisposition:   config.AWS.S3().ContentDisposition(),
+		serverSideEncryption: config.AWS.S3().ServerSideEncryption(),
+		storageClass:         config.AWS.S3().StorageClass(),
 	}
 }
 

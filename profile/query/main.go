@@ -41,8 +41,8 @@ func (bus *Bus) entityToModel(entity entity.Profile) *model.Profile {
 	profileModel.InterestedFieldDetail = entity.InterestedFieldDetail
 	profileModel.CreatedAt = entity.CreatedAt
 	profileModel.UpdatedAt = entity.UpdatedAt
-	profileModel.ImageURL = bus.config.AWS.S3.Endpoint + "/" +
-		bus.config.AWS.S3.Bucket + "/" + entity.FileID
+	profileModel.ImageURL = bus.config.AWS.S3().Endpoint() + "/" +
+		bus.config.AWS.S3().Bucket() + "/" + entity.FileID
 	if entity.FileID == "" {
 		profileModel.ImageURL = ""
 	}
