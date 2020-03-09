@@ -19,8 +19,8 @@ import (
 func getMongoDBClient(config *config.Config) *mongo.Collection {
 	clientOptions := options.Client().ApplyURI(
 		"mongodb://" +
-			config.Database.User + ":" + config.Database.Password +
-			"@" + config.Database.Host + ":" + config.Database.Port,
+			config.Database.User() + ":" + config.Database.Password() +
+			"@" + config.Database.Host() + ":" + config.Database.Port(),
 	)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -28,7 +28,7 @@ func getMongoDBClient(config *config.Config) *mongo.Collection {
 	}
 	client.Ping(context.TODO(), nil)
 	collection := client.Database(
-		config.Database.Name,
+		config.Database.Name(),
 	).Collection("profiles")
 
 	return collection
