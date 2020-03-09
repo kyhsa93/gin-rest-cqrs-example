@@ -36,8 +36,8 @@ func getMongoDBClient(config *config.Config) *mongo.Collection {
 
 func getRedisClient(config *config.Config) *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr:     config.Redis.Address,
-		Password: config.Redis.Password,
+		Addr:     config.Redis.Address(),
+		Password: config.Redis.Password(),
 	})
 }
 
