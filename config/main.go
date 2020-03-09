@@ -4,7 +4,7 @@ package config
 type Config struct {
 	Swagger  *Swagger
 	Auth     *Auth
-	Server   *Server
+	Server   ServerConfigInterface
 	Database *Database
 	Redis    *Redis
 	Email    *Email
@@ -14,7 +14,7 @@ type Config struct {
 // InitializeConfig initialize config
 func InitializeConfig() *Config {
 	return &Config{
-		Server:   NewServer(),
+		Server:   NewServerConfig(),
 		Database: NewDatabase(),
 		Swagger:  NewSwagger(),
 		Auth:     NewAuth(),

@@ -34,8 +34,8 @@ type API struct {
 // New create api instance
 func New(config *config.Config) *API {
 	return &API{
-		fileAPIURL:    config.Server.FileAPIAddress,
-		profileAPIURL: config.Server.ProfileAPIAddress,
+		fileAPIURL:    config.Server.FileServiceEndPoint(),
+		profileAPIURL: config.Server.ProfileServiceEndPoint(),
 	}
 }
 
