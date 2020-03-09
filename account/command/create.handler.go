@@ -26,7 +26,10 @@ func (bus *Bus) handleCreateCommand(
 	}
 	bus.email.Send([]string{command.Email}, "Account is created.")
 	accountModel := bus.entityToModel(createdAccountEntity)
-	accountModel.CreateAccessToken()
+	accountModel.CreateAccessToken(
+		bus.config.Auth.AccessTokenSecret(),
+		bus.config.Auth.AccessTokenExpiration(),
+	)
 	profile, err := bus.api.CreateProfile(
 		accountModel.AccessToken,
 		accountModel.ID,

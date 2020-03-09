@@ -3,7 +3,7 @@ package config
 // Config config stcut
 type Config struct {
 	Swagger  *Swagger
-	Auth     *Auth
+	Auth     AuthConfigInterface
 	Server   ServerConfigInterface
 	Database DatabaseConfigInterface
 	Redis    *Redis
@@ -17,7 +17,7 @@ func InitializeConfig() *Config {
 		Server:   NewServerConfig(),
 		Database: NewDatabaseConfig(),
 		Swagger:  NewSwagger(),
-		Auth:     NewAuth(),
+		Auth:     NewAuthConfig(),
 		Redis:    NewRedis(),
 		Email:    NewEmail(),
 		AWS:      NewAWS(),

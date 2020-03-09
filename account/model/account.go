@@ -18,11 +18,14 @@ type Account struct {
 }
 
 // CreateAccessToken create access token with jwt
-func (account *Account) CreateAccessToken() {
-	expirationTime := time.Now().Add(500 * time.Minute)
+func (account *Account) CreateAccessToken(
+	accessTokenSecret string,
+	accessTokenExpiration int,
+) {
+	expirationTime := time.Now().Add(time.Duration(accessTokenExpiration) * time.Minute)
 	claims := jwt.StandardClaims{ExpiresAt: expirationTime.Unix(), Issuer: account.ID}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, tokenError := token.SignedString([]byte("access token secret"))
+	tokenString, tokenError := token.SignedString([]byte(accessTokenSecret))
 
 	if tokenError != nil {
 		panic(tokenError)
@@ -31,7 +34,7 @@ func (account *Account) CreateAccessToken() {
 }
 
 // GetTokenIssuer get accesstokrn issuer from jwt
-func (account *Account) GetTokenIssuer() (string, error) {
+func (account *Account) GetTokenIssuer(accessTokenSecret string) (string, error) {
 	if account.AccessToken == "" {
 		return "", errors.New("token does not exist")
 	}
@@ -40,7 +43,7 @@ func (account *Account) GetTokenIssuer() (string, error) {
 		account.AccessToken,
 		claims,
 		func(token *jwt.Token) (interface{}, error) {
-			return []byte("access token secret"), nil
+			return []byte(accessTokenSecret), nil
 		})
 	if jwtToken.Valid == true && claims.Issuer != "" {
 		return claims.Issuer, nil
