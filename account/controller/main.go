@@ -73,7 +73,9 @@ func (controller *Controller) GetAccountByAccessToken(
 
 	account := &model.Account{AccessToken: accessToken}
 
-	accountID, err := account.GetTokenIssuer()
+	accountID, err := account.GetTokenIssuer(
+		controller.config.Auth.AccessTokenSecret(),
+	)
 	if accountID == "" || err != nil {
 		return model.Account{}, errors.New("token is invalid")
 	}
