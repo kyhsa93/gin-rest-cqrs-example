@@ -17,11 +17,11 @@ type DatabaseConfigInterface interface {
 
 // Database database config struct
 type Database struct {
-	port     string `env:"DATABASE_PORT" envDefault:"27017"`
-	host     string `env:"DATABASE_HOST" envDefault:"localhost"`
-	name     string `env:"DATABASE_NAME" envDefault:"gin-rest-cqrs-example"`
-	user     string `env:"DATABASE_USER" envDefault:"root"`
-	password string `env:"DATABASE_PASSWORD" envDefault:"test"`
+	port     string
+	host     string
+	name     string
+	user     string
+	password string
 }
 
 // NewDatabaseConfig create database instance
