@@ -10,7 +10,7 @@ type AWSConfigInterface interface {
 	SecretID() string
 	SecretKey() string
 	Token() string
-	S3() *S3
+	S3() S3ConfigInterface
 }
 
 // AWS default aws config
