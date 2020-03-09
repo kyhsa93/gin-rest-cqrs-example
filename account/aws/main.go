@@ -26,11 +26,11 @@ type AWS struct {
 // New create AWS instance
 func New(config *config.Config) *AWS {
 	awsInfra := &AWS{
-		s3Endpoint: config.AWS.S3.Endpoint,
-		s3Region:   config.AWS.S3.Region,
-		secretID:   config.AWS.EnvironmentValue.SecretID,
-		secretKey:  config.AWS.EnvironmentValue.SecretKey,
-		token:      config.AWS.EnvironmentValue.Token,
+		s3Endpoint: config.AWS.S3().Endpoint(),
+		s3Region:   config.AWS.S3().Region(),
+		secretID:   config.AWS.SecretID(),
+		secretKey:  config.AWS.SecretKey(),
+		token:      config.AWS.Token(),
 	}
 	awsInfra.s3 = NewS3(config, awsInfra.getAWSSession())
 	return awsInfra
