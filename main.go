@@ -21,7 +21,7 @@ import (
 func main() {
 	config := config.InitializeConfig()
 	util := util.InitializeUtil()
-	gin.SetMode(config.Server.Mode)
+	gin.SetMode(config.Server.Mode())
 	route := gin.Default()
 
 	account.InitializeAccount(route, config, util)
@@ -30,5 +30,5 @@ func main() {
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	log.Fatal(route.Run(":" + config.Server.Port))
+	log.Fatal(route.Run(":" + config.Server.Port()))
 }
