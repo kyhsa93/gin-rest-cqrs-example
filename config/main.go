@@ -5,7 +5,7 @@ type Config struct {
 	Swagger  *Swagger
 	Auth     *Auth
 	Server   ServerConfigInterface
-	Database *Database
+	Database DatabaseConfigInterface
 	Redis    *Redis
 	Email    *Email
 	AWS      *AWS
@@ -15,7 +15,7 @@ type Config struct {
 func InitializeConfig() *Config {
 	return &Config{
 		Server:   NewServerConfig(),
-		Database: NewDatabase(),
+		Database: NewDatabaseConfig(),
 		Swagger:  NewSwagger(),
 		Auth:     NewAuth(),
 		Redis:    NewRedis(),
