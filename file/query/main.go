@@ -11,12 +11,12 @@ import (
 
 // Bus file query bus
 type Bus struct {
-	config     *config.Config
+	config     config.Interface
 	repository repository.Interface
 }
 
 // New create Bus instance
-func New(config *config.Config, repository repository.Interface) *Bus {
+func New(config config.Interface, repository repository.Interface) *Bus {
 	return &Bus{config: config, repository: repository}
 }
 
@@ -36,7 +36,7 @@ func (bus *Bus) entityToModel(entity entity.File) *model.File {
 	fileModel.AccountID = entity.AccountID
 	fileModel.Usage = entity.Usage
 	fileModel.CreatedAt = entity.CreatedAt
-	fileModel.ImageURL = bus.config.AWS.S3().Endpoint() + "/" +
-		bus.config.AWS.S3().Bucket() + "/" + entity.ID
+	fileModel.ImageURL = bus.config.AWS().S3().Endpoint() + "/" +
+		bus.config.AWS().S3().Bucket() + "/" + entity.ID
 	return &fileModel
 }

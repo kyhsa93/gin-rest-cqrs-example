@@ -11,12 +11,12 @@ import (
 
 // Bus profile query bus
 type Bus struct {
-	config     *config.Config
+	config     config.Interface
 	repository repository.Interface
 }
 
 // New create bus instance
-func New(config *config.Config, repository repository.Interface) *Bus {
+func New(config config.Interface, repository repository.Interface) *Bus {
 	return &Bus{config: config, repository: repository}
 }
 
@@ -41,8 +41,8 @@ func (bus *Bus) entityToModel(entity entity.Profile) *model.Profile {
 	profileModel.InterestedFieldDetail = entity.InterestedFieldDetail
 	profileModel.CreatedAt = entity.CreatedAt
 	profileModel.UpdatedAt = entity.UpdatedAt
-	profileModel.ImageURL = bus.config.AWS.S3().Endpoint() + "/" +
-		bus.config.AWS.S3().Bucket() + "/" + entity.FileID
+	profileModel.ImageURL = bus.config.AWS().S3().Endpoint() + "/" +
+		bus.config.AWS().S3().Bucket() + "/" + entity.FileID
 	if entity.FileID == "" {
 		profileModel.ImageURL = ""
 	}

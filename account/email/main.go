@@ -21,12 +21,12 @@ type Email struct {
 }
 
 // New create email instance
-func New(config *config.Config) *Email {
+func New(config config.Interface) *Email {
 	return &Email{
-		Address:  config.Email.Address(),
-		Password: config.Email.Password(),
-		SMTPHost: config.Email.SMTPHost(),
-		SMTPPort: config.Email.SMTPPort(),
+		Address:  config.Email().Address(),
+		Password: config.Email().Password(),
+		SMTPHost: config.Email().SMTPHost(),
+		SMTPPort: config.Email().SMTPPort(),
 	}
 }
 

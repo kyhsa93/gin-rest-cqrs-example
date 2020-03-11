@@ -18,7 +18,7 @@ type Controller struct {
 	commandBus *command.Bus
 	queryBus   *query.Bus
 	util       *util.Util
-	config     *config.Config
+	config     config.Interface
 	api        api.Interface
 }
 
@@ -28,7 +28,7 @@ func New(
 	commandBus *command.Bus,
 	queryBus *query.Bus,
 	util *util.Util,
-	config *config.Config,
+	config config.Interface,
 	api api.Interface,
 ) *Controller {
 	controller := &Controller{
