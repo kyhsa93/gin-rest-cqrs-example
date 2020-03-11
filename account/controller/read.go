@@ -75,7 +75,7 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		return
 	}
 
-	data.FilterAccountAttributeByProvider()
+	data.SetAccountAttributeByProvider()
 
 	if !data.ValidateAccountAttributeByProvider() {
 		httpError := controller.util.Error.HTTP.BadRequest()

@@ -53,8 +53,8 @@ func (dto *CreateAccount) ValidateInterestedFieldAttribute() bool {
 	return true
 }
 
-// FilterAccountAttributeByProvider remove socialID or password by provider
-func (dto *CreateAccount) FilterAccountAttributeByProvider() {
+// SetAccountAttributeByProvider remove socialID or password by provider
+func (dto *CreateAccount) SetAccountAttributeByProvider() {
 	if dto.Provider == Provider()["email"] {
 		dto.SocialID = ""
 		return
@@ -105,8 +105,8 @@ func (dto *ReadAccount) ValidateAccountAttributeByProvider() bool {
 	return true
 }
 
-// FilterAccountAttributeByProvider remove socialID or password by provider
-func (dto *ReadAccount) FilterAccountAttributeByProvider() {
+// SetAccountAttributeByProvider remove socialID or password by provider
+func (dto *ReadAccount) SetAccountAttributeByProvider() {
 	if dto.Provider == Provider()["email"] {
 		dto.SocialID = ""
 		return
