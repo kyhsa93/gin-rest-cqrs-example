@@ -18,11 +18,11 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
-func getMongoDBClient(config *config.Config) *mongo.Collection {
+func getMongoDBClient(config config.Interface) *mongo.Collection {
 	clientOptions := options.Client().ApplyURI(
 		"mongodb://" +
-			config.Database.User() + ":" + config.Database.Password() +
-			"@" + config.Database.Host() + ":" + config.Database.Port(),
+			config.Database().User() + ":" + config.Database().Password() +
+			"@" + config.Database().Host() + ":" + config.Database().Port(),
 	)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -30,21 +30,21 @@ func getMongoDBClient(config *config.Config) *mongo.Collection {
 	}
 	client.Ping(context.TODO(), nil)
 	collection := client.Database(
-		config.Database.Name(),
+		config.Database().Name(),
 	).Collection("files")
 
 	return collection
 }
 
-func getRedisClient(config *config.Config) *redis.Client {
+func getRedisClient(config config.Interface) *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr:     config.Redis.Address(),
-		Password: config.Redis.Password(),
+		Addr:     config.Redis().Address(),
+		Password: config.Redis().Password(),
 	})
 }
 
 // InitializeFile init file module
-func InitializeFile(engine *gin.Engine, config *config.Config, util *util.Util) {
+func InitializeFile(engine *gin.Engine, config config.Interface, util *util.Util) {
 	mongoClient := getMongoDBClient(config)
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, mongoClient)

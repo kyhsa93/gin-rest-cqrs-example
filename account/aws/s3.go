@@ -29,14 +29,14 @@ type S3 struct {
 }
 
 // NewS3 create S3 instance
-func NewS3(config *config.Config, awsSession *session.Session) *S3 {
+func NewS3(config config.Interface, awsSession *session.Session) *S3 {
 	return &S3{
 		session:              awsSession,
-		bucket:               config.AWS.S3().Bucket(),
-		acl:                  config.AWS.S3().ACL(),
-		contentDisposition:   config.AWS.S3().ContentDisposition(),
-		serverSideEncryption: config.AWS.S3().ServerSideEncryption(),
-		storageClass:         config.AWS.S3().StorageClass(),
+		bucket:               config.AWS().S3().Bucket(),
+		acl:                  config.AWS().S3().ACL(),
+		contentDisposition:   config.AWS().S3().ContentDisposition(),
+		serverSideEncryption: config.AWS().S3().ServerSideEncryption(),
+		storageClass:         config.AWS().S3().StorageClass(),
 	}
 }
 

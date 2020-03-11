@@ -32,10 +32,10 @@ type API struct {
 }
 
 // New create api instance
-func New(config *config.Config) *API {
+func New(config config.Interface) *API {
 	return &API{
-		fileAPIURL:    config.Server.FileServiceEndPoint(),
-		profileAPIURL: config.Server.ProfileServiceEndPoint(),
+		fileAPIURL:    config.Server().FileServiceEndPoint(),
+		profileAPIURL: config.Server().ProfileServiceEndPoint(),
 	}
 }
 

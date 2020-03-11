@@ -16,11 +16,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func getMongoDBClient(config *config.Config) *mongo.Collection {
+func getMongoDBClient(config config.Interface) *mongo.Collection {
 	clientOptions := options.Client().ApplyURI(
 		"mongodb://" +
-			config.Database.User() + ":" + config.Database.Password() +
-			"@" + config.Database.Host() + ":" + config.Database.Port(),
+			config.Database().User() + ":" + config.Database().Password() +
+			"@" + config.Database().Host() + ":" + config.Database().Port(),
 	)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -28,22 +28,22 @@ func getMongoDBClient(config *config.Config) *mongo.Collection {
 	}
 	client.Ping(context.TODO(), nil)
 	collection := client.Database(
-		config.Database.Name(),
+		config.Database().Name(),
 	).Collection("profiles")
 
 	return collection
 }
 
-func getRedisClient(config *config.Config) *redis.Client {
+func getRedisClient(config config.Interface) *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr:     config.Redis.Address(),
-		Password: config.Redis.Password(),
+		Addr:     config.Redis().Address(),
+		Password: config.Redis().Password(),
 	})
 }
 
 // Initialize initialize profile module
 func Initialize(
-	engine *gin.Engine, config *config.Config, util *util.Util,
+	engine *gin.Engine, config config.Interface, util *util.Util,
 ) {
 	mongoClient := getMongoDBClient(config)
 	redisClient := getRedisClient(config)

@@ -12,12 +12,12 @@ import (
 
 // Bus account query bus
 type Bus struct {
-	config     *config.Config
+	config     config.Interface
 	repository repository.Interface
 }
 
 // New create Bus instance
-func New(config *config.Config, repository repository.Interface) *Bus {
+func New(config config.Interface, repository repository.Interface) *Bus {
 	return &Bus{config: config, repository: repository}
 }
 

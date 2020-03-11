@@ -34,10 +34,10 @@ type API struct {
 }
 
 // New create api instance
-func New(config *config.Config) *API {
+func New(config config.Interface) *API {
 	return &API{
-		accountAPIURL: config.Server.AccountServiceEndPoint(),
-		profileAPIURL: config.Server.ProfileServiceEndPoint(),
+		accountAPIURL: config.Server().AccountServiceEndPoint(),
+		profileAPIURL: config.Server().ProfileServiceEndPoint(),
 	}
 }
 

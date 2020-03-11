@@ -18,7 +18,7 @@ type Bus struct {
 	repository repository.Interface
 	email      email.Interface
 	aws        aws.Interface
-	config     *config.Config
+	config     config.Interface
 	api        api.Interface
 }
 
@@ -27,7 +27,7 @@ func New(
 	repository repository.Interface,
 	email email.Interface,
 	aws aws.Interface,
-	config *config.Config,
+	config config.Interface,
 	api api.Interface,
 ) *Bus {
 	return &Bus{
