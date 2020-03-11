@@ -34,12 +34,6 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if !emailAndProviderValidation(data.Email, data.Provider) {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Email and Provider is not matched")
-		return
-	}
-
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()

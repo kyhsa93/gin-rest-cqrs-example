@@ -2,7 +2,6 @@ package controller
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/api"
@@ -86,11 +85,4 @@ func (controller *Controller) GetAccountByAccessToken(
 		return model.Account{}, errors.New("account query error is occurred")
 	}
 	return *account, nil
-}
-
-func emailAndProviderValidation(email string, provider string) bool {
-	if provider == "email" {
-		return true
-	}
-	return strings.Contains(email, "@"+provider+".")
 }
