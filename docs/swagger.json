@@ -399,10 +399,6 @@
         "body.CreateProfile": {
             "type": "object",
             "properties": {
-                "accountId": {
-                    "type": "string",
-                    "example": "accountId"
-                },
                 "email": {
                     "type": "string",
                     "example": "test@gmail.com"

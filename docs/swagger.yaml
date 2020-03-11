@@ -35,9 +35,6 @@ definitions:
     type: object
   body.CreateProfile:
     properties:
-      accountId:
-        example: accountId
-        type: string
       email:
         example: test@gmail.com
         type: string
