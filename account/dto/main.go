@@ -17,11 +17,11 @@ func Gender() map[string]string {
 }
 
 // InterestedField part of user InterestedFielded
-func InterestedField() map[string]string {
-	return map[string]string{
-		"develop": "develop",
-		"design":  "design",
-		"manage":  "manage",
+func InterestedField() map[string][]string {
+	return map[string][]string{
+		"develop": []string{"web", "server", "mobile", "dataScience", "game", "iot"},
+		"design":  []string{"bx", "ux/ui", "video", "3d", "illustration"},
+		"plan":    []string{"ga", "ux", "reverse", "marcketing"},
 	}
 }
 
@@ -45,10 +45,30 @@ func (dto *CreateAccount) ValidateAccountGender() bool {
 	return true
 }
 
-// ValidateInterestedFieldAttribute validation account's InterestedField
-func (dto *CreateAccount) ValidateInterestedFieldAttribute() bool {
-	if InterestedField()[dto.InterestedField] == "" {
+// ValidateInterestedField validation account's InterestedField
+func (dto *CreateAccount) ValidateInterestedField() bool {
+	if len(InterestedField()[dto.InterestedField]) == 0 {
 		return false
+	}
+	return true
+}
+
+func findStringInSlice(slice []string, value string) int {
+	for index, item := range slice {
+		if item == value {
+			return index
+		}
+	}
+	return len(slice)
+}
+
+// ValidateInterestedFieldDetail validation interestedFieldDetail
+func (dto *CreateAccount) ValidateInterestedFieldDetail() bool {
+	interestedField := InterestedField()[dto.InterestedField]
+	for _, value := range dto.InterestedFieldDetail {
+		if findStringInSlice(interestedField, value) == len(interestedField) {
+			return false
+		}
 	}
 	return true
 }

@@ -76,11 +76,20 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if !data.ValidateInterestedFieldAttribute() {
+	if !data.ValidateInterestedField() {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(
 			httpError.Code(),
-			"InterestedField is must be one of 'develop', 'design' and 'manage'",
+			"InterestedField is must be one of 'develop', 'design' and 'plan'",
+		)
+		return
+	}
+
+	if !data.ValidateInterestedFieldDetail() {
+		httpError := controller.util.Error.HTTP.BadRequest()
+		context.JSON(
+			httpError.Code(),
+			"InterestedFieldDetail is contain invalid data",
 		)
 		return
 	}
