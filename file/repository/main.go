@@ -29,7 +29,7 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(redis *redis.Client, mongo *mongo.Collection) *Repository {
+func New(redis *redis.Client, mongo *mongo.Collection) Interface {
 	return &Repository{mongo: mongo, redis: redis}
 }
 
