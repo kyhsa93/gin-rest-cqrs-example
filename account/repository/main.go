@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -44,31 +43,33 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(redis *redis.Client, mongo *mongo.Collection) Interface {
+func New(
+	redis *redis.Client, mongo *mongo.Collection,
+) Interface {
 	return &Repository{mongo: mongo, redis: redis}
 }
 
-func (repository *Repository) setCache(key string, accountEntity *entity.Account) {
+func (repository *Repository) setCache(
+	key string, accountEntity *entity.Account,
+) {
 	marshaledEntity, _ := json.Marshal(&accountEntity)
-	setRedisDataError := repository.redis.Set(
+	repository.redis.Set(
 		"account:"+key, string(marshaledEntity), time.Second,
-	).Err()
-	if setRedisDataError != nil {
-		log.Println("Set Data to Redis Error: ", setRedisDataError)
-	}
+	)
 }
 
-func (repository *Repository) getCache(key string) *entity.Account {
-	data, getDataFromRedisError := repository.redis.Get("account:" + key).Result()
+func (repository *Repository) getCache(
+	key string,
+) *entity.Account {
+	data, getDataFromRedisError :=
+		repository.redis.Get("account:" + key).Result()
 	if getDataFromRedisError != nil {
-		log.Println("Get Data from Redis Error: ", getDataFromRedisError)
 		return nil
 	}
 
 	entity := &entity.Account{}
 	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
 	if jsonUnmarshalError != nil {
-		log.Println("Fail to unmarshal cached data", jsonUnmarshalError)
 		return nil
 	}
 
@@ -215,7 +216,9 @@ func (repository *Repository) FindByID(
 }
 
 // Delete delete account by accountId
-func (repository *Repository) Delete(accountID string) entity.Account {
+func (repository *Repository) Delete(
+	accountID string,
+) entity.Account {
 	accountEntity := entity.Account{}
 	repository.mongo.FindOne(
 		context.TODO(),
