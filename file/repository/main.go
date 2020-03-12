@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -29,31 +28,33 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(redis *redis.Client, mongo *mongo.Collection) Interface {
+func New(
+	redis *redis.Client, mongo *mongo.Collection,
+) Interface {
 	return &Repository{mongo: mongo, redis: redis}
 }
 
-func (repository *Repository) setCache(key string, fileEntity *entity.File) {
+func (repository *Repository) setCache(
+	key string, fileEntity *entity.File,
+) {
 	marshaledEntity, _ := json.Marshal(&fileEntity)
-	setRedisDataError := repository.redis.Set(
+	repository.redis.Set(
 		"file:"+key, string(marshaledEntity), time.Second,
-	).Err()
-	if setRedisDataError != nil {
-		log.Println(setRedisDataError)
-	}
+	)
 }
 
-func (repository *Repository) getCache(key string) *entity.File {
-	data, getDataFromRedisErrorByKey := repository.redis.Get("file:" + key).Result()
+func (repository *Repository) getCache(
+	key string,
+) *entity.File {
+	data, getDataFromRedisErrorByKey :=
+		repository.redis.Get("file:" + key).Result()
 	if getDataFromRedisErrorByKey != nil {
-		log.Println(getDataFromRedisErrorByKey)
 		return nil
 	}
 
 	entity := &entity.File{}
 	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
 	if jsonUnmarshalError != nil {
-		log.Println(jsonUnmarshalError)
 		return nil
 	}
 
@@ -83,12 +84,14 @@ func (repository *Repository) Create(
 	if err != nil || insertResult == nil {
 		return fileEntity, err
 	}
-	repository.setCache(accountID, &fileEntity)
+	repository.setCache(fileID, &fileEntity)
 	return fileEntity, nil
 }
 
 // FindByID fine file data using file id
-func (repository *Repository) FindByID(fileID string) entity.File {
+func (repository *Repository) FindByID(
+	fileID string,
+) entity.File {
 	if cache := repository.getCache(fileID); cache != nil {
 		return *cache
 	}

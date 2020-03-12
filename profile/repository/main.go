@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -44,31 +43,33 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(redis *redis.Client, mongo *mongo.Collection) Interface {
+func New(
+	redis *redis.Client, mongo *mongo.Collection,
+) Interface {
 	return &Repository{mongo: mongo, redis: redis}
 }
 
-func (repository *Repository) setCache(key string, profileEntity *entity.Profile) {
+func (repository *Repository) setCache(
+	key string, profileEntity *entity.Profile,
+) {
 	marshaledEntity, _ := json.Marshal(&profileEntity)
-	setRedisDataError := repository.redis.Set(
+	repository.redis.Set(
 		"profile:"+key, string(marshaledEntity), time.Second,
-	).Err()
-	if setRedisDataError != nil {
-		log.Println("Set Data to Redis Error: ", setRedisDataError)
-	}
+	)
 }
 
-func (repository *Repository) getCache(key string) *entity.Profile {
-	data, getDataFromRedisError := repository.redis.Get("profile:" + key).Result()
+func (repository *Repository) getCache(
+	key string,
+) *entity.Profile {
+	data, getDataFromRedisError :=
+		repository.redis.Get("profile:" + key).Result()
 	if getDataFromRedisError != nil {
-		log.Println("Get Data from Redis Error: ", getDataFromRedisError)
 		return nil
 	}
 
 	entity := &entity.Profile{}
 	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
 	if jsonUnmarshalError != nil {
-		log.Println("Fail to unmarshal cached data", jsonUnmarshalError)
 		return nil
 	}
 
@@ -154,6 +155,7 @@ func (repository *Repository) FindByID(
 		context.TODO(),
 		bson.M{"_id": profileID, "deletedAt": nil},
 	).Decode(&profileEntity)
+	repository.setCache(profileID, &profileEntity)
 	return profileEntity, nil
 }
 
@@ -169,5 +171,6 @@ func (repository *Repository) FindByAccountID(
 		context.TODO(),
 		bson.M{"accountId": accountID, "deletedAt": nil},
 	).Decode(&profileEntity)
+	repository.setCache(profileEntity.ID, &profileEntity)
 	return profileEntity, nil
 }
