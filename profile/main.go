@@ -17,10 +17,12 @@ import (
 )
 
 func getMongoDBClient(config config.Interface) *mongo.Collection {
+	user := config.Database().User()
+	password := config.Database().Password()
+	host := config.Database().Host()
+	port := config.Database().Port()
 	clientOptions := options.Client().ApplyURI(
-		"mongodb://" +
-			config.Database().User() + ":" + config.Database().Password() +
-			"@" + config.Database().Host() + ":" + config.Database().Port(),
+		"mongodb://" + user + ":" + password + "@" + host + ":" + port,
 	)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {

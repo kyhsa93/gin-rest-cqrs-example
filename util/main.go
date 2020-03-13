@@ -6,7 +6,6 @@ import (
 
 // Interface Utile interface
 type Interface interface {
-	InitializeUtil() *Util
 }
 
 // Util provide utilities
@@ -14,8 +13,8 @@ type Util struct {
 	Error *error.Error
 }
 
-// InitializeUtil initialize utilities
-func InitializeUtil() *Util {
+// Initialize initialize utilities
+func Initialize() *Util {
 	error := error.New()
 	return &Util{Error: error}
 }
