@@ -19,12 +19,12 @@ import (
 // @name Authorization
 
 func main() {
-	config := config.InitializeConfig()
-	util := util.InitializeUtil()
+	config := config.Initialize()
+	util := util.Initialize()
 	gin.SetMode(config.Server().Mode())
 	route := gin.Default()
-	account.InitializeAccount(route, config, util)
-	file.InitializeFile(route, config, util)
+	account.Initialize(route, config, util)
+	file.Initialize(route, config, util)
 	profile.Initialize(route, config, util)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

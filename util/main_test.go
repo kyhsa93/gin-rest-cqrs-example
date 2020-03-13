@@ -6,9 +6,9 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/util"
 )
 
-// TestInitializeUtil test InitizlizeUtil method
+// TestInitialize test InitizlizeUtil method
 func TestInitializeUtil(t *testing.T) {
-	instance := util.InitializeUtil()
+	instance := util.Initialize()
 	if instance == nil {
 		t.Error("Can not create util instance")
 	}

@@ -22,8 +22,8 @@ type Interface interface {
 	AWS() AWSConfigInterface
 }
 
-// InitializeConfig initialize config
-func InitializeConfig() Interface {
+// Initialize initialize config
+func Initialize() Interface {
 	return &Config{
 		server:   NewServerConfig(),
 		database: NewDatabaseConfig(),
