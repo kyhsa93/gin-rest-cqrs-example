@@ -45,18 +45,10 @@ func New(
 
 // SetupRoutes setup profile router
 func (controller *Controller) SetupRoutes() {
-	controller.route.POST("profiles", func(context *gin.Context) {
-		controller.create(context)
-	})
-	controller.route.GET("profiles/:id", func(context *gin.Context) {
-		controller.readByID(context)
-	})
-	controller.route.GET("profiles", func(context *gin.Context) {
-		controller.read(context)
-	})
-	controller.route.PUT("profiles", func(context *gin.Context) {
-		controller.update(context)
-	})
+	controller.route.POST("profiles", controller.create)
+	controller.route.GET("profiles/:id", controller.readByID)
+	controller.route.GET("profiles", controller.read)
+	controller.route.PUT("profiles", controller.update)
 }
 
 // GetAccountByAccessToken check http request auth

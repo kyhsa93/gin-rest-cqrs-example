@@ -41,13 +41,8 @@ func New(
 
 // SetupRoutes setup files route handler
 func (controller *Controller) SetupRoutes() {
-	controller.route.POST("/files", func(context *gin.Context) {
-		controller.create(context)
-	})
-
-	controller.route.GET("/files/:id", func(context *gin.Context) {
-		controller.readFileByID(context)
-	})
+	controller.route.POST("/files", controller.create)
+	controller.route.GET("/files/:id", controller.readFileByID)
 }
 
 // GetAccountByAccessToken check http request auth
