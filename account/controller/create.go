@@ -50,7 +50,7 @@ func (controller *Controller) create(context *gin.Context) {
 
 	if !data.ValidateAccountGender() {
 		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Gender is nust one of 'male' or female")
+		context.JSON(httpError.Code(), "Gender is must one of 'male' or female")
 		return
 	}
 
