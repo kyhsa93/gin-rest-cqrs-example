@@ -79,7 +79,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/body.UpdateAccount"
                         }
                     }
@@ -111,7 +110,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/body.CreateAccount"
                         }
                     }
@@ -265,7 +263,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/body.UpdateProfile"
                         }
                     }
@@ -302,7 +299,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/body.CreateProfile"
                         }
                     }

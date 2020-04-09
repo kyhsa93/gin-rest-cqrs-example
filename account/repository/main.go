@@ -29,10 +29,10 @@ type Interface interface {
 		fcmToken string,
 	) (entity.Account, error)
 	FindByEmailAndProvider(
-		email string, provider string, unscoped bool,
+		email string, provider string, deleted bool,
 	) entity.Account
-	FindByEmail(email string) entity.Account
-	FindByID(id string, unscoped bool) entity.Account
+	FindByEmail(email string, deleted bool) entity.Account
+	FindByID(id string, deleted bool) entity.Account
 	Delete(id string) entity.Account
 }
 
@@ -63,19 +63,16 @@ func (repository *Repository) getCache(
 ) *entity.Account {
 	data, getDataFromRedisError :=
 		repository.redis.Get("account:" + key).Result()
-	if getDataFromRedisError != nil {
+	if data == "" || getDataFromRedisError != nil {
 		return nil
 	}
 
 	entity := &entity.Account{}
 	jsonUnmarshalError := json.Unmarshal([]byte(data), entity)
-	if jsonUnmarshalError != nil {
+	if entity.ID == "" || jsonUnmarshalError != nil {
 		return nil
 	}
 
-	if entity.ID == "" {
-		return nil
-	}
 	return entity
 }
 
@@ -92,11 +89,11 @@ func (repository *Repository) Create(
 	sameEmailAccount := entity.Account{}
 	repository.mongo.FindOne(
 		context.TODO(),
-		bson.M{"email": email},
+		bson.M{"email": email, "deletedAt": nil},
 	).Decode(&sameEmailAccount)
 
 	if sameEmailAccount.ID != "" {
-		return sameEmailAccount, errors.New("Duplicated Email")
+		return sameEmailAccount, errors.New("duplicated email")
 	}
 	accountEntity := entity.Account{
 		ID:        accountID,
@@ -126,8 +123,16 @@ func (repository *Repository) Update(
 	password string,
 	fcmToken string,
 ) (entity.Account, error) {
-	condition := bson.M{"_id": accountID}
-	_, err := repository.mongo.UpdateOne(
+	account := entity.Account{}
+	condition := bson.M{"_id": accountID, "deletedAt": nil}
+	repository.mongo.FindOne(
+		context.TODO(),
+		condition,
+	).Decode(&account)
+	if account.ID == "" {
+		return account, errors.New("update targe not found")
+	}
+	updateResult, err := repository.mongo.UpdateOne(
 		context.TODO(),
 		condition,
 		bson.M{
@@ -138,23 +143,18 @@ func (repository *Repository) Update(
 			},
 		},
 	)
-	if err != nil {
+	if updateResult == nil || err != nil {
 		panic(err)
 	}
-	updated := entity.Account{}
-	repository.mongo.FindOne(
-		context.TODO(),
-		bson.M{"_id": accountID},
-	).Decode(&updated)
-	repository.setCache(accountID, &updated)
-	return updated, nil
+	repository.setCache(accountID, &account)
+	return account, nil
 }
 
 // FindByEmailAndProvider find all account
 func (repository *Repository) FindByEmailAndProvider(
 	email string,
 	provider string,
-	unscoped bool,
+	deleted bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
 
@@ -163,7 +163,11 @@ func (repository *Repository) FindByEmailAndProvider(
 	}
 	repository.mongo.FindOne(
 		context.TODO(),
-		bson.M{"email": email, "provider": provider},
+		bson.M{
+			"email":     email,
+			"provider":  provider,
+			"deletedAt": nil,
+		},
 	).Decode(&accountEntity)
 	repository.setCache(email, &accountEntity)
 	return accountEntity
@@ -172,15 +176,24 @@ func (repository *Repository) FindByEmailAndProvider(
 // FindByEmail find account by email
 func (repository *Repository) FindByEmail(
 	email string,
+	deleted bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
+
+	if deleted == true {
+		repository.mongo.FindOne(
+			context.TODO(),
+			bson.M{"email": email},
+		).Decode(&accountEntity)
+		return accountEntity
+	}
 
 	if cache := repository.getCache(email); cache != nil {
 		return *cache
 	}
 	repository.mongo.FindOne(
 		context.TODO(),
-		bson.M{"email": email},
+		bson.M{"email": email, "deletedAt": nil},
 	).Decode(&accountEntity)
 	repository.setCache(email, &accountEntity)
 	return accountEntity
@@ -189,16 +202,15 @@ func (repository *Repository) FindByEmail(
 // FindByID find account by accountId
 func (repository *Repository) FindByID(
 	accountID string,
-	unscoped bool,
+	deleted bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
 
-	if unscoped == true {
+	if deleted == true {
 		repository.mongo.FindOne(
 			context.TODO(),
 			bson.M{
 				"_id": accountID,
-				"$ne": []interface{}{bson.M{"deletedAt": nil}},
 			},
 		).Decode(&accountEntity)
 		return accountEntity
