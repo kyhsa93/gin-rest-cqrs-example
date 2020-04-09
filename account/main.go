@@ -45,7 +45,7 @@ func getRedisClient(config config.Interface) *redis.Client {
 	})
 }
 
-// Initialize innitialize account module
+// Initialize initialize account module
 func Initialize(
 	engine *gin.Engine, config config.Interface, util *util.Util,
 ) {

@@ -11,7 +11,7 @@ type ReadAccountQuery struct {
 	Provider string
 	SocialID string
 	Password string
-	Unscoped bool
+	Deleted  bool
 }
 
 // ReadAccountByEmailQuery read account by email

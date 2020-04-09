@@ -27,7 +27,7 @@ func (bus *Bus) handleReadAccountQuery(
 	query *ReadAccountQuery,
 ) (*model.Account, error) {
 	entity := bus.repository.FindByEmailAndProvider(
-		query.Email, query.Provider, query.Unscoped,
+		query.Email, query.Provider, query.Deleted,
 	)
 
 	if entity.ID == "" {
@@ -58,7 +58,7 @@ func (bus *Bus) handleReadAccountQuery(
 func (bus *Bus) handleReadAccountByEmailquery(
 	query *ReadAccountByEmailQuery,
 ) (*model.Account, error) {
-	entity := bus.repository.FindByEmail(query.Email)
+	entity := bus.repository.FindByEmail(query.Email, true)
 	if entity.ID == "" {
 		return &model.Account{}, nil
 	}

@@ -203,7 +203,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/body.CreateAccount'
-          type: object
       produces:
       - application/json
       responses:
@@ -224,7 +223,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/body.UpdateAccount'
-          type: object
       produces:
       - application/json
       responses:
@@ -306,7 +304,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/body.CreateProfile'
-          type: object
       produces:
       - application/json
       responses:
@@ -329,7 +326,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/body.UpdateProfile'
-          type: object
       produces:
       - application/json
       responses:

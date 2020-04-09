@@ -88,7 +88,7 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		Provider: provider,
 		SocialID: socialID,
 		Password: password,
-		Unscoped: false,
+		Deleted:  false,
 	}
 	account, _ := controller.queryBus.Handle(query)
 	if account == nil {
