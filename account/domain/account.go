@@ -8,52 +8,14 @@ import (
 )
 
 // AccountAnemic anemic account model
-type AccountAnemic interface {
-	ID() string
-	Name() string
-	Passord() PasswordAnemic
-	Balance() int
-	OpenedAt() time.Time
-	UpdatedAt() time.Time
-	ClosedAt() time.Time
-}
-
-type accountAnemicImplement struct {
-	id        string
-	name      string
-	password  PasswordAnemic
-	balance   int
-	openedAt  time.Time
-	updatedAt time.Time
-	closedAt  time.Time
-}
-
-func (a *accountAnemicImplement) ID() string {
-	return a.id
-}
-
-func (a *accountAnemicImplement) Name() string {
-	return a.name
-}
-
-func (a *accountAnemicImplement) Passord() PasswordAnemic {
-	return a.password
-}
-
-func (a *accountAnemicImplement) Balance() int {
-	return a.balance
-}
-
-func (a *accountAnemicImplement) OpenedAt() time.Time {
-	return a.openedAt
-}
-
-func (a *accountAnemicImplement) UpdatedAt() time.Time {
-	return a.updatedAt
-}
-
-func (a *accountAnemicImplement) ClosedAt() time.Time {
-	return a.closedAt
+type AccountAnemic struct {
+	ID        string
+	Name      string
+	Password  PasswordAnemic
+	Balance   int
+	OpenedAt  time.Time
+	UpdatedAt time.Time
+	ClosedAt  time.Time
 }
 
 // AccountOptions options for create account
@@ -105,6 +67,24 @@ func NewAccount(options AccountOptions) Account {
 		updatedAt: time.Now(),
 		closedAt:  time.Now(),
 		events:    []interface{}{AccountOpenedDomainEventImplement{accountID: options.ID}},
+	}
+}
+
+// ReconstituteAccount reconstitute account domain object
+func ReconstituteAccount(anemic AccountAnemic) Account {
+	return &AccountImplement{
+		id:   anemic.ID,
+		name: anemic.Name,
+		password: ReconstitutePassword(PasswordAnemic{
+			Hashed:     anemic.Password.Hashed,
+			Cost:       anemic.Password.Cost,
+			CreatedAt:  anemic.Password.CreatedAt,
+			ComparedAt: anemic.Password.ComparedAt,
+		}),
+		balance:   anemic.Balance,
+		openedAt:  anemic.OpenedAt,
+		updatedAt: anemic.UpdatedAt,
+		closedAt:  anemic.ClosedAt,
 	}
 }
 
@@ -183,20 +163,20 @@ func (a *AccountImplement) comparePasswrod(password string) error {
 
 // ToAnemic convert account to anemic object
 func (a *AccountImplement) ToAnemic() AccountAnemic {
-	return &accountAnemicImplement{
-		id:        a.id,
-		name:      a.name,
-		password:  a.password.ToAnemic(),
-		balance:   a.balance,
-		openedAt:  a.openedAt,
-		updatedAt: a.updatedAt,
-		closedAt:  a.closedAt,
+	return AccountAnemic{
+		ID:        a.id,
+		Name:      a.name,
+		Password:  a.password.ToAnemic(),
+		Balance:   a.balance,
+		OpenedAt:  a.openedAt,
+		UpdatedAt: a.updatedAt,
+		ClosedAt:  a.closedAt,
 	}
 }
 
 // AccountRepository account repository
 type AccountRepository interface {
-	Save(account Account) error
+	Save(account Account)
 	FindNewID() (string, error)
 	FindByID(id string) (Account, error)
 }

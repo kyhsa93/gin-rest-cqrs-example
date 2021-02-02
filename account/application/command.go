@@ -81,9 +81,7 @@ func (h *OpenAccountCommandHandlerImplement) handle(command OpenAccountCommand) 
 		Password: command.Password,
 	})
 
-	if err := h.AccountRepository.Save(account); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(account)
 
 	for _, event := range account.Events() {
 		h.EventBus.Excute(event)
@@ -120,9 +118,7 @@ func (h *UpdatePasswordCommandHandlerImplement) handle(command UpdatePasswordCom
 
 	account.UpdatePassword(command.New, command.Password)
 
-	if err := h.AccountRepository.Save(account); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(account)
 
 	for _, event := range account.Events() {
 		h.EventBus.Excute(event)
@@ -160,9 +156,7 @@ func (h *CloseAccountCommandHandlerImplement) handle(command CloseAccountCommand
 
 	account.Close(command.Password)
 
-	if err := h.AccountRepository.Save(account); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(account)
 
 	for _, event := range account.Events() {
 		h.EventBus.Excute(event)
@@ -199,9 +193,7 @@ func (h *WithdrawCommandHandlerImplement) handle(command WithdrawCommand) {
 
 	account.Withdraw(command.Amount, command.Password)
 
-	if err := h.AccountRepository.Save(account); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(account)
 
 	for _, event := range account.Events() {
 		h.EventBus.Excute(event)
@@ -239,9 +231,7 @@ func (h *DepositCommandHandlerImplement) handle(command DepositCommand) {
 
 	account.Deposit(command.Amount)
 
-	if err := h.AccountRepository.Save(account); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(account)
 
 	for _, event := range account.Events() {
 		h.EventBus.Excute(event)
@@ -289,13 +279,8 @@ func (h *RemittanceCommandHandlerImplement) handle(command RemittanceCommand) {
 		Amount:   command.Amount,
 	})
 
-	if err := h.AccountRepository.Save(sender); err != nil {
-		panic(err)
-	}
-
-	if err := h.AccountRepository.Save(receiver); err != nil {
-		panic(err)
-	}
+	h.AccountRepository.Save(sender)
+	h.AccountRepository.Save(receiver)
 
 	for _, event := range sender.Events() {
 		h.EventBus.Excute(event)
