@@ -7,34 +7,11 @@ import (
 )
 
 // PasswordAnemic anemic password model
-type PasswordAnemic interface {
-	Hashed() string
-	Cost() int
-	CreatedAt() time.Time
-	ComparedAt() time.Time
-}
-
-type passwordAnemicImplement struct {
-	hashed     string
-	cost       int
-	createdAt  time.Time
-	comparedAt time.Time
-}
-
-func (p *passwordAnemicImplement) Hashed() string {
-	return p.hashed
-}
-
-func (p *passwordAnemicImplement) Cost() int {
-	return p.cost
-}
-
-func (p *passwordAnemicImplement) CreatedAt() time.Time {
-	return p.createdAt
-}
-
-func (p *passwordAnemicImplement) ComparedAt() time.Time {
-	return p.comparedAt
+type PasswordAnemic struct {
+	Hashed     string
+	Cost       int
+	CreatedAt  time.Time
+	ComparedAt time.Time
 }
 
 type passwordOptionsImplement struct {
@@ -79,13 +56,23 @@ func NewPassword(options passwordOptions) Password {
 	}
 }
 
+// ReconstitutePassword reconstitute password
+func ReconstitutePassword(anemic PasswordAnemic) Password {
+	return &PasswordImplement{
+		hashed:     anemic.Hashed,
+		cost:       anemic.Cost,
+		createdAt:  anemic.CreatedAt,
+		comparedAt: anemic.ComparedAt,
+	}
+}
+
 // ToAnemic return anemic password model
 func (p *PasswordImplement) ToAnemic() PasswordAnemic {
-	return &passwordAnemicImplement{
-		hashed:     p.hashed,
-		cost:       p.cost,
-		createdAt:  p.createdAt,
-		comparedAt: p.comparedAt,
+	return PasswordAnemic{
+		Hashed:     p.hashed,
+		Cost:       p.cost,
+		CreatedAt:  p.createdAt,
+		ComparedAt: p.comparedAt,
 	}
 }
 
