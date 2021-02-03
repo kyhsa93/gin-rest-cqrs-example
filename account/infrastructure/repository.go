@@ -8,6 +8,10 @@ import (
 	"github.com/kyhsa93/gin-rest-cqrs-example/account/domain"
 )
 
+func test(container container) {
+
+}
+
 // NewRepository create new repository
 func NewRepository(connection *gorm.DB) domain.AccountRepository {
 	return &MySQL{DB: connection}
