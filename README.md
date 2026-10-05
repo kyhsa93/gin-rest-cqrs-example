@@ -1,3 +1,5 @@
+> **Archived — no longer maintained.** For a maintained Go implementation of the same layered/CQRS structure, see [backend-service-playbook/implementations/go](https://github.com/kyhsa93/backend-service-playbook/tree/main/implementations/go).
+
 # Gin CQRS Rest api example
 
 This is sample Go project.
